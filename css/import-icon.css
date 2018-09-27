@@ -1,0 +1,16 @@
+[class*=sence-icon-], [class^=sence-icon-] {
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    -webkit-background-size: 100% auto;
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.sence-icon-arrow-right {
+    width: 49px;
+    height: 39px;
+    background-image: url(../image/icon/icon-arrow-right.png);
+}

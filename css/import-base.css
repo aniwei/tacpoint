@@ -1,0 +1,8 @@
+body {
+    font-family: OpenSans;
+    font-weight: 300;
+}
+
+button:focus {
+    outline: none;
+}
