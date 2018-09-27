@@ -14,3 +14,24 @@
     height: 39px;
     background-image: url(../image/icon/icon-arrow-right.png);
 }
+
+.sence-icon-fb {
+    width: 10px;
+    height: 20px;
+    background-image: url(../image//icon/icon-fb.png); 
+}
+.sence-icon-tw {
+    width: 20px;
+    height: 16px;
+    background-image: url(../image//icon/icon-tw.png); 
+}
+.sence-icon-in {
+    width: 18px;
+    height: 18px;
+    background-image: url(../image//icon/icon-in.png); 
+}
+.sence-icon-ig {
+    width: 18px;
+    height: 18px;
+    background-image: url(../image//icon/icon-ig.png); 
+}
