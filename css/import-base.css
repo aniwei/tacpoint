@@ -3,6 +3,14 @@ body {
     font-weight: 300;
 }
 
+input:focus,
 button:focus {
     outline: none;
+}
+
+.app {
+    transition: background-color 1s;
+    -moz-transition: background-color 1s;
+    -webkit-transition: background-color 1s;
+    -o-transition: background-color 1s;
 }
