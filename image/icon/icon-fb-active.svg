@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="8.82352941e-05 6.15384615e-05 9.86264706 6.15384615e-05 9.86264706 19.8699077 8.82352941e-05 19.8699077"></polygon>
+    </defs>
+    <g id="temporary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="home-desktop-protected" transform="translate(-407.000000, -20.000000)">
+            <g id="Group-5" transform="translate(407.000000, 20.000000)">
+                <circle id="Oval-3" fill="#F0F0F0" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
+                <g id="Group-3" transform="translate(10.000000, 5.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="Clip-2"></g>
+                    <path d="M9.31008824,10.8066462 L9.74538235,7.27433846 L6.40185294,7.27433846 L6.40185294,5.01895385 C6.40185294,3.99649231 6.6745,3.29956923 8.07626471,3.29956923 L9.86273529,3.29833846 L9.86273529,0.139261538 C9.55420588,0.0961846154 8.49391176,-0.000123076923 7.25773529,-0.000123076923 C4.67979412,-0.000123076923 2.91597059,1.64633846 2.91597059,4.66972308 L2.91597059,7.27433846 L8.82352941e-05,7.27433846 L8.82352941e-05,10.8066462 L2.91597059,10.8066462 L2.91597059,19.8700308 L6.40185294,19.8700308 L6.40185294,10.8066462 L9.31008824,10.8066462 Z" id="Fill-1" fill="#1A1A1A" mask="url(#mask-2)"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

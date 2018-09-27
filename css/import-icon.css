@@ -12,26 +12,26 @@
 .sence-icon-arrow-right {
     width: 49px;
     height: 39px;
-    background-image: url(../image/icon/icon-arrow-right.png);
+    background-image: url(../image/icon/icon-arrow-right.svg);
 }
 
 .sence-icon-fb {
     width: 10px;
     height: 20px;
-    background-image: url(../image//icon/icon-fb.png); 
+    background-image: url(../image//icon/icon-fb.svg); 
 }
 .sence-icon-tw {
     width: 20px;
     height: 16px;
-    background-image: url(../image//icon/icon-tw.png); 
+    background-image: url(../image//icon/icon-tw.svg); 
 }
 .sence-icon-in {
     width: 18px;
     height: 18px;
-    background-image: url(../image//icon/icon-in.png); 
+    background-image: url(../image//icon/icon-in.svg); 
 }
 .sence-icon-ig {
     width: 18px;
     height: 18px;
-    background-image: url(../image//icon/icon-ig.png); 
+    background-image: url(../image//icon/icon-ig.svg); 
 }

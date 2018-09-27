@@ -90,15 +90,15 @@
     height: 32px;
 }
 .sence-contact__information-site-link:hover .sence-icon-fb {
-    background-image: url(../image/icon/icon-fb-active.png);
+    background-image: url(../image/icon/icon-fb-active.svg);
 }
 .sence-contact__information-site-link:hover .sence-icon-tw {
-    background-image: url(../image/icon/icon-tw-active.png);
+    background-image: url(../image/icon/icon-tw-active.svg);
 }
 .sence-contact__information-site-link:hover .sence-icon-in {
-    background-image: url(../image/icon/icon-in-active.png);
+    background-image: url(../image/icon/icon-in-active.svg);
 }
 .sence-contact__information-site-link:hover .sence-icon-ig {
-    background-image: url(../image/icon/icon-ig-active.png);
+    background-image: url(../image/icon/icon-ig-active.svg);
 }
 /* information e */

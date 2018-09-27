@@ -1,0 +1,55 @@
+/* header s */
+.sence-project__header {
+    margin-bottom: 96px;
+}
+.sence-project__title {
+    margin-bottom: 64px;
+    line-height: 72px;
+    font-size: 64px;
+    font-weight: 300;
+    color: #1a1a1a;
+}
+
+.sence-project__description {
+    font-size: 0;
+    text-align: right;
+}
+.sence-project__description-inner {
+    display: inline-block;
+    vertical-align: top;
+    padding-right: 58px;
+    width: 434px;
+    text-align: left;
+}
+.sence-project__description-text {
+    line-height: 24px;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+.sence-project__description-extra {
+    margin-top: 25px;
+    line-height: 24px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #646464;
+    opacity: 0.5;
+}
+/* header e */
+
+/* body s */
+.sence-project__box + .sence-project__box {
+    margin-top: 64px;
+}
+.sence-project__image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+/* body e */
+
+/* carousel s */
+.sence-project .sence__carousel {
+    padding: 32px 0;
+}
+/* carousel e */
