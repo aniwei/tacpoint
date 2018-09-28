@@ -1,3 +1,46 @@
 .sence__carousel-inner {
-    position: relative;
+    overflow: hidden;
 }
+
+/* slider s */
+.sence__carousel-slider {
+    margin: 0 auto;
+    width: 77.0833%
+}
+.sence__carousel-list {
+    font-size: 0;
+    white-space: nowrap;
+}
+.sence__carousel-item {
+    display: inline-block;
+    vertical-align: top;
+    opacity: 0.5;
+}
+.sence__carousel-item_active {
+    opacity: 1;
+}
+.sence__carousel-item-inner {
+    padding: 0 32px;
+}
+/* slider e */
+
+/* order s */
+.sence__carousel-order {
+    margin-top: 40px;
+    font-size: 0;
+    text-align: center;
+}
+.sence__carousel-order-num {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 40px;
+    line-height: 18px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.5;
+}
+.sence__carousel-order_active {
+    opacity: 1;
+}
+/* order e */
+

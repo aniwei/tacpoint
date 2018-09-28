@@ -7,7 +7,6 @@
     line-height: 72px;
     font-size: 64px;
     font-weight: 300;
-    color: #1a1a1a;
 }
 
 .sence-project__description {
@@ -24,7 +23,6 @@
 .sence-project__description-text {
     line-height: 24px;
     font-size: 16px;
-    color: #1a1a1a;
 }
 .sence-project__description-extra {
     margin-top: 25px;
@@ -53,3 +51,26 @@
     padding: 32px 0;
 }
 /* carousel e */
+
+/* footer s */
+.sence-project__footer {
+    margin-top: 64px;
+}
+.sence-project__footer-inner {
+    margin: 0 auto;
+    padding-top: 32px;
+    width: 82.96%;
+    border-top: 1px solid #646464;
+}
+.sence-project__footer-label {
+    line-height: 20px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+.sence-project__footer-title {
+    margin-top: 28px;
+    line-height: 64px;
+    font-size: 56px;
+    font-weight: 300;
+}
+/* footer e */
