@@ -1,0 +1,60 @@
+{
+  "types": [
+    {
+      "id": 0,
+      "key": "analytics",
+      "name": "Analytics"
+    },
+    {
+      "id": 1,
+      "key": "branding",
+      "name": "Branding"
+    },
+    {
+      "id": 2,
+      "key": "data",
+      "name": "Data"
+    },
+    {
+      "id": 3,
+      "key": "graphics",
+      "name": "Graphics"
+    },
+    {
+      "id": 4,
+      "key": "UI/UX",
+      "name": "UI/UX"
+    },
+    {
+      "id": 5,
+      "key": "development",
+      "name": "Development"
+    },
+    {
+      "id": 6,
+      "key": "marketing",
+      "name": "Marketing"
+    },
+    {
+      "id": 7,
+      "key": "presentation",
+      "name": "Presentation"
+    },
+    {
+      "id": 8,
+      "key": "app",
+      "name": "App"
+    },
+    {
+      "id": 9,
+      "key": "wtrategy",
+      "name": "Strategy"
+    },
+    {
+      "id": 10,
+      "key": "web",
+      "name": "Web"
+    }
+
+  ]
+}

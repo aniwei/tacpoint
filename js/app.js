@@ -5,6 +5,23 @@
     BLACK: 'rgb(0, 0, 0)'
   };
 
+  // fetch status
+  var FETCH_STATUS = {
+    ERROR: 'ERROR',
+    SUCCESS: 'SUCCESS'
+  };
+
+  // promise type
+  var PROMISE_TYPES = {
+    PROJECTS: 'PROJECTS',
+    PROJECTS_TYPE: 'PROJECTS_TYPE'
+  };
+
+  // api url
+  var PROJECT_TYPES_URL = './data/projectTypes.json';
+  var PROJECTS_URL = './data/projects.json';
+  var PROJECT_URL = './data/project.json';
+
   // css selector
   var querySelector = function (el) {
     return typeof el === 'string' ? document.querySelector(el) : el;
@@ -17,6 +34,61 @@
       el.style.webkitTransision = transition;
       el.style.transision = transition;
     }
+  }
+
+  // get project types
+  var getProjectTypes = function (callback) {
+    callback = callback || noop;
+
+    return fetch(PROJECT_TYPES_URL, {
+      method: 'GET'
+    }).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      callback(FETCH_STATUS.SUCCESS, res);
+    }).catch(function (error) {
+      callback(FETCH_STATUS.ERROR, error);
+    });
+  }
+
+  // get project list by types
+  var getProjectListByTypes = function (type, callback) {
+    if (typeof type === 'function') {
+      callback = type;
+      type = undefined;
+    }
+
+    callback = callback || noop;
+
+    fetch(PROJECTS_URL, {
+      method: 'GET'
+    }).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      callback(FETCH_STATUS.SUCCESS, res);
+    }).catch(function (error) {
+      callback(FETCH_STATUS.ERROR, error);
+    });
+  }
+
+  // get project by types
+  var getProjectById = function (type, callback) {
+    if (typeof type === 'function') {
+      callback = type;
+      type = undefined;
+    }
+
+    callback = callback || noop;
+
+    fetch(PROJECT_URL, {
+      method: 'GET'
+    }).then(function (res) {
+      return res.json();
+    }).then(function (res) {
+      callback(FETCH_STATUS.SUCCESS, res);
+    }).catch(function (error) {
+      callback(FETCH_STATUS.ERROR, error);
+    });
   }
 
   // scene class
@@ -99,11 +171,16 @@
       return this;
     }
   };
+
+  var Store = function () {
+    
+  }
   
   // app controller
   var app = {
     current: null,
     scenes: [],
+    store: {},
 
     setBackgroundColor: function (backgroundColor) {
       this.container.style.backgroundColor = backgroundColor;
@@ -143,7 +220,7 @@
 
   var scenes = {};
 
-  scenes.root = new Scene('.scene-contact', {
+  scenes.root = new Scene('.scene-project', {
     backgroundColor: '#fff',
     navigator: {
       prev: {
@@ -160,6 +237,44 @@
     },
     init: function () {
       this.container = querySelector('scene-project');
+
+      var self = this;
+      
+
+      var promise = Promise.all([
+        new Promise(function (resolve, reject) {
+          // get project types
+          getProjectTypes(function (code, res) {
+            if (code === FETCH_STATUS.SUCCESS) {
+              self.store.projectTypes = res.types;
+
+              resolve();
+            } else {
+              reject(PROMISE_TYPES.PROJECTS_TYPE)
+            }
+          });
+        }),
+        new Promise(function (resolve, reject) {
+          // get project list 
+          getProjectListByTypes(function () {
+            if (code === FETCH_STATUS.SUCCESS) {
+              self.store.projectTypes = res.types;
+
+              resolve();
+            } else {
+              reject(PROMISE_TYPES.PROJECT_LIST)
+            }
+          });
+        })
+      ]);
+
+      promise.then(function () {
+        
+      }).catch(function () {
+
+        alert('Sorry, has a network error.');
+      });
+      
     },
 
     appear: function (route, params) {
@@ -182,7 +297,17 @@
         color: '#1a1a1a'
       }
     },
+    
     init: function () {
+      this.name = querySelector('.');
+      this.email = querySelector('.');
+      this.message = querySelector('.');
+      this.send = querySelector('.');
+
+    },
+
+    submit: function () {
+
     },
 
     appear: function (route, params) {
