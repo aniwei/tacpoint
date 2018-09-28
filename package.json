@@ -1,0 +1,26 @@
+{
+  "name": "tacpoint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aniwei/tacpoint.git"
+  },
+  "keywords": [
+    "tacpoint"
+  ],
+  "author": "aniwei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aniwei/tacpoint/issues"
+  },
+  "homepage": "https://github.com/aniwei/tacpoint#readme",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
