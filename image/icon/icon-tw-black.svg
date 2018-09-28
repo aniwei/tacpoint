@@ -6,10 +6,10 @@
     <defs>
         <polygon id="path-1" points="0.000117647059 7.80487805e-05 19.7015686 7.80487805e-05 19.7015686 15.9325659 0.000117647059 15.9325659"></polygon>
     </defs>
-    <g id="temporary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="home-desktop-protected" transform="translate(-467.000000, -20.000000)">
-            <g id="Group-4" transform="translate(467.000000, 20.000000)">
-                <circle id="Oval-3-Copy" fill="#F0F0F0" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
+    <g id="visual-20180806" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="about-m" transform="translate(-99.000000, -3111.000000)">
+            <g id="Group-4" transform="translate(99.000000, 3111.000000)">
+                <circle id="Oval-3-Copy" fill="#FFFFFF" fill-rule="nonzero" opacity="0" cx="15" cy="15" r="15"></circle>
                 <g id="Group-3" transform="translate(5.000000, 7.000000)">
                     <mask id="mask-2" fill="white">
                         <use xlink:href="#path-1"></use>

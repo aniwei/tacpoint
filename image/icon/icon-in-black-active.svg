@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <title>Group 2</title>
     <desc>Created with Sketch.</desc>
@@ -8,9 +8,9 @@
         <polygon id="path-3" points="0.0488769231 0.337177358 11.5120385 0.337177358 11.5120385 12.2263472 0.0488769231 12.2263472"></polygon>
     </defs>
     <g id="temporary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="home-desktop-protected-copy" transform="translate(-533.000000, -26.000000)">
+        <g id="home-desktop-protected" transform="translate(-527.000000, -20.000000)">
             <g id="Group-2" transform="translate(527.000000, 20.000000)">
-                <circle id="Oval-3-Copy-2" opacity="0.100000001" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
+                <circle id="Oval-3-Copy-2" fill="#1A1A1A" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
                 <g id="Group-7" transform="translate(6.000000, 6.000000)">
                     <g id="Group-3" transform="translate(0.000000, 0.047242)">
                         <mask id="mask-2" fill="white">

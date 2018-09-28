@@ -15,23 +15,68 @@
     background-image: url(../image/icon/icon-arrow-right.svg);
 }
 
-.sence-icon-fb {
-    width: 10px;
-    height: 20px;
-    background-image: url(../image//icon/icon-fb.svg); 
+.sence-icon-white-fb {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-fb-white.svg); 
 }
-.sence-icon-tw {
-    width: 20px;
-    height: 16px;
-    background-image: url(../image//icon/icon-tw.svg); 
+.sence-icon-white-tw {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-tw-white.svg); 
 }
-.sence-icon-in {
-    width: 18px;
-    height: 18px;
-    background-image: url(../image//icon/icon-in.svg); 
+.sence-icon-white-in {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-in-white.svg); 
 }
-.sence-icon-ig {
-    width: 18px;
-    height: 18px;
-    background-image: url(../image//icon/icon-ig.svg); 
+.sence-icon-white-ig {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-ig-white.svg); 
+}
+.sence__page-footer-information-site-link:hover .sence-icon-white-fb {
+    background-image: url(../image/icon/icon-fb-white-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-white-tw {
+    background-image: url(../image/icon/icon-tw-white-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-white-in {
+    background-image: url(../image/icon/icon-in-white-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-white-ig {
+    background-image: url(../image/icon/icon-ig-white-active.svg);
+}
+
+.sence-icon-black-fb {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-fb-black.svg); 
+}
+.sence-icon-black-tw {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-tw-black.svg); 
+}
+.sence-icon-black-in {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-in-black.svg); 
+}
+.sence-icon-black-ig {
+    width: 30px;
+    height: 30px;
+    background-image: url(../image//icon/icon-ig-black.svg); 
+}
+.sence__page-footer-information-site-link:hover .sence-icon-black-fb {
+    background-image: url(../image/icon/icon-fb-black-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-black-tw {
+    background-image: url(../image/icon/icon-tw-black-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-black-in {
+    background-image: url(../image/icon/icon-in-black-active.svg);
+}
+.sence__page-footer-information-site-link:hover .sence-icon-black-ig {
+    background-image: url(../image/icon/icon-ig-black-active.svg);
 }

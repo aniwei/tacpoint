@@ -1,3 +1,9 @@
+/* header s */
+.sence-project .sence__page-header {
+    margin-bottom: 96px;
+}
+/* header e */
+
 /* body s */
 .sence-project__box + .sence-project__box {
     margin-top: 64px;
@@ -14,3 +20,10 @@
     padding: 32px 0;
 }
 /* carousel e */
+
+/* footer s */
+.sence-project .sence__page-footer-inner {
+    padding-top: 32px;
+    border-top: 1px solid #646464;
+}
+/* footer e */

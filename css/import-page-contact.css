@@ -1,14 +1,8 @@
-/* form s */
-.sence-contact__form-header {
-    margin-bottom: 64px;
-}
-.sence-contact__form-title {
-    line-height: 72px;
-    font-size: 64px;
+.sence-contact {
     color: #ffffff;
-    font-weight: 300;
 }
 
+/* form s */
 .sence-contact__form-footer {
     margin-top: 32px;
     text-align: right;
@@ -23,6 +17,7 @@
 
 /* map s */
 .sence-contact__map {
+    margin-top: 96px;
     position: relative;
     padding-top: 38%;
     width: 100%;
@@ -37,68 +32,3 @@
     height: 100%;
 }
 /* map e */
-
-/* information s */
-.sence-contact__information {
-    margin-top: 64px;
-}
-.sence-contact__information-header {
-    margin-bottom: 64px;
-}
-.sence-contact__information-title {
-    line-height: 64px;
-    font-size: 56px;
-    color: #ffffff;
-    font-weight: 300;
-}
-
-.sence-contact__information-item {
-    line-height: 24px;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #ffffff;
-}
-.sence-contact__information-item + .sence-contact__information-item {
-    margin-top: 16px;
-}
-
-.sence-contact__information-footer {
-    margin-top: 32px;
-}
-.sence-contact__information-site {
-    font-size: 0;
-}
-.sence-contact__information-site-link {
-    margin-right: 30px;
-    display: inline-block;
-    vertical-align: middle;
-    width: 30px;
-    height: 30px;
-    font-size: 0;
-    text-align: center;
-}
-.sence-contact__information-site-link:after {
-    content: "";
-    display: inline-block;
-    vertical-align: middle;
-    width: 0px;
-    height: 100%;
-    visibility: hidden;
-}
-.sence-contact__information-site-link:hover i {
-    width: 32px;
-    height: 32px;
-}
-.sence-contact__information-site-link:hover .sence-icon-fb {
-    background-image: url(../image/icon/icon-fb-active.svg);
-}
-.sence-contact__information-site-link:hover .sence-icon-tw {
-    background-image: url(../image/icon/icon-tw-active.svg);
-}
-.sence-contact__information-site-link:hover .sence-icon-in {
-    background-image: url(../image/icon/icon-in-active.svg);
-}
-.sence-contact__information-site-link:hover .sence-icon-ig {
-    background-image: url(../image/icon/icon-ig-active.svg);
-}
-/* information e */

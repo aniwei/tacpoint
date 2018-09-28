@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="16px" viewBox="0 0 20 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
     <title>Group 4</title>
     <desc>Created with Sketch.</desc>
@@ -7,9 +7,9 @@
         <polygon id="path-1" points="0.000117647059 7.80487805e-05 19.7015686 7.80487805e-05 19.7015686 15.9325659 0.000117647059 15.9325659"></polygon>
     </defs>
     <g id="temporary" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="home-desktop-protected-copy" transform="translate(-472.000000, -27.000000)">
+        <g id="home-desktop-protected" transform="translate(-467.000000, -20.000000)">
             <g id="Group-4" transform="translate(467.000000, 20.000000)">
-                <circle id="Oval-3-Copy" opacity="0.100000001" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
+                <circle id="Oval-3-Copy" fill="#1A1A1A" fill-rule="nonzero" cx="15" cy="15" r="15"></circle>
                 <g id="Group-3" transform="translate(5.000000, 7.000000)">
                     <mask id="mask-2" fill="white">
                         <use xlink:href="#path-1"></use>
