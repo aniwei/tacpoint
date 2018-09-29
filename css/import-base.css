@@ -34,7 +34,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
 }
 
 .sence__container {
-    position: relative;
+    position: absolute;
     padding-left: 10px;
     padding-right: 10px;
     width: 100%;

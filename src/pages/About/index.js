@@ -3,12 +3,15 @@ import React from 'react';
 import Scene from '../../components/Scene';
 import Context from '../../Context';
 
+const SCALE = 1.2;
+
 class About extends React.Component {
   static backgroundColor = '#f0f0f0';
   static logoColor = '#1a1a1a';
 
   state = {
-    waiting: false
+    waiting: false,
+    categoryOffset: 0
   }
 
   componentDidMount () {
@@ -16,6 +19,29 @@ class About extends React.Component {
 
     setBackgroundColor(About.backgroundColor);
     setLogoColor(About.logoColor);
+
+    window.addEventListener('scroll', this.onWindowScroll);
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.onWindowScroll);
+  }
+
+  onWindowScroll = () => {
+    const { top } = this.getScrollRect();
+
+    this.setState({
+      categoryOffset: top
+    });
+  }
+
+  getScrollRect = () => {
+    const { 
+      scrollTop: top,
+      scrollHeight: height
+    } = document.documentElement;
+
+    return { top, height };
   }
 
   headerRender () {
@@ -101,48 +127,53 @@ class About extends React.Component {
   }
 
   bodyRender () {
+    const { categoryOffset } = this.state;
+    const style = {
+      transform: `translateY(${-categoryOffset}px)`
+    };
+
     return (
       <Scene.Body>
-        <div className="sence__grid">
+        <div className="sence__grid" >
           <div className="sence__grid-inner">
             <div className="col-4">
-              <div className="sence-about__link">
-                <span className="sence-about__link-line" style={{ transform: 'rotate(-35deg)' }}></span>
-                  <div className="sence__grid">
+              <div className="sence__category" style={style}>
+                <span className="sence__category-line" style={{ transform: 'rotate(-35deg)' }}></span>
+                <div className="sence__grid">
                     <div className="sence__grid-inner">
-                      <div className="col-6">
-                          <ul className="sence-about__link-list">
-                            <li className="sence-about__link-item">
+                      <div className="col-6" >
+                          <ul className="sence__category-list">
+                            <li className="sence__category-item">
                               <a href="">analytics</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">branding</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">data</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">graphics</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">ux/ui</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">development</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">marketing</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">presentation</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">app</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">strategy</a>
                             </li>
-                            <li className="sence-about__link-item">
+                            <li className="sence__category-item">
                               <a href="">web</a>
                             </li>
                           </ul>

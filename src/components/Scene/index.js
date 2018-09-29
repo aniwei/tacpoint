@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import Waiting from '../Waiting';
+import NetworkError from '../NetworkError';
 
 const Header = (props) => {
   return (
@@ -33,7 +34,7 @@ export default class Scene extends Component {
   static Footer = Footer;
 
   state = {
-    waiting: true
+    waiting: this.props.waiting
   };
 
   waiting = (waiting) => {
@@ -43,12 +44,20 @@ export default class Scene extends Component {
   }
 
   render () {
-    const { waiting } = this.state;
+    const { waiting, networkError, onReload } = this.state;
+    const { onReload } = this.props;
 
     return (
       <div className="sence__container">
-        <Waiting waiting={waiting} />
-        {this.props.children}
+        {
+          networkError ?
+            <NetworkError onReload={onReload} /> :
+            <Waiting waiting={waiting} onReload={onReload} />    
+        }
+        
+        <div className="scene__content">
+          {this.props.children}
+        </div>
       </div>
     );
   }

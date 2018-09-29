@@ -1,4 +1,7 @@
 /* header s */
+.scene__animated {
+    position: relative;
+}
 .sence__page-header {
     margin-bottom: 64px;
 }
