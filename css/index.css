@@ -7,7 +7,12 @@
 @import url(import-grid.css);
 @import url(import-carousel.css);
 @import url(import-animations.css);
+@import url(import-category.css);
+@import url(import-project.css);
+@import url(import-thumbnail.css);
 
 @import url(import-page-contact.css);
-@import url(import-page-project.css);
+@import url(import-page-detail.css);
 @import url(import-page-about.css);
+@import url(import-page-login.css);
+@import url(import-page-home.css);

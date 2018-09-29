@@ -1,0 +1,42 @@
+/* layout s */
+.sence-home {
+    box-flex: 1;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1
+}
+.sence-home .sence__grid,
+.sence-home .sence__grid-inner,
+.sence-home__project,
+.sence-home__category {
+    height: 100%;
+}
+/* layout e */
+
+/* category s */
+.sence-home__category {
+    font-size: 0px;
+}
+.sence-home__category:after {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    width: 0px;
+    height: 100%;
+}
+.sence-home__category-content {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.sence-home .sence__category-item {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.25);
+}
+.sence-home .sence__category-item_highlight {
+    color: #e2e2e2;
+}
+/* category e */

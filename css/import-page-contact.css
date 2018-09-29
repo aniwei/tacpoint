@@ -3,14 +3,8 @@
 }
 
 /* form s */
-.sence-contact__form-footer {
-    margin-top: 32px;
+.sence-contact .sence__form-footer {
     text-align: right;
-}
-.sence-contact__form-button {
-    display: inline-block;
-    vertical-align: middle;
-    background: none;
 }
 /* form e */
 

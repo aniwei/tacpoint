@@ -1,0 +1,26 @@
+.sence__category {
+    position: relative;
+}
+.sence__category-line {
+    position: absolute;
+    bottom: 100%;
+    left: 14px;
+    margin-bottom: 120px;
+    width: 312px;
+    height: 1px;
+    background-color: #1a1a1a;
+    /* transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+    -moz-transform: rotate(-35deg);
+    -webkit-transform: rotate(-35deg);
+    -o-transform: rotate(-35deg); */
+}
+.sence__category-item {
+    line-height: 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+.sence__category-item + .sence__category-item {
+    margin-top: 8px;
+}

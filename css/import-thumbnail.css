@@ -1,0 +1,19 @@
+.sence__thumbnail-object {
+    margin: 0 auto;
+    width: 184px;
+    height: 80px;
+    background-color: #ddd;
+}
+.sence__thumbnail-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.sence__thumbnail .sence__grid-inner {
+    margin-bottom: -64px;
+}
+.sence__thumbnail .sence__grid [class*=col-], 
+.sence__thumbnail .sence__grid [class^=col-] {
+    margin-bottom: 64px;
+}

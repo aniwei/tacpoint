@@ -1,4 +1,13 @@
 /* form s */
+.sence__form-footer {
+    margin-top: 32px;
+    text-align: center;
+}
+.sence__form-button {
+    display: inline-block;
+    vertical-align: middle;
+    background: none;
+}
 .sence__form-item + .sence__form-item {
     margin-top: 32px;
 }
@@ -11,7 +20,7 @@
     height: 64px;
     line-height: normal;
     font-size: 32px;
-    color: rgba(255, 2555, 255, .5);
+    color: #fff;
     border: none;
     border-bottom: 1px solid rgba(255, 2555, 255, .2);
     background: none;
