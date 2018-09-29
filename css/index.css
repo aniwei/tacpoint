@@ -1,15 +1,21 @@
 @charset "utf-8";
 @import url(import-reset.css);
+@import url(import-animations.css);
 @import url(import-base.css);
+@import url(import-app.css);
 @import url(import-page.css);
 @import url(import-form.css);
 @import url(import-icon.css);
 @import url(import-grid.css);
 @import url(import-carousel.css);
+<<<<<<< HEAD
 @import url(import-animations.css);
 @import url(import-category.css);
 @import url(import-project.css);
 @import url(import-thumbnail.css);
+=======
+
+>>>>>>> f51d4da9499e42cb9fea3485cf87d93ef19b6c8c
 
 @import url(import-page-contact.css);
 @import url(import-page-detail.css);

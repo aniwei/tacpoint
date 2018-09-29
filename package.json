@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "http-server ."
+    "start": "webpack --watch --progress & http-server ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,21 @@
   },
   "homepage": "https://github.com/aniwei/tacpoint#readme",
   "dependencies": {
-    "http-server": "^0.11.1"
+    "classnames": "^2.2.6",
+    "create-react-context": "^0.2.3",
+    "http-server": "^0.11.1",
+    "prop-types": "^15.6.2",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "jsx-loader": "^0.13.2",
+    "webpack": "^1.13.1"
   }
 }
