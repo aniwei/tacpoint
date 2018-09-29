@@ -1,0 +1,38 @@
+.root {
+  height: 100%;
+}
+.app {
+  transition: background-color 1s;
+  -moz-transition: background-color 1s;
+  -webkit-transition: background-color 1s;
+  -o-transition: background-color 1s;
+  height: 100%;
+}
+
+.app__layout {
+  height: 100%;
+  padding: 72px 50px;
+  position: relative;
+}
+
+.app__header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+}
+
+.app__logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.app__logo-svg.show {
+  animation-name: fadeIn;
+}
+.app__logo-svg.hide {
+  animation-name: fadeOut;
+}
+

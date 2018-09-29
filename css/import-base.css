@@ -1,21 +1,13 @@
+html {
+    height: 100%;
+}
 body {
     font-family: OpenSans;
     font-weight: 300;
+    height: 100%;
 }
 
 input:focus,
 button:focus {
     outline: none;
-}
-
-.app {
-    transition: background-color 1s;
-    -moz-transition: background-color 1s;
-    -webkit-transition: background-color 1s;
-    -o-transition: background-color 1s;
-}
-
-.sence__container {
-    padding-left: 10px;
-    padding-right: 10px;
 }
