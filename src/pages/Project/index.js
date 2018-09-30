@@ -49,41 +49,65 @@ class Project extends React.Component {
   }
 
   headerRender () {
-    return (
-      <Scene.Header>
-        <div class="sence__page-header-title-wrap">
-          <div class="sence__grid">
-            <div class="sence__grid-inner">
-              <div class="col-10">
-                <h3 class="sence__page-header-title">Visa Fraud</h3>
+    const { data } = this.state;
+
+    if (data) {
+      return (
+        <Scene.Header>
+          <div className="sence__page-header-title-wrap">
+            <div className="sence__grid">
+              <div className="sence__grid-inner">
+                <div className="col-10">
+                  <h3 className="sence__page-header-title">{data.name}</h3>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        {this.headerDescriptionRender()}
-      </Scene.Header>
-    );
+          {this.headerDescriptionRender()}
+        </Scene.Header>
+      );
+    }
   }
 
   headerDescriptionRender () {
-    return (
-      <div class="sence__page-header-description-wrap">
-        <div class="sence__grid">
-          <div class="sence__grid-inner">
-            <div class="col-4 col-offset-7">
-              <div class="sence__page-header-description">
-                <div class="sence__page-header-description-inner">
-                  <p class="sence__page-header-description-text">
-                      In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. 
-                  </p>
-                  <p class="sence__page-header-description-extra">graphics   ux/ui   development</p>
+    const { data } = this.state;
+
+    if (data) {
+      const { breif, categories } = data;
+
+      const breifElement = breif.map((breif, index) => {
+        return (
+          <p className="sence__page-header-description-text" key={index}>
+            {breif}          
+          </p>
+        );
+      });
+
+      const categoriesElement = (
+        <p className="sence__page-header-description-extra">
+          {categories.map(cate => cate.name).join('   ')}
+        </p>
+      );
+
+
+
+      return (
+        <div className="sence__page-header-description-wrap">
+          <div className="sence__grid">
+            <div className="sence__grid-inner">
+              <div className="col-4 col-offset-7">
+                <div className="sence__page-header-description">
+                  <div className="sence__page-header-description-inner">
+                    {breifElement}
+                    {categoriesElement}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   footerRender () {
@@ -198,7 +222,6 @@ class Project extends React.Component {
     return (
       <Scene waiting={this.waiting}>
         {this.headerRender()}
-        
         {this.bodyRender()}
         {this.footerRender()}
       </Scene>

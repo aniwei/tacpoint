@@ -44,8 +44,14 @@ export default class Scene extends Component {
   }
 
   render () {
-    const { waiting, networkError, onReload } = this.state;
+    const { waiting, networkError } = this.state;
     const { onReload } = this.props;
+    const classes = classnames({
+      'scene_content': true,
+      'show': !waiting || !networkError
+    });
+
+    debugger;
 
     return (
       <div className="sence__container">
@@ -55,8 +61,8 @@ export default class Scene extends Component {
             <Waiting waiting={waiting} onReload={onReload} />    
         }
         
-        <div className="scene__content">
-          {this.props.children}
+        <div className={classes}>
+          {(networkError || waiting) ? null : this.props.children}
         </div>
       </div>
     );
