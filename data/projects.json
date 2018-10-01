@@ -2,55 +2,21 @@
   "projects": [
     {
       "id": 0,
-      "types": [
-        {
-          "id": 3,
-          "key": "graphics",
-          "name": "Graphics"
-        },
-        {
-          "id": 4,
-          "key": "UI/UX",
-          "name": "UI/UX"
-        },
-        {
-          "id": 5,
-          "key": "development",
-          "name": "Development"
-        }
+      "categories": [
+          {
+            "id": 3,
+            "key": "graphics",
+            "name": "Graphics"
+          },
+          {
+            "id": 4,
+            "key": "UI/UX",
+            "name": "UI/UX"
+          }  
       ],
+      "client": 1,
       "name": "Visa Fraud",
-      "breif": [
-        "In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. "
-      ],
-
-      "introductions": [
-        {
-          "type": "image",
-          "data": [
-            ""
-          ]
-        },
-        {
-          "type": "text",
-          "data": [
-            "In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. "
-          ]
-        },
-        {
-          "type": "swiper",
-          "data": [
-            ""
-          ]
-        },
-        {
-          "type": "image",
-          "data": [
-            ""
-          ]
-        }
-      ]
-
+      "thumbnail": ""
     }
   ]
 }

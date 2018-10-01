@@ -13,6 +13,7 @@
   height: 100%;
   padding: 72px 50px;
   position: relative;
+  box-sizing: border-box;
 }
 
 .app__header {
@@ -37,11 +38,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.app__logo-svg.show {
-  animation-name: fadeIn;
-}
-.app__logo-svg.hide {
-  animation-name: fadeOut;
+
+.app__logo-svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .app__copyright {
@@ -53,4 +55,19 @@
   font-weight: 600;
   letter-spacing: 3.4px;
   color: #1a1a1a;
+}
+
+.app__navigator {
+  position: absolute;
+  top: 50%;
+}
+
+.app__navigator-left {
+  transform: rotate(90deg);
+  left: 0;
+}
+
+.app__navigator-right {
+  transform: rotate(-90deg);
+  left: 0;
 }

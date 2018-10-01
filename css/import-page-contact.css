@@ -1,22 +1,22 @@
-.sence-contact {
+.scene-contact {
     color: #ffffff;
 }
 
 /* form s */
-.sence-contact .sence__form-footer {
+.scene-contact .scene__form-footer {
     text-align: right;
 }
 /* form e */
 
 
 /* map s */
-.sence-contact__map {
+.scene-contact__map {
     margin-top: 96px;
     position: relative;
     padding-top: 38%;
     width: 100%;
 }
-.sence-contact__map-inner {
+.scene-contact__map-inner {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -28,23 +28,23 @@
 /* map e */
 
 @media screen and (max-width: 1024px) {
-    .sence-contact__map {
+    .scene-contact__map {
         margin-top: 64px;
     }
 }
 
 @media screen and (max-width: 768px) {
-    .sence-contact__map {
+    .scene-contact__map {
         margin-top: 52px;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .sence-contact__map {
+    .scene-contact__map {
         margin-top: 64px;
     }
 
-    .sence-contact__map {
+    .scene-contact__map {
         padding-top: 106.6667%;
     }
 }

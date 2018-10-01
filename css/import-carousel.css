@@ -1,32 +1,32 @@
-.sence__carousel-inner {
+.scene__carousel-inner {
     overflow: hidden;
 }
 
 /* slider s */
-.sence__carousel-slider {
+.scene__carousel-slider {
     margin: 0 auto;
 }
-.sence__carousel-list {
+.scene__carousel-list {
     font-size: 0;
     white-space: nowrap;
 }
-.sence__carousel-item {
+.scene__carousel-item {
     display: inline-block;
     vertical-align: top;
     opacity: 0.5;
 }
-.sence__carousel-item_active {
+.scene__carousel-item_active {
     opacity: 1;
 }
 /* slider e */
 
 /* order s */
-.sence__carousel-order {
+.scene__carousel-order {
     margin-top: 64px;
     font-size: 0;
     text-align: center;
 }
-.sence__carousel-order-num {
+.scene__carousel-order-num {
     display: inline-block;
     vertical-align: middle;
     padding: 0 20px;
@@ -36,18 +36,18 @@
     letter-spacing: 2px;
     cursor: pointer;
 }
-.sence__carousel-order-num + .sence__carousel-order-num {
+.scene__carousel-order-num + .scene__carousel-order-num {
     margin-left: 40px;
 }
-.sence__carousel-order-num:hover,
-.sence__carousel-order_active {
+.scene__carousel-order-num:hover,
+.scene__carousel-order_active {
     color: #1a1a1a;
 }
 /* order e */
 
 @media screen and (max-width: 1024px) {
     /* order s */
-    .sence__carousel-order {
+    .scene__carousel-order {
         margin-top: 32px;
     }
     /* order e */
@@ -55,7 +55,7 @@
 
 @media screen and (max-width: 768px) {
     /* order s */
-    .sence__carousel-order {
+    .scene__carousel-order {
         margin-top: 26px;
     }
     /* order e */
@@ -63,14 +63,14 @@
 
 @media screen and (max-width: 600px) {
     /* order s */
-    .sence__carousel-order {
+    .scene__carousel-order {
         margin-top: 32px;
     }
-    .sence__carousel-order-num {
+    .scene__carousel-order-num {
         padding-left: 10px;
         padding-right: 10px;
     }
-    .sence__carousel-order-num + .sence__carousel-order-num {
+    .scene__carousel-order-num + .scene__carousel-order-num {
         margin-left: 44px;
     }
     /* order e */

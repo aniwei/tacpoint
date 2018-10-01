@@ -6,7 +6,8 @@ export default class Logo extends Component {
     const { type, color } = this.props;
     const classes = classnames({
       'app__logo-svg': true,
-      [type === 'full' ? 'show' : 'hide']: !!type
+      'animated': true,
+      [type === 'full' ? 'fadeIn' : 'fadeOut']: !!type
     });
 
     return (
@@ -35,7 +36,8 @@ export default class Logo extends Component {
     const { type, color } = this.props;
     const classes = classnames({
       'app__logo-svg': true,
-      [type !== 'full' ? 'show' : 'hide']: !!type
+      'animated': true,
+      [type !== 'full' ? 'fadeIn' : 'fadeOut']: !!type
     });
 
     return (

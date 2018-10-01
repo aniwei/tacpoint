@@ -1,26 +1,26 @@
 
 /* project s */
-.sence__project-item {
+.scene__project-item {
     line-height: 72px;
     font-size: 64px;
     font-weight: 300;
     color: rgba(255, 255, 255, 0.25);
 }
 
-.sence__project-item_highlight {
+.scene__project-item_highlight {
     color: #ffffff;
 }
 /* project e */
 
 @media screen and (max-width: 1024px) {
-    .sence__project-item {
+    .scene__project-item {
         line-height: 64px;
         font-size: 56px;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .sence__project-item {
+    .scene__project-item {
         line-height: 58px;
         font-size: 48px;
     }

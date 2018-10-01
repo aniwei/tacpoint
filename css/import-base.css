@@ -33,7 +33,7 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     -o-transition: background-color 1s;
 }
 
-.sence__container {
+.scene__container {
     position: absolute;
     padding-left: 10px;
     padding-right: 10px;
@@ -42,21 +42,39 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     box-sizing: border-box;
 }
 
-.app.sence__screen_full,
-.app.sence__screen_full .sence,
-.app.sence__screen_full .sence__layout {
+.scene__waiting {
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.scene__waiting.dark {
+    color: #1a1a1a;
+}
+
+.scene__waiting.light {
+    color: #f1f1f1;
+}
+
+.app.scene__screen_full,
+.app.scene__screen_full .scene,
+.app.scene__screen_full .scene__layout {
     height: 100%;
     overflow: hidden;
 }
 
-.app.sence__screen_full .sence__container {
+.app.scene__screen_full .scene__container {
     display: -webkit-box;   /* 老版本语法: Safari, iOS, Android browser, older WebKit browsers. */
     display: -moz-box;      /* 老版本语法: Firefox (buggy) */
     display: -ms-flexbox;   /* 混合版本语法: IE 10 */  
     display: -webkit-flex;  /* 新版本语法: Chrome 21+ */
     display: flex;          /* 新版本语法: Opera 12.1, Firefox 22+ */
 }
-.sence__fixed {
+.scene__fixed {
     position: fixed;
     top: 0px;
     left: 0px;

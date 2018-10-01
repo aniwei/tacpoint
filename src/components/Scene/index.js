@@ -1,31 +1,66 @@
-import React, { Component } from 'react';
+import React, { Component, createElement, isValidElement } from 'react';
 import classnames from 'classnames';
 
 import Waiting from '../Waiting';
 import NetworkError from '../NetworkError';
+import Context from './Context';
 
-const Header = (props) => {
-  return (
-    <div className="sence__page-header">
-      {props.children}
-    </div>
-  );
+const enableRender = ({ waiting, networkError, element }) => {
+  if (!waiting || !networkError) {
+    return element;
+  }
 }
 
-const Body = (props) => {
-  return (
-    <div className="sence__page-body">
-      {props.children}
-    </div>
-  );
+const Header = ({ children }) => {
+
+  return <Context.Consumer>
+    {
+      ({ waiting, networkError }) => enableRender({
+        waiting,
+        networkError,
+        element: (
+          <div className="scene__page-header">
+            {isValidElement(children) || Array.isArray(children) ? children : createElement(children)}
+          </div>
+        )
+      })
+    }
+
+  </Context.Consumer>
 }
 
-const Footer = (props) => {
-  return (
-    <div className="sence__page-footer">
-      {props.children}
-    </div>
-  );
+const Body = ({ children }) => {
+  return <Context.Consumer>
+    {
+      ({ waiting, networkError }) => enableRender({
+        waiting,
+        networkError,
+        element: (
+          <div className="scene__page-body">
+            {isValidElement(children) || Array.isArray(children) ? Array.isArraychildren : createElement(children)}
+          </div>
+        )
+      })
+    }
+
+  </Context.Consumer>
+}
+
+const Footer = ({ children }) => {
+  return <Context.Consumer>
+    {
+      ({ waiting, networkError }) => enableRender({
+        waiting,
+        networkError,
+        element: (
+          <div className="scene__page-footer">
+            {isValidElement(children) || Array.isArray(children) ? children : createElement(children)}
+          </div>
+        )
+      })
+    }
+
+  </Context.Consumer>
 }
 
 export default class Scene extends Component {
@@ -33,38 +68,29 @@ export default class Scene extends Component {
   static Body = Body;
   static Footer = Footer;
 
-  state = {
-    waiting: this.props.waiting
-  };
-
-  waiting = (waiting) => {
-    this.setState({
-      waiting
-    })
-  }
-
   render () {
-    const { waiting, networkError } = this.state;
+    const { waiting, networkError } = this.props;
     const { onReload } = this.props;
     const classes = classnames({
       'scene_content': true,
-      'show': !waiting || !networkError
+      'animated': true,
+      'fadeIn': !waiting || !networkError
     });
 
-    debugger;
-
     return (
-      <div className="sence__container">
-        {
-          networkError ?
-            <NetworkError onReload={onReload} /> :
-            <Waiting waiting={waiting} onReload={onReload} />    
-        }
-        
-        <div className={classes}>
-          {(networkError || waiting) ? null : this.props.children}
+      <Context.Provider value={{ waiting, networkError }}>
+        <div className="scene__container">
+          {
+            networkError ?
+              <NetworkError onReload={onReload} /> :
+              <Waiting {...this.props} waiting={waiting} onReload={onReload}  />    
+          }
+          
+          <div className={classes}>
+            {(networkError || waiting) ? null : this.props.children}
+          </div>
         </div>
-      </div>
+      </Context.Provider>
     );
   }
 }

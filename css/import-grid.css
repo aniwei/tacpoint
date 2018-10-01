@@ -1,12 +1,12 @@
-.sence__grid {
+.scene__grid {
     width: 100%;
 }
-.sence__grid-inner {
+.scene__grid-inner {
     margin: 0 -10px;
     font-size: 0;
 }
-.sence__grid [class*=col-], 
-.sence__grid [class^=col-] {
+.scene__grid [class*=col-], 
+.scene__grid [class^=col-] {
     display: inline-block;
     vertical-align: top;
     padding-left:10px;

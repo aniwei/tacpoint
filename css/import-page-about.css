@@ -1,14 +1,14 @@
 /* header s */
-.sence-about .sence__page-header {
+.scene-about .scene__page-header {
     margin-bottom: 180px;
 }
-.sence-about .sence__page-header-title-wrap {
+.scene-about .scene__page-header-title-wrap {
     margin-bottom: 96px;
 }
 /* header e */
 
 /* image s */
-.sence-about__image {
+.scene-about__image {
     display: block;
     width: 100%;
     height: auto;
@@ -16,19 +16,19 @@
 /* image e */
 
 /* partner s */
-.sence-about__partner {
+.scene-about__partner {
     margin-top: 96px;
 }
 /* partner e */
 
 /* footer s */
-.sence-about .sence__page-footer {
+.scene-about .scene__page-footer {
     margin-top: 96px;
 }
-.sence-about .sence__page-footer-information {
+.scene-about .scene__page-footer-information {
     margin-top: 74px;
 }
-.sence-about .sence__page-footer-information-site-link i {
+.scene-about .scene__page-footer-information-site-link i {
     opacity: 1;
 }
 /* footer e */

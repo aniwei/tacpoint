@@ -1,4 +1,4 @@
-[class*=sence-icon-], [class^=sence-icon-] {
+[class*=scene-icon-], [class^=scene-icon-] {
     display: inline-block;
     vertical-align: middle;
     width: 30px;
@@ -9,74 +9,74 @@
     background-position: center center;
 }
 
-.sence-icon-arrow-right {
+.scene-icon-arrow-right {
     width: 49px;
     height: 39px;
     background-image: url(../image/icon/icon-arrow-right.svg);
 }
 
-.sence-icon-white-fb {
+.scene-icon-white-fb {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-fb-white.svg); 
 }
-.sence-icon-white-tw {
+.scene-icon-white-tw {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-tw-white.svg); 
 }
-.sence-icon-white-in {
+.scene-icon-white-in {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-in-white.svg); 
 }
-.sence-icon-white-ig {
+.scene-icon-white-ig {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-ig-white.svg); 
 }
-.sence__page-footer-information-site-link:hover .sence-icon-white-fb {
+.scene__page-footer-information-site-link:hover .scene-icon-white-fb {
     background-image: url(../image/icon/icon-fb-white-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-white-tw {
+.scene__page-footer-information-site-link:hover .scene-icon-white-tw {
     background-image: url(../image/icon/icon-tw-white-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-white-in {
+.scene__page-footer-information-site-link:hover .scene-icon-white-in {
     background-image: url(../image/icon/icon-in-white-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-white-ig {
+.scene__page-footer-information-site-link:hover .scene-icon-white-ig {
     background-image: url(../image/icon/icon-ig-white-active.svg);
 }
 
-.sence-icon-black-fb {
+.scene-icon-black-fb {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-fb-black.svg); 
 }
-.sence-icon-black-tw {
+.scene-icon-black-tw {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-tw-black.svg); 
 }
-.sence-icon-black-in {
+.scene-icon-black-in {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-in-black.svg); 
 }
-.sence-icon-black-ig {
+.scene-icon-black-ig {
     width: 30px;
     height: 30px;
     background-image: url(../image//icon/icon-ig-black.svg); 
 }
-.sence__page-footer-information-site-link:hover .sence-icon-black-fb {
+.scene__page-footer-information-site-link:hover .scene-icon-black-fb {
     background-image: url(../image/icon/icon-fb-black-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-black-tw {
+.scene__page-footer-information-site-link:hover .scene-icon-black-tw {
     background-image: url(../image/icon/icon-tw-black-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-black-in {
+.scene__page-footer-information-site-link:hover .scene-icon-black-in {
     background-image: url(../image/icon/icon-in-black-active.svg);
 }
-.sence__page-footer-information-site-link:hover .sence-icon-black-ig {
+.scene__page-footer-information-site-link:hover .scene-icon-black-ig {
     background-image: url(../image/icon/icon-ig-black-active.svg);
 }

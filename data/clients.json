@@ -1,0 +1,9 @@
+{
+  "clients": [
+    {
+      "id": 0,
+      "key": "analytics",
+      "name": "Analytics"
+    }
+  ]
+}
