@@ -6,7 +6,170 @@ import Context from '../../Context';
 
 import Scene from '../../components/Scene';
 
+const Navigations = withRouter(class Navigations extends Component {
+  state = {
+    type: 'categories'
+  }
+
+  onCategoryLinkClick = (...args) => {
+    const { onCategoryLinkClick } = this.props;
+
+    onCategoryLinkClick(...args);
+  }
+
+  onClientLinkClick = (...args) => {
+    const { onClientLinkClick } = this.props;
+
+    onClientLinkClick(...args);
+  }
+
+  onTitleClick = (type) => {
+    this.setState({ type });
+  }
+
+  clear = () => {
+    const { onClear } = this.props;
+
+    if (typeof onClear === 'function') {
+      onClear();
+    }
+  }
+
+  categoriesRender () {
+    const { type } = this.state;
+    const { location } = this.props;
+    const { categories, selectedCategories } = this.props;
+    const query = qs.parse(location.search);
+
+    query.clients = query.clients || [];
+
+    const categoryElements = categories.map((client) => {
+      const { id, name } = client;
+      const index = selectedCategories.indexOf(id);
+      const isInclude = index !== -1;
+      const classes = classnames({
+        'scene__category-item_highlight': isInclude,
+        'scene__category-item': true
+      });
+
+      const categories = (
+        isInclude ? 
+          selectedCategories.concat().splice(index, 1) : 
+          selectedCategories.concat(id)
+      ).join(',');
+
+      const to = `/?${qs.stringify({ ...query, categories })}`;
+
+      return (
+        <li className={classes} key={id}>
+          <Link 
+            to={to}
+            onClick={() => {
+              this.onCategoryLinkClick(id, isInclude);
+            }}
+          >
+            {name}
+          </Link>
+        </li>
+      );
+    });
+
+    return (
+      <div className="col-12 col-xs-24">
+        <div className={classnames({
+          'scene__category-box': true,
+          'active': type === 'categories',
+          'animated': true
+        })}>
+          <h3 className="scene__category-title" onClick={() => this.onTitleClick('categories')}>
+            TYPE OF<br />PROJECT
+          </h3>
+          <ul className="scene__category-list scene__category-capability">
+            {categoryElements}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  clientsRender () {
+    const { type } = this.state;
+    const { location } = this.props;
+    const { selectedClients, clients } = this.props;
+    const query = qs.parse(location.search);
+
+    query.clients = query.clients || [];
+
+    const clientElements = clients.map((client) => {
+      const { id, name } = client;
+      const index = selectedClients.indexOf(id);
+      const isInclude = index !== -1;
+      const classes = classnames({
+        'scene__category-item_highlight': isInclude,
+        'scene__category-item': true
+      });
+
+      const clients = (
+        isInclude ? 
+          selectedClients.concat().splice(index, 1) : 
+          selectedClients.concat(id)
+      ).join(',');
+
+      const to = `/?${qs.stringify({ ...query, clients })}`;
+
+      return (
+        <li className={classes} key={id} >
+          <Link 
+            to={to}
+            onClick={() => this.onClientLinkClick(id, isInclude)}
+          >
+            {name}
+          </Link>
+        </li>
+      );
+    });
+
+    return (
+      <div className="col-12 col-xs-24 scene__category-client">
+        <div className={classnames({
+          'scene__category-box': true,
+          'active': type === 'client',
+          'animated': true
+        })}>
+          <h3 className="scene__category-title" onClick={() => this.onTitleClick('client')}>
+            CLIENT
+          </h3>
+          <ul className="scene__category-list scene__category-capability">
+            {clientElements}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
+  render () {
+    return (
+      <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category">
+        <div className="scene-home__category-content">
+          <div className="scene__category">
+            <div className="scene_grid">
+              <div className="scene__grid-inner">
+                {this.categoriesRender()}
+                {this.clientsRender()}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 class Home extends Component {
+  static navigators = [
+    { position: 'left', text: 'About', path: '/about' },
+    { position: 'right', text: 'Let\'s talk', path: '/contact' }
+  ];
 
   state = {
     waiting: true,
@@ -19,7 +182,7 @@ class Home extends Component {
   }
 
   componentDidMount () {
-    const { location } = this.props;
+    const { location, setNavigations, setNavigators } = this.props;
     const query = qs.parse(location.search);
 
     this.setState({
@@ -32,6 +195,8 @@ class Home extends Component {
         this.getClientList()
       ]);
 
+      setNavigators(Home.navigators);
+
       promise
         .then(res => {
           const state = {
@@ -42,13 +207,22 @@ class Home extends Component {
             ...res[2]
           };
 
-          this.setState(state);
+          this.setState(state, () => {
+            setNavigations(this.navigationsRender());
+          });
         })
         .catch(error => {
           this.setState({
             networkError: error
           });
         });
+    });
+  }
+
+  onClearSelectedList = () => {
+    this.setState({
+      selectedClients: [],
+      selectedCategories: []
     });
   }
 
@@ -157,26 +331,25 @@ class Home extends Component {
           selectedClients.includes(clientId)
         ) {
           return (
-            <Link 
-              to={to}
-              key={id}
-            >
-              <li className={classes}>
+            <li className={classes} key={id}>
+              <Link
+                to={to}
+              >
                 {name}
-              </li>
-            </Link>
+              </Link>
+            </li>
           );
         }
       } else {
         return (
-          <Link 
-            to={to}
-            key={id}
-          >
-            <li className={classes}>
+          <li className={classes}>
+            <Link 
+              to={to}
+              key={id}
+            >
               {name}
-            </li>
-          </Link>
+            </Link>
+          </li>
         );
       }
 
@@ -194,114 +367,23 @@ class Home extends Component {
     );
   }
 
-  categoriesRender () {
-    const { location } = this.props;
-    const { categories, selectedCategories } = this.state;
-    const query = qs.parse(location.search);
-
-    query.clients = query.clients || [];
-
-    const categoryElements = categories.map((client) => {
-      const { id, name } = client;
-      const index = selectedCategories.indexOf(id);
-      const isInclude = index !== -1;
-      const classes = classnames({
-        'scene__category-item_highlight': isInclude,
-        'scene__category-item': true
-      });
-
-      const categories = (
-        isInclude ? 
-          selectedCategories.concat().splice(index, 1) : 
-          selectedCategories.concat(id)
-      ).join(',');
-
-      const to = `/?${qs.stringify({ ...query, categories })}`;
-
-      return (
-        <Link 
-          to={to}
-          key={id}
-          onClick={() => {
-            this.onCategoryLinkClick(id, isInclude);
-          }}
-        >
-          <li className={classes}>{name}</li>
-        </Link>
-      );
-    });
-
+  navigationsRender = () => {
     return (
-      <div className="clo-6">
-        <ul className="scene__category-list scene__category-capability">
-          {categoryElements}
-        </ul>
-      </div>
-    );
-  }
-
-  clientsRender () {
-    const { location } = this.props;
-    const { selectedClients, clients } = this.state;
-    const query = qs.parse(location.search);
-
-    query.clients = query.clients || [];
-
-    const clientElements = clients.map((client) => {
-      const { id, name } = client;
-      const index = selectedClients.indexOf(id);
-      const isInclude = index !== -1;
-      const classes = classnames({
-        'scene__category-item_highlight': isInclude,
-        'scene__category-item': true
-      });
-
-      const clients = (
-        isInclude ? 
-          selectedClients.concat().splice(index, 1) : 
-          selectedClients.concat(id)
-      ).join(',');
-
-      const to = `/?${qs.stringify({ ...query, clients })}`;
-
-      return (
-        <Link 
-          to={to}
-          onClick={() => this.onClientLinkClick(id, isInclude)}
-          key={id}  
-        >
-          <li className={classes}>{name}</li>
-        </Link>
-      );
-    });
-
-    return (
-      <div className="clo-6">
-        <ul className="scene__category-list scene__category-capability">
-          {clientElements}
-        </ul>
-      </div>
-    );
-  }
-
-  filtersRender () {
-    return (
-      <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category">
-        <div className="scene-home__category-content">
-          <div className="scene__category">
-            <div className="scene_grid">
-              <div className="scene__grid-inner">
-                {this.categoriesRender()}
-                {this.clientsRender()}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Navigations 
+        ref={ref => this.navigations = ref}
+        onCategoryLinkClick={this.onCategoryLinkClick}
+        onClientLinkClick={this.onClientLinkClick}
+        onClear={this.onClearSelectedList}
+        {...this.state}
+      />
     );
   }
 
   bodyRender () {
+    const { isMobile } = this.props;
+
+    console.log(isMobile);
+
     return (
       <Scene.Body>
         {
@@ -309,7 +391,7 @@ class Home extends Component {
             <div className="scene__grid">
               <div className="scene__grid-inner">
                 {this.projectsRender()}
-                {this.filtersRender()}
+                {!isMobile && this.navigationsRender()}
               </div>
             </div>
           )

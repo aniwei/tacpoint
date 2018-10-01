@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
-import React, { Component } from 'react';
+import React, { Component, cloneElement } from 'react';
 import ReactDom from 'react-dom';
-import { Route, HashRouter as Router, Switch } from 'react-router-dom';
+import classnames from 'classnames';
+import { Route, HashRouter as Router, Switch, Link } from 'react-router-dom';
 import { AnimatedSwitch } from 'react-router-transition';
 
 import Project from './pages/Project';
@@ -11,9 +12,11 @@ import About from './pages/About';
 import Access from './pages/Access';
 
 import Logo from './components/Logo';
+import NavigationButton from './components/NavigationButton';
 
 import Context from './Context';
 import { 
+  IS_MOBILE,
   COLORS, 
   WIDTH_LIST, 
   TRANSITION_PROPERTY,
@@ -22,10 +25,14 @@ import {
 
 class App extends Component {
   state = {
+    openNavigations: false,
+    navigations: null,
+    navigators: [],
     backgroundColor: COLORS.BLACK,
     logoColor: COLORS.WHITE,
     logoType: 'simple',
-    transitionProperty: TRANSITION_PROPERTY['1024']
+    transitionProperty: TRANSITION_PROPERTY['1024'],
+    isMobile: false
   }
 
   componentDidMount () {
@@ -51,8 +58,15 @@ class App extends Component {
     this.height = height;
 
     this.setState({
-      transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index - 1]]
+      transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
+      isMobile: IS_MOBILE[WIDTH_LIST[index]] === 'MOBILE'
     });
+  }
+
+  onNavigationClear = () => {
+    if (this.navigations) {
+      this.navigations.clear();
+    }
   }
 
   onMapStyles = (styles) => {
@@ -90,6 +104,14 @@ class App extends Component {
     });
   }
 
+  setNavigations = (navigations) => {
+    this.setState({
+      navigations: cloneElement(navigations, {
+        ref: ref => this.navigations = ref
+      })
+    });
+  }
+
   setBackgroundColor = (backgroundColor) => {
     this.setState({ backgroundColor });
   }
@@ -98,8 +120,24 @@ class App extends Component {
     this.setState({ logoColor });
   }
 
-  setNavigator = () => {
-
+  setNavigators = (navigators) => {
+    this.setState({
+      navigators: navigators.map(nav => {
+        const { position, text, path } = nav;  
+        const classes = classnames({
+          'app__navigator': true,
+          [`app__navigator-${position}`]: true
+        })
+  
+        return (
+          <div className={classes} key={position}>
+            <Link to={path}>
+              {text}
+            </Link>
+          </div>
+        );
+      })
+    });
   }
 
   openNavigator = () => {
@@ -108,6 +146,12 @@ class App extends Component {
 
   closeNavigator = () => {
 
+  }
+
+  onNavigationButtonClick = (action) => {
+    this.setState({
+      openNavigations: action === 'open'
+    });
   }
 
   getWindowSize = () => {
@@ -157,27 +201,26 @@ class App extends Component {
     );
   }
 
-  navigatorsRender () {
-    const { navigators } = this.state;
-
-
-  }
-
   layoutRender () {
-    const { logoColor, logoType } = this.state;
+    const { logoColor, logoType, navigations, openNavigations, navigators } = this.state;
+
+    console.log(navigator)
+
+    const classes = classnames({
+      'app__navigation': true,
+      'animated': true,
+      'open': openNavigations
+    });
 
     return (
       <div className="app__layout">
         <div className="app__header">
+          <NavigationButton 
+            open={openNavigations}
+            onOpen={() => this.onNavigationButtonClick('open')} 
+            onClose={() => this.onNavigationButtonClick('close')} 
+          />
           <Logo color={logoColor} type={logoType} />
-          <div className="app__navigation">
-            <div className="app__navigation-button">
-            </div>
-
-            <div className="app__navigation-content">
-
-            </div>
-          </div>
         </div>
         <div className="app__scene">
           {this.scenesRender()}
@@ -186,8 +229,28 @@ class App extends Component {
           <div className="app__copyright">©2018 Tacpoint, Inc.</div>
         </div>
 
-        <div className="app__navigator app__navigator-left"></div>
-        <div className="app__navigator app__navigator-right"></div>
+        <div className={classes}>
+          <div className="app__navigation-content">
+            <div className="scene__grid">
+              <div className="scene__grid-inner">
+                {navigations}
+              </div>
+            </div>
+          </div>
+          <div className="app__navigation-clear" onClick={this.onNavigationClear}>
+            <div className="scene__grid">
+              <div className="scene__grid-inner">
+                <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear" onClick={this.onNavigationClear}>
+                  <Link to="/">
+                    + all projects
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {navigators}
       </div>
     );
   }
@@ -195,11 +258,14 @@ class App extends Component {
   provideContext = () => {
     return {
       application: this,
+      isMobile: this.state.isMobile,
       openNavigator: this.openNavigator,
       closeNavigator: this.closeNavigator,
       setBackgroundColor: this.setBackgroundColor,
       setLogoColor: this.setLogoColor,
       setLogoType: this.setLogoType,
+      setNavigations: this.setNavigations,
+      setNavigators: this.setNavigators,
       getWindowSize: this.getWindowSize
     }
   }

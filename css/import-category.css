@@ -47,13 +47,40 @@
         display: block;
     }
     .scene__category-list {
-        display: none;
+        opacity: 0;
+        transition: opacity 1.5s;
+        pointer-events: none;
+    }
+
+    .scene__grid-inner {
+        position: relative;
+    }
+
+    .scene__category-box {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: left 1.5s;
+        left: 100%;
+    }
+
+    .scene__category-client .scene__category-box.active {
+        left: -100%;
+    }
+
+    .scene__category-client .scene__category-box {
+        left: 0;
+    }
+
+    .scene__category-box.active {
+        left: 0;
     }
 
     .scene__category-box.active .scene__category-title {
         color: #ffffff;
     }
     .scene__category-box.active .scene__category-list {
-        display: block;
+        opacity: 1;
+        pointer-events: all;
     }
 }

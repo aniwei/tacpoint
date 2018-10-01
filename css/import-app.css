@@ -9,7 +9,8 @@
   height: 100%;
 }
 
-.app__layout {
+.app__layout,
+.app__navigation {
   height: 100%;
   padding: 72px 50px;
   position: relative;
@@ -22,6 +23,7 @@
   left: 0;
   right: 0;
   height: 72px;
+  z-index: 100;
 }
 
 .app__footer {
@@ -65,9 +67,92 @@
 .app__navigator-left {
   transform: rotate(90deg);
   left: 0;
+  color: #fff;
 }
 
 .app__navigator-right {
   transform: rotate(-90deg);
+  right: 0;
+  color: #fff;
+}
+
+.app__navigation-button {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  top: 50%;
+  margin-top: -20px;
+  width: 40px;
+  height: 40px;
+  transition: transform .5s, opacity 1s;
+  transform: rotateZ(0deg);
+}
+
+.app__navigation-button.open {
+  transform: rotateZ(-45deg);
+}
+
+.app__navigation {
+  position: absolute;
+  display: none;
   left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+
+.app__navigation a {
+  pointer-events: none;
+}
+
+.app__navigation .scene__category-item_highlight {
+  color: #e2e2e2;
+}
+
+.app__navigation-content {
+  height: 100%;
+  position: relative;
+}
+
+.app__navigation-clear {
+  position: absolute;
+  bottom: 80px;
+  color: #fff;
+  width: 100%;
+  font-size: 18px;
+}
+
+.app__navigation-content .scene__grid {
+  height: 100%;
+}
+
+.app__navigation-content .scene__grid-inner {
+  height: 100%;
+}
+
+@media screen and (max-width: 375px) {
+  .app__layout {
+    padding: 80px 37px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .app__layout {
+    padding: 80px 50px;
+  }
+
+  .app__navigation.open {
+    animation-name: fadeIn;
+    display: block;
+  }
+
+  .app__navigation.open a {
+    pointer-events: all;
+  }
+
+  .app__navigation-button {
+    left: 37px;
+    pointer-events: all;
+    opacity: 1;
+  }
 }

@@ -14,10 +14,10 @@ const TRANSITION_PROPERTY = {
   }],
   '768': [{
     name: 'transform',
-    vvalue: { from: 80, to: 0 }
+    value: { from: 80, to: 0 }
   }, {
     name: 'opacity',
-    vvalue: { from: 0, to: 1 }
+    value: { from: 0, to: 1 }
   }],
   '375': [{
     name: 'transform',
@@ -27,6 +27,13 @@ const TRANSITION_PROPERTY = {
     value: { from: 0, to: 1 }
   }],
 }
+
+const IS_MOBILE = {
+  '1440': 'PC',
+  '1024': 'PC',
+  '768': 'MOBILE',
+  '375': 'MOBILE',
+};
 
 const WIDTH_LIST = [
   375, 768, 1024, 1440
@@ -41,6 +48,7 @@ const PROJECT_LAYOUT_TYPE = {
 }
 
 export {
+  IS_MOBILE,
   PROJECT_LAYOUT_TYPE,
   COLORS,
   GOOGLE_MAP_JS_URL,

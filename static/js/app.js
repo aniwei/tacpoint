@@ -60,6 +60,10 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
+	var _classnames2 = __webpack_require__(259);
+
+	var _classnames3 = _interopRequireDefault(_classnames2);
+
 	var _reactRouterDom = __webpack_require__(260);
 
 	var _reactRouterTransition = __webpack_require__(302);
@@ -88,6 +92,10 @@
 
 	var _Logo2 = _interopRequireDefault(_Logo);
 
+	var _NavigationButton = __webpack_require__(398);
+
+	var _NavigationButton2 = _interopRequireDefault(_NavigationButton);
+
 	var _Context = __webpack_require__(253);
 
 	var _Context2 = _interopRequireDefault(_Context);
@@ -95,6 +103,8 @@
 	var _contants = __webpack_require__(257);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -117,10 +127,14 @@
 	    }
 
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      openNavigations: false,
+	      navigations: null,
+	      navigators: [],
 	      backgroundColor: _contants.COLORS.BLACK,
 	      logoColor: _contants.COLORS.WHITE,
 	      logoType: 'simple',
-	      transitionProperty: _contants.TRANSITION_PROPERTY['1024']
+	      transitionProperty: _contants.TRANSITION_PROPERTY['1024'],
+	      isMobile: false
 	    }, _this.onResize = function () {
 	      var _window = window,
 	          width = _window.innerWidth,
@@ -134,8 +148,13 @@
 	      _this.height = height;
 
 	      _this.setState({
-	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index - 1]]
+	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]],
+	        isMobile: _contants.IS_MOBILE[_contants.WIDTH_LIST[index]] === 'MOBILE'
 	      });
+	    }, _this.onNavigationClear = function () {
+	      if (_this.navigations) {
+	        _this.navigations.clear();
+	      }
 	    }, _this.onMapStyles = function (styles) {
 	      if (styles.transform !== undefined) {
 	        return _extends({}, styles, {
@@ -164,11 +183,45 @@
 	      _this.setState({
 	        logoType: logoType
 	      });
+	    }, _this.setNavigations = function (navigations) {
+	      _this.setState({
+	        navigations: (0, _react.cloneElement)(navigations, {
+	          ref: function ref(_ref2) {
+	            return _this.navigations = _ref2;
+	          }
+	        })
+	      });
 	    }, _this.setBackgroundColor = function (backgroundColor) {
 	      _this.setState({ backgroundColor: backgroundColor });
 	    }, _this.setLogoColor = function (logoColor) {
 	      _this.setState({ logoColor: logoColor });
-	    }, _this.setNavigator = function () {}, _this.openNavigator = function () {}, _this.closeNavigator = function () {}, _this.getWindowSize = function () {
+	    }, _this.setNavigators = function (navigators) {
+	      _this.setState({
+	        navigators: navigators.map(function (nav) {
+	          var position = nav.position,
+	              text = nav.text,
+	              path = nav.path;
+
+	          var classes = (0, _classnames3.default)(_defineProperty({
+	            'app__navigator': true
+	          }, 'app__navigator-' + position, true));
+
+	          return _react2.default.createElement(
+	            'div',
+	            { className: classes, key: position },
+	            _react2.default.createElement(
+	              _reactRouterDom.Link,
+	              { to: path },
+	              text
+	            )
+	          );
+	        })
+	      });
+	    }, _this.openNavigator = function () {}, _this.closeNavigator = function () {}, _this.onNavigationButtonClick = function (action) {
+	      _this.setState({
+	        openNavigations: action === 'open'
+	      });
+	    }, _this.getWindowSize = function () {
 	      var self = _this;
 
 	      return {
@@ -184,9 +237,9 @@
 
 	      var style = {};
 
-	      transitionProperty.map(function (_ref2) {
-	        var name = _ref2.name,
-	            value = _ref2.value;
+	      transitionProperty.map(function (_ref3) {
+	        var name = _ref3.name,
+	            value = _ref3.value;
 
 	        style[name] = value[type];
 	      });
@@ -195,11 +248,14 @@
 	    }, _this.provideContext = function () {
 	      return {
 	        application: _this,
+	        isMobile: _this.state.isMobile,
 	        openNavigator: _this.openNavigator,
 	        closeNavigator: _this.closeNavigator,
 	        setBackgroundColor: _this.setBackgroundColor,
 	        setLogoColor: _this.setLogoColor,
 	        setLogoType: _this.setLogoType,
+	        setNavigations: _this.setNavigations,
+	        setNavigators: _this.setNavigators,
 	        getWindowSize: _this.getWindowSize
 	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -250,17 +306,25 @@
 	      );
 	    }
 	  }, {
-	    key: 'navigatorsRender',
-	    value: function navigatorsRender() {
-	      var navigators = this.state.navigators;
-	    }
-	  }, {
 	    key: 'layoutRender',
 	    value: function layoutRender() {
+	      var _this2 = this;
+
 	      var _state = this.state,
 	          logoColor = _state.logoColor,
-	          logoType = _state.logoType;
+	          logoType = _state.logoType,
+	          navigations = _state.navigations,
+	          openNavigations = _state.openNavigations,
+	          navigators = _state.navigators;
 
+
+	      console.log(navigator);
+
+	      var classes = (0, _classnames3.default)({
+	        'app__navigation': true,
+	        'animated': true,
+	        'open': openNavigations
+	      });
 
 	      return _react2.default.createElement(
 	        'div',
@@ -268,13 +332,16 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app__header' },
-	          _react2.default.createElement(_Logo2.default, { color: logoColor, type: logoType }),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'app__navigation' },
-	            _react2.default.createElement('div', { className: 'app__navigation-button' }),
-	            _react2.default.createElement('div', { className: 'app__navigation-content' })
-	          )
+	          _react2.default.createElement(_NavigationButton2.default, {
+	            open: openNavigations,
+	            onOpen: function onOpen() {
+	              return _this2.onNavigationButtonClick('open');
+	            },
+	            onClose: function onClose() {
+	              return _this2.onNavigationButtonClick('close');
+	            }
+	          }),
+	          _react2.default.createElement(_Logo2.default, { color: logoColor, type: logoType })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -290,8 +357,45 @@
 	            '\xA92018 Tacpoint, Inc.'
 	          )
 	        ),
-	        _react2.default.createElement('div', { className: 'app__navigator app__navigator-left' }),
-	        _react2.default.createElement('div', { className: 'app__navigator app__navigator-right' })
+	        _react2.default.createElement(
+	          'div',
+	          { className: classes },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'app__navigation-content' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'scene__grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'scene__grid-inner' },
+	                navigations
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'app__navigation-clear', onClick: this.onNavigationClear },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'scene__grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'scene__grid-inner' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear', onClick: this.onNavigationClear },
+	                  _react2.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/' },
+	                    '+ all projects'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        navigators
 	      );
 	    }
 	  }, {
@@ -22894,6 +22998,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _class, _temp2, _initialiseProps;
+
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -22924,21 +23030,246 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Home = function (_Component) {
-	  _inherits(Home, _Component);
+	var Navigations = (0, _reactRouterDom.withRouter)((_temp2 = _class = function (_Component) {
+	  _inherits(Navigations, _Component);
 
-	  function Home() {
+	  function Navigations() {
 	    var _ref;
 
 	    var _temp, _this, _ret;
 
-	    _classCallCheck(this, Home);
+	    _classCallCheck(this, Navigations);
 
 	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
 	      args[_key] = arguments[_key];
 	    }
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Home.__proto__ || Object.getPrototypeOf(Home)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Navigations.__proto__ || Object.getPrototypeOf(Navigations)).call.apply(_ref, [this].concat(args))), _this), _initialiseProps.call(_this), _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(Navigations, [{
+	    key: 'categoriesRender',
+	    value: function categoriesRender() {
+	      var _this2 = this;
+
+	      var type = this.state.type;
+	      var location = this.props.location;
+	      var _props = this.props,
+	          categories = _props.categories,
+	          selectedCategories = _props.selectedCategories;
+
+	      var query = _queryString2.default.parse(location.search);
+
+	      query.clients = query.clients || [];
+
+	      var categoryElements = categories.map(function (client) {
+	        var id = client.id,
+	            name = client.name;
+
+	        var index = selectedCategories.indexOf(id);
+	        var isInclude = index !== -1;
+	        var classes = (0, _classnames2.default)({
+	          'scene__category-item_highlight': isInclude,
+	          'scene__category-item': true
+	        });
+
+	        var categories = (isInclude ? selectedCategories.concat().splice(index, 1) : selectedCategories.concat(id)).join(',');
+
+	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { categories: categories }));
+
+	        return _react2.default.createElement(
+	          'li',
+	          { className: classes, key: id },
+	          _react2.default.createElement(
+	            _reactRouterDom.Link,
+	            {
+	              to: to,
+	              onClick: function onClick() {
+	                _this2.onCategoryLinkClick(id, isInclude);
+	              }
+	            },
+	            name
+	          )
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'col-12 col-xs-24' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: (0, _classnames2.default)({
+	              'scene__category-box': true,
+	              'active': type === 'categories',
+	              'animated': true
+	            }) },
+	          _react2.default.createElement(
+	            'h3',
+	            { className: 'scene__category-title', onClick: function onClick() {
+	                return _this2.onTitleClick('categories');
+	              } },
+	            'TYPE OF',
+	            _react2.default.createElement('br', null),
+	            'PROJECT'
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'scene__category-list scene__category-capability' },
+	            categoryElements
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'clientsRender',
+	    value: function clientsRender() {
+	      var _this3 = this;
+
+	      var type = this.state.type;
+	      var location = this.props.location;
+	      var _props2 = this.props,
+	          selectedClients = _props2.selectedClients,
+	          clients = _props2.clients;
+
+	      var query = _queryString2.default.parse(location.search);
+
+	      query.clients = query.clients || [];
+
+	      var clientElements = clients.map(function (client) {
+	        var id = client.id,
+	            name = client.name;
+
+	        var index = selectedClients.indexOf(id);
+	        var isInclude = index !== -1;
+	        var classes = (0, _classnames2.default)({
+	          'scene__category-item_highlight': isInclude,
+	          'scene__category-item': true
+	        });
+
+	        var clients = (isInclude ? selectedClients.concat().splice(index, 1) : selectedClients.concat(id)).join(',');
+
+	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { clients: clients }));
+
+	        return _react2.default.createElement(
+	          'li',
+	          { className: classes, key: id },
+	          _react2.default.createElement(
+	            _reactRouterDom.Link,
+	            {
+	              to: to,
+	              onClick: function onClick() {
+	                return _this3.onClientLinkClick(id, isInclude);
+	              }
+	            },
+	            name
+	          )
+	        );
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'col-12 col-xs-24 scene__category-client' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: (0, _classnames2.default)({
+	              'scene__category-box': true,
+	              'active': type === 'client',
+	              'animated': true
+	            }) },
+	          _react2.default.createElement(
+	            'h3',
+	            { className: 'scene__category-title', onClick: function onClick() {
+	                return _this3.onTitleClick('client');
+	              } },
+	            'CLIENT'
+	          ),
+	          _react2.default.createElement(
+	            'ul',
+	            { className: 'scene__category-list scene__category-capability' },
+	            clientElements
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'scene-home__category-content' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'scene__category' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'scene_grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'scene__grid-inner' },
+	                this.categoriesRender(),
+	                this.clientsRender()
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Navigations;
+	}(_react.Component), _initialiseProps = function _initialiseProps() {
+	  var _this4 = this;
+
+	  this.state = {
+	    type: 'categories'
+	  };
+
+	  this.onCategoryLinkClick = function () {
+	    var onCategoryLinkClick = _this4.props.onCategoryLinkClick;
+
+
+	    onCategoryLinkClick.apply(undefined, arguments);
+	  };
+
+	  this.onClientLinkClick = function () {
+	    var onClientLinkClick = _this4.props.onClientLinkClick;
+
+
+	    onClientLinkClick.apply(undefined, arguments);
+	  };
+
+	  this.onTitleClick = function (type) {
+	    _this4.setState({ type: type });
+	  };
+
+	  this.clear = function () {
+	    var onClear = _this4.props.onClear;
+
+
+	    if (typeof onClear === 'function') {
+	      onClear();
+	    }
+	  };
+	}, _temp2));
+
+	var Home = function (_Component2) {
+	  _inherits(Home, _Component2);
+
+	  function Home() {
+	    var _ref2;
+
+	    var _temp3, _this5, _ret2;
+
+	    _classCallCheck(this, Home);
+
+	    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	      args[_key2] = arguments[_key2];
+	    }
+
+	    return _ret2 = (_temp3 = (_this5 = _possibleConstructorReturn(this, (_ref2 = Home.__proto__ || Object.getPrototypeOf(Home)).call.apply(_ref2, [this].concat(args))), _this5), _this5.state = {
 	      waiting: true,
 	      networkError: null,
 	      projects: [],
@@ -22946,8 +23277,13 @@
 	      clients: [],
 	      selectedCategories: [],
 	      selectedClients: []
-	    }, _this.onClientLinkClick = function (client, isInclude) {
-	      var selectedClients = _this.state.selectedClients;
+	    }, _this5.onClearSelectedList = function () {
+	      _this5.setState({
+	        selectedClients: [],
+	        selectedCategories: []
+	      });
+	    }, _this5.onClientLinkClick = function (client, isInclude) {
+	      var selectedClients = _this5.state.selectedClients;
 
 	      var index = selectedClients.indexOf(client);
 
@@ -22956,18 +23292,18 @@
 	      if (isInclude) {
 	        newSelectedList.splice(index, 1);
 
-	        _this.setState({
+	        _this5.setState({
 	          selectedClients: newSelectedList
 	        });
 	      } else {
 	        newSelectedList.push(client);
 
-	        _this.setState({
+	        _this5.setState({
 	          selectedClients: newSelectedList
 	        });
 	      }
-	    }, _this.onCategoryLinkClick = function (category, isInclude) {
-	      var selectedCategories = _this.state.selectedCategories;
+	    }, _this5.onCategoryLinkClick = function (category, isInclude) {
+	      var selectedCategories = _this5.state.selectedCategories;
 
 	      var index = selectedCategories.indexOf(category);
 
@@ -22976,25 +23312,37 @@
 	      if (isInclude) {
 	        newSelectedList.splice(index, 1);
 
-	        _this.setState({
+	        _this5.setState({
 	          selectedCategories: newSelectedList
 	        });
 	      } else {
 	        newSelectedList.push(category);
 
-	        _this.setState({
+	        _this5.setState({
 	          selectedCategories: newSelectedList
 	        });
 	      }
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    }, _this5.navigationsRender = function () {
+	      return _react2.default.createElement(Navigations, _extends({
+	        ref: function ref(_ref3) {
+	          return _this5.navigations = _ref3;
+	        },
+	        onCategoryLinkClick: _this5.onCategoryLinkClick,
+	        onClientLinkClick: _this5.onClientLinkClick,
+	        onClear: _this5.onClearSelectedList
+	      }, _this5.state));
+	    }, _temp3), _possibleConstructorReturn(_this5, _ret2);
 	  }
 
 	  _createClass(Home, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this2 = this;
+	      var _this6 = this;
 
-	      var location = this.props.location;
+	      var _props3 = this.props,
+	          location = _props3.location,
+	          setNavigations = _props3.setNavigations,
+	          setNavigators = _props3.setNavigators;
 
 	      var query = _queryString2.default.parse(location.search);
 
@@ -23006,7 +23354,9 @@
 	          return client - 0;
 	        }) : []
 	      }, function () {
-	        var promise = Promise.all([_this2.getProjectList(), _this2.getCategoryList(), _this2.getClientList()]);
+	        var promise = Promise.all([_this6.getProjectList(), _this6.getCategoryList(), _this6.getClientList()]);
+
+	        setNavigators(Home.navigators);
 
 	        promise.then(function (res) {
 	          var state = _extends({
@@ -23014,9 +23364,11 @@
 	            waiting: false
 	          }, res[0], res[1], res[2]);
 
-	          _this2.setState(state);
+	          _this6.setState(state, function () {
+	            setNavigations(_this6.navigationsRender());
+	          });
 	        }).catch(function (error) {
-	          _this2.setState({
+	          _this6.setState({
 	            networkError: error
 	          });
 	        });
@@ -23106,28 +23458,27 @@
 	            return selectedCategories.includes(cate.id);
 	          }) || selectedClients.includes(clientId)) {
 	            return _react2.default.createElement(
-	              _reactRouterDom.Link,
-	              {
-	                to: to,
-	                key: id
-	              },
+	              'li',
+	              { className: classes, key: id },
 	              _react2.default.createElement(
-	                'li',
-	                { className: classes },
+	                _reactRouterDom.Link,
+	                {
+	                  to: to
+	                },
 	                name
 	              )
 	            );
 	          }
 	        } else {
 	          return _react2.default.createElement(
-	            _reactRouterDom.Link,
-	            {
-	              to: to,
-	              key: id
-	            },
+	            'li',
+	            { className: classes },
 	            _react2.default.createElement(
-	              'li',
-	              { className: classes },
+	              _reactRouterDom.Link,
+	              {
+	                to: to,
+	                key: id
+	              },
 	              name
 	            )
 	          );
@@ -23149,147 +23500,14 @@
 	      );
 	    }
 	  }, {
-	    key: 'categoriesRender',
-	    value: function categoriesRender() {
-	      var _this3 = this;
-
-	      var location = this.props.location;
-	      var _state2 = this.state,
-	          categories = _state2.categories,
-	          selectedCategories = _state2.selectedCategories;
-
-	      var query = _queryString2.default.parse(location.search);
-
-	      query.clients = query.clients || [];
-
-	      var categoryElements = categories.map(function (client) {
-	        var id = client.id,
-	            name = client.name;
-
-	        var index = selectedCategories.indexOf(id);
-	        var isInclude = index !== -1;
-	        var classes = (0, _classnames2.default)({
-	          'scene__category-item_highlight': isInclude,
-	          'scene__category-item': true
-	        });
-
-	        var categories = (isInclude ? selectedCategories.concat().splice(index, 1) : selectedCategories.concat(id)).join(',');
-
-	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { categories: categories }));
-
-	        return _react2.default.createElement(
-	          _reactRouterDom.Link,
-	          {
-	            to: to,
-	            key: id,
-	            onClick: function onClick() {
-	              _this3.onCategoryLinkClick(id, isInclude);
-	            }
-	          },
-	          _react2.default.createElement(
-	            'li',
-	            { className: classes },
-	            name
-	          )
-	        );
-	      });
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'clo-6' },
-	        _react2.default.createElement(
-	          'ul',
-	          { className: 'scene__category-list scene__category-capability' },
-	          categoryElements
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'clientsRender',
-	    value: function clientsRender() {
-	      var _this4 = this;
-
-	      var location = this.props.location;
-	      var _state3 = this.state,
-	          selectedClients = _state3.selectedClients,
-	          clients = _state3.clients;
-
-	      var query = _queryString2.default.parse(location.search);
-
-	      query.clients = query.clients || [];
-
-	      var clientElements = clients.map(function (client) {
-	        var id = client.id,
-	            name = client.name;
-
-	        var index = selectedClients.indexOf(id);
-	        var isInclude = index !== -1;
-	        var classes = (0, _classnames2.default)({
-	          'scene__category-item_highlight': isInclude,
-	          'scene__category-item': true
-	        });
-
-	        var clients = (isInclude ? selectedClients.concat().splice(index, 1) : selectedClients.concat(id)).join(',');
-
-	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { clients: clients }));
-
-	        return _react2.default.createElement(
-	          _reactRouterDom.Link,
-	          {
-	            to: to,
-	            onClick: function onClick() {
-	              return _this4.onClientLinkClick(id, isInclude);
-	            },
-	            key: id
-	          },
-	          _react2.default.createElement(
-	            'li',
-	            { className: classes },
-	            name
-	          )
-	        );
-	      });
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'clo-6' },
-	        _react2.default.createElement(
-	          'ul',
-	          { className: 'scene__category-list scene__category-capability' },
-	          clientElements
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'filtersRender',
-	    value: function filtersRender() {
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category' },
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'scene-home__category-content' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'scene__category' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'scene_grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'scene__grid-inner' },
-	                this.categoriesRender(),
-	                this.clientsRender()
-	              )
-	            )
-	          )
-	        )
-	      );
-	    }
-	  }, {
 	    key: 'bodyRender',
 	    value: function bodyRender() {
-	      var _this5 = this;
+	      var _this7 = this;
+
+	      var isMobile = this.props.isMobile;
+
+
+	      console.log(isMobile);
 
 	      return _react2.default.createElement(
 	        _Scene2.default.Body,
@@ -23301,8 +23519,8 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'scene__grid-inner' },
-	              _this5.projectsRender(),
-	              _this5.filtersRender()
+	              _this7.projectsRender(),
+	              !isMobile && _this7.navigationsRender()
 	            )
 	          );
 	        }
@@ -23326,6 +23544,7 @@
 	  return Home;
 	}(_react.Component);
 
+	Home.navigators = [{ position: 'left', text: 'About', path: '/about' }, { position: 'right', text: 'Let\'s talk', path: '/contact' }];
 	exports.default = (0, _reactRouterDom.withRouter)(function (props) {
 	  return _react2.default.createElement(
 	    _Context2.default.Consumer,
@@ -24492,10 +24711,10 @@
 	  }],
 	  '768': [{
 	    name: 'transform',
-	    vvalue: { from: 80, to: 0 }
+	    value: { from: 80, to: 0 }
 	  }, {
 	    name: 'opacity',
-	    vvalue: { from: 0, to: 1 }
+	    value: { from: 0, to: 1 }
 	  }],
 	  '375': [{
 	    name: 'transform',
@@ -24504,6 +24723,13 @@
 	    name: 'opacity',
 	    value: { from: 0, to: 1 }
 	  }]
+	};
+
+	var IS_MOBILE = {
+	  '1440': 'PC',
+	  '1024': 'PC',
+	  '768': 'MOBILE',
+	  '375': 'MOBILE'
 	};
 
 	var WIDTH_LIST = [375, 768, 1024, 1440];
@@ -24516,6 +24742,7 @@
 	  SWIPER: 'swiper'
 	};
 
+	exports.IS_MOBILE = IS_MOBILE;
 	exports.PROJECT_LAYOUT_TYPE = PROJECT_LAYOUT_TYPE;
 	exports.COLORS = COLORS;
 	exports.GOOGLE_MAP_JS_URL = GOOGLE_MAP_JS_URL;
@@ -33229,6 +33456,133 @@
 		}
 	};
 
+
+/***/ }),
+/* 398 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(251);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _classnames = __webpack_require__(259);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var noop = function noop() {};
+
+	var NavigationButton = function (_Component) {
+	  _inherits(NavigationButton, _Component);
+
+	  function NavigationButton() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, NavigationButton);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = NavigationButton.__proto__ || Object.getPrototypeOf(NavigationButton)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      open: _this.props.openNaviagtions
+	    }, _this.onClick = function () {
+	      var open = _this.state.open;
+	      var _this$props = _this.props,
+	          onOpen = _this$props.onOpen,
+	          onClose = _this$props.onClose;
+
+
+	      _this.setState({
+	        open: !open
+	      });
+
+	      open ? onClose() : onOpen();
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(NavigationButton, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      if (nextProps.openNaviagtions !== this.state.open) {
+	        this.setState({
+	          open: nextProps.openNaviagtions
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var open = this.state.open;
+
+	      var classes = (0, _classnames2.default)({
+	        'app__navigation-button': true,
+	        'open': open
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: classes, onClick: this.onClick },
+	        _react2.default.createElement(
+	          'svg',
+	          { width: '40px', height: '40px', viewBox: '0 0 40 40', version: '1.1', xmlns: 'http://www.w3.org/2000/svg', xmlnsXlink: 'http://www.w3.org/1999/xlink' },
+	          _react2.default.createElement(
+	            'g',
+	            { stroke: 'none', strokeWidth: '1', fill: 'none', fillRule: 'evenodd', opacity: '0.5' },
+	            _react2.default.createElement(
+	              'g',
+	              { id: 'home-m', transform: 'translate(-37.000000, -21.000000)', fillRule: 'nonzero' },
+	              _react2.default.createElement(
+	                'g',
+	                { transform: 'translate(37.000000, 21.000000)' },
+	                _react2.default.createElement('rect', { fill: '#D8D8D8', opacity: '0.01', x: '0', y: '0', width: '40', height: '40' }),
+	                _react2.default.createElement(
+	                  'g',
+	                  { fill: '#FFFFFF', transform: 'translate(20.000000, 20.000000) rotate(90.000000) translate(-20.000000, -20.000000) translate(10.000000, 10.000000)' },
+	                  _react2.default.createElement('rect', { x: '0', y: '9', width: '20', height: '2' }),
+	                  _react2.default.createElement('rect', { transform: 'translate(10.000000, 10.000000) rotate(90.000000) translate(-10.000000, -10.000000) ', x: '0', y: '9', width: '20', height: '2' })
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return NavigationButton;
+	}(_react.Component);
+
+	NavigationButton.propTypes = {
+	  onOpen: _propTypes2.default.func,
+	  onClose: _propTypes2.default.func
+	};
+	NavigationButton.defaultProps = {
+	  onOpen: noop,
+	  onClose: noop
+	};
+	exports.default = NavigationButton;
 
 /***/ })
 /******/ ]);
