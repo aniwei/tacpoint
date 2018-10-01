@@ -59,7 +59,6 @@
 .scene__page-footer-information-item {
     line-height: 24px;
     font-size: 16px;
-    line-height: 1.5;
 }
 .scene__page-footer-information-item + .scene__page-footer-information-item {
     margin-top: 16px;
@@ -102,6 +101,9 @@
     .scene__page-header-title {
         line-height: 64px;
         font-size: 56px;
+    }
+    .scene__page-header-title p + p {
+        margin-top: 32px;
     }
     /* header e */
 

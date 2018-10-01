@@ -46,7 +46,7 @@
     .scene__category-title {
         display: block;
     }
-    .scene__category-list {
+    .scene__category-box .scene__category-list {
         display: none;
     }
 
@@ -55,5 +55,12 @@
     }
     .scene__category-box.active .scene__category-list {
         display: block;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .scene__category-line {
+        left: 50%;
+        margin-left: -156px;
     }
 }

@@ -8,6 +8,13 @@ body {
     height: 100%;
 }
 
+a {
+    color: inherit;
+}
+a:hover {
+    text-decoration: none;
+}
+
 input:focus,
 button:focus {
     outline: none;
