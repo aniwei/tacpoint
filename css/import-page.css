@@ -2,29 +2,29 @@
 .scene__animated {
     position: relative;
 }
-.sence__page-header {
+.scene__page-header {
     margin-bottom: 64px;
 }
-.sence__page-header-title-wrap {
+.scene__page-header-title-wrap {
     margin-bottom: 64px;
 }
-.sence__page-header-title {
+.scene__page-header-title {
     line-height: 72px;
     font-size: 64px;
     font-weight: 300;
 }
-.sence__page-header-title p + p {
+.scene__page-header-title p + p {
     margin-top: 48px;
 }
 
-.sence__page-header-description-text {
+.scene__page-header-description-text {
     line-height: 24px;
     font-size: 16px;
 }
-.sence__page-header-description-text + .sence__page-header-description-text {
+.scene__page-header-description-text + .scene__page-header-description-text {
     margin-top: 32px;
 }
-.sence__page-header-description-extra {
+.scene__page-header-description-extra {
     margin-top: 25px;
     line-height: 24px;
     font-size: 12px;
@@ -36,18 +36,18 @@
 /* header e */
 
 /* footer s */
-.sence__page-footer {
+.scene__page-footer {
     margin-top: 64px;
 }
-.sence__page-footer-label {
+.scene__page-footer-label {
     line-height: 20px;
     font-size: 14px;
     opacity: 0.5;
 }
-.sence__page-footer-label {
+.scene__page-footer-label {
     margin-bottom: 28px;
 }
-.sence__page-footer-title {
+.scene__page-footer-title {
     line-height: 64px;
     font-size: 56px;
     font-weight: 300;
@@ -56,26 +56,26 @@
 
 
 /* information s */
-.sence__page-footer-information {
+.scene__page-footer-information {
     margin-top: 64px;
 }
-.sence__page-footer-information-item {
+.scene__page-footer-information-item {
     line-height: 24px;
     font-size: 16px;
     line-height: 1.5;
 }
-.sence__page-footer-information-item + .sence__page-footer-information-item {
+.scene__page-footer-information-item + .scene__page-footer-information-item {
     margin-top: 16px;
 }
 
-.sence__page-footer-information-footer {
+.scene__page-footer-information-footer {
     margin-top: 32px;
 }
-.sence__page-footer-information-site {
+.scene__page-footer-information-site {
     margin-top: 32px;
     font-size: 0;
 }
-.sence__page-footer-information-site-link {
+.scene__page-footer-information-site-link {
     margin-right: 30px;
     display: inline-block;
     vertical-align: middle;
@@ -84,7 +84,7 @@
     font-size: 0;
     text-align: center;
 }
-.sence__page-footer-information-site-link:after {
+.scene__page-footer-information-site-link:after {
     content: "";
     display: inline-block;
     vertical-align: middle;
@@ -92,10 +92,10 @@
     height: 100%;
     visibility: hidden;
 }
-.sence__page-footer-information-site-link i {
+.scene__page-footer-information-site-link i {
     opacity: 0.5;
 }
-.sence__page-footer-information-site-link:hover i {
+.scene__page-footer-information-site-link:hover i {
     opacity: 1;
 }
 /* information e */

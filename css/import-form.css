@@ -1,20 +1,21 @@
 /* form s */
-.sence__form-footer {
+.scene__form-footer {
     margin-top: 32px;
     text-align: center;
 }
-.sence__form-button {
+.scene__form-button {
     display: inline-block;
     vertical-align: middle;
     background: none;
+    opacity: 0;
 }
-.sence__form-item + .sence__form-item {
+.scene__form-item + .scene__form-item {
     margin-top: 32px;
 }
 /* form e */
 
 /* input s */
-.sence__input-text {
+.scene__input-text {
     display: block;
     width: 100%;
     height: 64px;

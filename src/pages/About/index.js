@@ -47,11 +47,11 @@ class About extends React.Component {
   headerRender () {
     return (
       <Scene.Header>
-        <div className="sence__page-header-title-wrap">
-          <div className="sence__grid">
-            <div className="sence__grid-inner">
+        <div className="scene__page-header-title-wrap">
+          <div className="scene__grid">
+            <div className="scene__grid-inner">
               <div className="col-10">
-                <h3 className="sence__page-header-title">
+                <h3 className="scene__page-header-title">
                   <p>We craft delightful experiences.</p>
                   <p>We craft efficiency.</p>
                   <p>We help forward-thinking businesses succeed in digital culture.</p>
@@ -67,15 +67,15 @@ class About extends React.Component {
 
   headerDescriptionRender () {
     return (
-      <div className="sence__page-header-description-wrap">
-        <div className="sence__grid">
-          <div className="sence__grid-inner">
+      <div className="scene__page-header-description-wrap">
+        <div className="scene__grid">
+          <div className="scene__grid-inner">
             <div className="col-4 col-offset-7">
-              <div className="sence__page-header-description">
-                <div className="sence__page-header-description-inner">
-                  <p className="sence__page-header-description-text">
+              <div className="scene__page-header-description">
+                <div className="scene__page-header-description-inner">
+                  <p className="scene__page-header-description-text">
                     Tacpoint is an innovative end-to-end interactive design and software development agency specializing in mobile, web, and custom enterprise applications.                                                         </p>
-                  <p className="sence__page-header-description-text">
+                  <p className="scene__page-header-description-text">
                     We are the intersection of design and technology. Our multidisciplinary team of strategists, designers, and technical architects work in unison to delivery iconic solutions that are scalable, adaptable, and grows with you over time. 
                   </p>
                 </div>
@@ -90,31 +90,31 @@ class About extends React.Component {
   footerRender () {
     return (
       <Scene.Footer>
-        <div className="sence__page-footer-inner">
-          <h3 className="sence__page-footer-title">Let’s talk.</h3>
+        <div className="scene__page-footer-inner">
+          <h3 className="scene__page-footer-title">Let’s talk.</h3>
 
-          <div className="sence__grid">
-            <div className="sence__grid-inner">
+          <div className="scene__grid">
+            <div className="scene__grid-inner">
               <div className="col-4 col-offset-7">
-                <div className="sence__page-footer-information">
-                  <ul className="sence__page-footer-informationlist">
-                    <li className="sence__page-footer-information-item">577 Airport Blvd, Suite 160, Burlingame, CA 94010</li>
-                    <li className="sence__page-footer-information-item">hello@tacpoint.com</li>
-                    <li className="sence__page-footer-information-item">650.577.3140</li>
+                <div className="scene__page-footer-information">
+                  <ul className="scene__page-footer-informationlist">
+                    <li className="scene__page-footer-information-item">577 Airport Blvd, Suite 160, Burlingame, CA 94010</li>
+                    <li className="scene__page-footer-information-item">hello@tacpoint.com</li>
+                    <li className="scene__page-footer-information-item">650.577.3140</li>
                   </ul>
 
-                  <div className="sence__page-footer-information-site">
-                    <a className="sence__page-footer-information-site-link" href="javascript:;">
-                      <i className="sence-icon-black-fb"></i>
+                  <div className="scene__page-footer-information-site">
+                    <a className="scene__page-footer-information-site-link" href="javascript:;">
+                      <i className="scene-icon-black-fb"></i>
                     </a>
-                    <a className="sence__page-footer-information-site-link" href="javascript:;">
-                      <i className="sence-icon-black-tw"></i>
+                    <a className="scene__page-footer-information-site-link" href="javascript:;">
+                      <i className="scene-icon-black-tw"></i>
                     </a>
-                    <a className="sence__page-footer-information-site-link" href="javascript:;">
-                      <i className="sence-icon-black-in"></i>
+                    <a className="scene__page-footer-information-site-link" href="javascript:;">
+                      <i className="scene-icon-black-in"></i>
                     </a>
-                    <a className="sence__page-footer-information-site-link" href="javascript:;">
-                      <i className="sence-icon-black-ig"></i>
+                    <a className="scene__page-footer-information-site-link" href="javascript:;">
+                      <i className="scene-icon-black-ig"></i>
                     </a>
                   </div>
                 </div>
@@ -134,46 +134,46 @@ class About extends React.Component {
 
     return (
       <Scene.Body>
-        <div className="sence__grid" >
-          <div className="sence__grid-inner">
+        <div className="scene__grid" >
+          <div className="scene__grid-inner">
             <div className="col-4">
-              <div className="sence__category" style={style}>
-                <span className="sence__category-line" style={{ transform: 'rotate(-35deg)' }}></span>
-                <div className="sence__grid">
-                    <div className="sence__grid-inner">
+              <div className="scene__category" style={style}>
+                <span className="scene__category-line" style={{ transform: 'rotate(-35deg)' }}></span>
+                <div className="scene__grid">
+                    <div className="scene__grid-inner">
                       <div className="col-6" >
-                          <ul className="sence__category-list">
-                            <li className="sence__category-item">
+                          <ul className="scene__category-list">
+                            <li className="scene__category-item">
                               <a href="">analytics</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">branding</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">data</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">graphics</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">ux/ui</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">development</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">marketing</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">presentation</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">app</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">strategy</a>
                             </li>
-                            <li className="sence__category-item">
+                            <li className="scene__category-item">
                               <a href="">web</a>
                             </li>
                           </ul>
@@ -184,8 +184,8 @@ class About extends React.Component {
             </div>
 
             <div className="col-8">
-              <div className="sence-about__object">
-                <img className="sence-about__image" src="image/img-about-office.jpg" alt="" />
+              <div className="scene-about__object">
+                <img className="scene-about__image" src="image/img-about-office.jpg" alt="" />
               </div>
             </div>
           </div>

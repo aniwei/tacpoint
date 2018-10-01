@@ -1,5 +1,5 @@
 /* layout s */
-.sence-login {
+.scene-login {
     font-size: 0px;
     text-align: center;
     box-flex: 1;
@@ -9,7 +9,7 @@
     -webkit-flex: 1;
     -ms-flex: 1
 }
-.sence-login:after {
+.scene-login:after {
     content: '';
     display: inline-block;
     vertical-align: middle;
@@ -17,7 +17,7 @@
     height: 100%;
     font-size: 0px;
 }
-.sence-login__content {
+.scene-login__content {
     display: inline-block;
     vertical-align: middle;
     width: 32%;
@@ -25,19 +25,19 @@
 /* layout s */
 
 /* form s */
-.sence-login .sence__input-text {
+.scene-login .scene__input-text {
     text-align: center;
 }
 /* form e */
 
 @media screen and (max-width: 768px) {
-    .sence-login__content {
+    .scene-login__content {
         width: 48%;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .sence-login__content {
+    .scene-login__content {
         width: 100%;
     }
 }

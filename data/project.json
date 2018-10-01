@@ -23,19 +23,46 @@
       "In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. "
     ],
 
-    "introductions": [
+    "layout": [
       {
         "type": "image",
         "data": [
-          "http://127.0.0.1:8082/image/img-project1.jpg"
+          { "url": "http://127.0.0.1:8082/image/img-project1.jpg" }
+        ]
+      },
+      {
+        "type": "image",
+        "data": [
+          { "url": "http://127.0.0.1:8080/image/img-project2.jpg", "grid": "col-6" },
+          { "url": "http://127.0.0.1:8080/image/img-project3.jpg", "grid": "col-6" }
+        ]
+      },
+      {
+        "type": "image",
+        "data": [
+          { "url": "http://127.0.0.1:8082/image/img-project4.jpg" }
         ]
       },
       {
         "type": "text",
         "data": [
-          "In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. "
+          { "text": "In convallis leo at libero blandit, sit amet semper arcu sollicitudin. In venenatis ligula metus, eu consectetur ipsum tempor quis. Cras fringilla est id placerat ultricies. " }
         ]
       },
+      {
+        "type": "image",
+        "data": [
+          { "url": "http://127.0.0.1:8080/image/img-project5.jpg", "grid": "col-3" },
+          { "url": "http://127.0.0.1:8080/image/img-project6.jpg", "grid": "col-9" }
+        ]
+      },
+      {
+        "type": "image",
+        "data": [
+          { "url": "http://127.0.0.1:8082/image/img-project7.jpg" }
+        ]
+      },
+      
       {
         "type": "swiper",
         "data": [
@@ -45,7 +72,7 @@
       {
         "type": "image",
         "data": [
-          ""
+          {}
         ]
       }
     ]

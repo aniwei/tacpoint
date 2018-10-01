@@ -1,13 +1,14 @@
 import 'whatwg-fetch';
 import React, { Component } from 'react';
 import ReactDom from 'react-dom';
-import { Route, HashRouter as Router } from 'react-router-dom';
+import { Route, HashRouter as Router, Switch } from 'react-router-dom';
 import { AnimatedSwitch } from 'react-router-transition';
 
 import Project from './pages/Project';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
 import About from './pages/About';
+import Access from './pages/Access';
 
 import Logo from './components/Logo';
 
@@ -15,7 +16,8 @@ import Context from './Context';
 import { 
   COLORS, 
   WIDTH_LIST, 
-  TRANSITION_PROPERTY 
+  TRANSITION_PROPERTY,
+  GOOGLE_MAP_JS_URL
 } from './contants';
 
 class App extends Component {
@@ -30,6 +32,10 @@ class App extends Component {
     window.addEventListener('resize', this.onResize);
     
     this.onResize();
+  }
+
+  componentWillMount () {
+    
   }
 
   componentWillUnmount () {
@@ -60,12 +66,48 @@ class App extends Component {
     return styles;
   }
 
+  appendGoogleMapScript = (onLoaded) => {
+    if (this.isGoogleScriptLoaded) {
+      return onLoaded();
+    }
+
+    const script = document.createElement('script');
+
+    script.type = 'application/javascript';
+    script.src = GOOGLE_MAP_JS_URL;
+    script.onload = () => {
+      onLoaded();
+    }
+
+    document.body.appendChild(script);
+
+    this.isGoogleScriptLoaded = true;
+  }
+
+  setLogoType = (logoType) => {
+    this.setState({
+      logoType
+    });
+  }
+
   setBackgroundColor = (backgroundColor) => {
     this.setState({ backgroundColor });
   }
 
   setLogoColor = (logoColor) => {
     this.setState({ logoColor });
+  }
+
+  setNavigator = () => {
+
+  }
+
+  openNavigator = () => {
+    
+  }
+
+  closeNavigator = () => {
+
   }
 
   getWindowSize = () => {
@@ -96,6 +138,7 @@ class App extends Component {
 
     return (
       <div className="scene">
+        <Home />
         <AnimatedSwitch
           atEnter={this.getAnimatedProperty('from')}
           atLeave={this.getAnimatedProperty('from')}
@@ -103,13 +146,21 @@ class App extends Component {
           mapStyles={this.onMapStyles}
           className="scene__animated"
         >
-          <Route path="/" component={Home} exact />
-          <Route path="/project" component={Project} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
+          <Switch>
+            <Route path="/project" component={Project} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/access" component={Access} />
+          </Switch>
         </AnimatedSwitch>·
       </div>
     );
+  }
+
+  navigatorsRender () {
+    const { navigators } = this.state;
+
+
   }
 
   layoutRender () {
@@ -119,6 +170,14 @@ class App extends Component {
       <div className="app__layout">
         <div className="app__header">
           <Logo color={logoColor} type={logoType} />
+          <div className="app__navigation">
+            <div className="app__navigation-button">
+            </div>
+
+            <div className="app__navigation-content">
+
+            </div>
+          </div>
         </div>
         <div className="app__scene">
           {this.scenesRender()}
@@ -126,16 +185,27 @@ class App extends Component {
         <div className="app__footer">
           <div className="app__copyright">©2018 Tacpoint, Inc.</div>
         </div>
+
+        <div className="app__navigator app__navigator-left"></div>
+        <div className="app__navigator app__navigator-right"></div>
       </div>
     );
   }
 
   provideContext = () => {
     return {
+      application: this,
+      openNavigator: this.openNavigator,
+      closeNavigator: this.closeNavigator,
       setBackgroundColor: this.setBackgroundColor,
       setLogoColor: this.setLogoColor,
+      setLogoType: this.setLogoType,
       getWindowSize: this.getWindowSize
     }
+  }
+
+  set onGoogleScriptLoaded (onLoaded) {
+    this.appendGoogleMapScript(onLoaded);        
   }
 
   render () {

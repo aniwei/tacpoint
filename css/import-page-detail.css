@@ -1,14 +1,14 @@
 /* header s */
-.sence-detail .sence__page-header {
+.scene-detail .scene__page-header {
     margin-bottom: 96px;
 }
 /* header e */
 
 /* body s */
-.sence-detail__box + .sence-detail__box {
+.scene-detail__box + .scene-detail__box {
     margin-top: 64px;
 }
-.sence-detail__image {
+.scene-detail__image {
     display: block;
     width: 100%;
     height: auto;
@@ -16,13 +16,13 @@
 /* body e */
 
 /* carousel s */
-.sence-detail .sence__carousel {
+.scene-detail .scene__carousel {
     padding: 32px 0;
 }
 /* carousel e */
 
 /* footer s */
-.sence-detail .sence__page-footer-inner {
+.scene-detail .scene__page-footer-inner {
     padding-top: 32px;
     border-top: 1px solid #646464;
 }
