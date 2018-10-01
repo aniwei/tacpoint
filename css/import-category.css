@@ -84,3 +84,10 @@
         pointer-events: all;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .scene__category-line {
+        left: 50%;
+        margin-left: -156px;
+    }
+}

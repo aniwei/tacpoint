@@ -3,7 +3,7 @@
     margin-bottom: 180px;
 }
 .scene-about .scene__page-header-title-wrap {
-    margin-bottom: 96px;
+    margin-bottom: 144px;
 }
 /* header e */
 
@@ -12,6 +12,9 @@
     display: block;
     width: 100%;
     height: auto;
+}
+.scene-about .scene__carousel-order_brief {
+    display: none;
 }
 /* image e */
 
@@ -25,6 +28,10 @@
 .scene-about .scene__page-footer {
     margin-top: 96px;
 }
+.scene-about .scene__page-footer-title {
+    line-height: 72px;
+    font-size: 64px;
+}
 .scene-about .scene__page-footer-information {
     margin-top: 74px;
 }
@@ -32,3 +39,90 @@
     opacity: 1;
 }
 /* footer e */
+
+@media screen and (max-width: 1024px) {
+    /* header s */
+    .scene-about .scene__page-header {
+        margin-bottom: 210px;
+    }
+    .scene-about .scene__page-header-title-wrap {
+        margin-bottom: 64px;
+    }
+    /* header e */
+
+    /* footer s */
+    .scene-about .scene__page-footer-title {
+        line-height: 64px;
+        font-size: 56px;
+    }
+    .scene-about .scene__page-footer-information {
+        margin-top: 32px;
+    }
+    /* footer e */
+
+}
+
+@media screen and (max-width: 768px) {
+    /* header s */
+    .scene-about .scene__page-header-title-wrap {
+        margin-bottom: 80px;
+    }
+    /* header e */
+
+    /* image s */
+    .scene-about .scene__carousel-order_brief {
+        display: block;
+    }
+    /* image e */
+
+    /* partner s */
+    .scene-about__partner {
+        margin-top: 50px;
+    }
+    /* partner e */
+
+    /* footer s */
+    .scene-about .scene__page-footer {
+        margin-top: 50px;
+    }
+    /* footer e */
+}
+
+@media screen and (max-width: 600px) {
+    .scene-about {
+        overflow: hidden;
+    }
+    /* header s */
+    .scene-about .scene__page-header {
+        margin-bottom: 240px;
+    }
+    .scene-about .scene__page-header-title-wrap {
+        margin-bottom: 96px;
+    }
+    /* header e */
+
+    /* image s */
+    .scene-about__object {
+        margin-top: 36px;
+    }
+    /* image e */
+
+    /* partner s */
+    .scene-about__partner {
+        margin-top: 64px;
+    }
+    /* partner e */
+
+    /* footer s */
+    .scene-about .scene__page-footer {
+        margin-top: 96px;
+    }
+    .scene-about .scene__page-footer-title {
+        line-height: 58px;
+        font-size: 48px;
+    }
+    .scene-about .scene__page-footer-information {
+        margin-top: 64px;
+    }
+    /* footer e */
+}

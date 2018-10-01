@@ -60,8 +60,10 @@
 }
 
 .app__navigator {
-  position: absolute;
+  position: fixed;
   top: 50%;
+  width: 50px;
+  text-align: center;
 }
 
 .app__navigator-left {

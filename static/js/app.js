@@ -132,6 +132,7 @@
 	      navigators: [],
 	      backgroundColor: _contants.COLORS.BLACK,
 	      logoColor: _contants.COLORS.WHITE,
+	      navigatorColor: _contants.COLORS.WHITE,
 	      logoType: 'simple',
 	      transitionProperty: _contants.TRANSITION_PROPERTY['1024'],
 	      isMobile: false
@@ -179,6 +180,10 @@
 	      document.body.appendChild(script);
 
 	      _this.isGoogleScriptLoaded = true;
+	    }, _this.setNavigatorColor = function (navigatorColor) {
+	      _this.setState({
+	        navigatorColor: navigatorColor
+	      });
 	    }, _this.setLogoType = function (logoType) {
 	      _this.setState({
 	        logoType: logoType
@@ -196,6 +201,9 @@
 	    }, _this.setLogoColor = function (logoColor) {
 	      _this.setState({ logoColor: logoColor });
 	    }, _this.setNavigators = function (navigators) {
+	      var navigatorColor = _this.state.navigatorColor;
+
+
 	      _this.setState({
 	        navigators: navigators.map(function (nav) {
 	          var position = nav.position,
@@ -208,7 +216,7 @@
 
 	          return _react2.default.createElement(
 	            'div',
-	            { className: classes, key: position },
+	            { className: classes, key: position, style: { color: navigatorColor } },
 	            _react2.default.createElement(
 	              _reactRouterDom.Link,
 	              { to: path },
@@ -217,7 +225,7 @@
 	          );
 	        })
 	      });
-	    }, _this.openNavigator = function () {}, _this.closeNavigator = function () {}, _this.onNavigationButtonClick = function (action) {
+	    }, _this.onNavigationButtonClick = function (action) {
 	      _this.setState({
 	        openNavigations: action === 'open'
 	      });
@@ -256,6 +264,7 @@
 	        setLogoType: _this.setLogoType,
 	        setNavigations: _this.setNavigations,
 	        setNavigators: _this.setNavigators,
+	        setNavigatorColor: _this.setNavigatorColor,
 	        getWindowSize: _this.getWindowSize
 	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -301,8 +310,7 @@
 	            _react2.default.createElement(_reactRouterDom.Route, { path: '/contact', component: _Contact2.default }),
 	            _react2.default.createElement(_reactRouterDom.Route, { path: '/access', component: _Access2.default })
 	          )
-	        ),
-	        '\xB7'
+	        )
 	      );
 	    }
 	  }, {
@@ -23965,11 +23973,15 @@
 	    value: function componentDidMount() {
 	      var _props = this.props,
 	          setBackgroundColor = _props.setBackgroundColor,
-	          setLogoColor = _props.setLogoColor;
+	          setLogoColor = _props.setLogoColor,
+	          setNavigators = _props.setNavigators,
+	          setNavigatorColor = _props.setNavigatorColor;
 
 
 	      setBackgroundColor(About.backgroundColor);
 	      setLogoColor(About.logoColor);
+	      setNavigators(About.navigators);
+	      setNavigatorColor(About.navigatorColor);
 
 	      window.addEventListener('scroll', this.onWindowScroll);
 	    }
@@ -24310,6 +24322,8 @@
 
 	About.backgroundColor = '#f0f0f0';
 	About.logoColor = '#1a1a1a';
+	About.navigatorColor = '#1a1a1a';
+	About.navigators = [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'let’s talk', path: '/contact' }];
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(

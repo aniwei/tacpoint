@@ -30,6 +30,7 @@ class App extends Component {
     navigators: [],
     backgroundColor: COLORS.BLACK,
     logoColor: COLORS.WHITE,
+    navigatorColor: COLORS.WHITE,
     logoType: 'simple',
     transitionProperty: TRANSITION_PROPERTY['1024'],
     isMobile: false
@@ -98,6 +99,12 @@ class App extends Component {
     this.isGoogleScriptLoaded = true;
   }
 
+  setNavigatorColor = (navigatorColor) => {
+    this.setState({
+      navigatorColor
+    });
+  }
+
   setLogoType = (logoType) => {
     this.setState({
       logoType
@@ -121,6 +128,8 @@ class App extends Component {
   }
 
   setNavigators = (navigators) => {
+    const { navigatorColor } = this.state;
+
     this.setState({
       navigators: navigators.map(nav => {
         const { position, text, path } = nav;  
@@ -130,7 +139,7 @@ class App extends Component {
         })
   
         return (
-          <div className={classes} key={position}>
+          <div className={classes} key={position} style={{ color: navigatorColor }}>
             <Link to={path}>
               {text}
             </Link>
@@ -138,14 +147,6 @@ class App extends Component {
         );
       })
     });
-  }
-
-  openNavigator = () => {
-    
-  }
-
-  closeNavigator = () => {
-
   }
 
   onNavigationButtonClick = (action) => {
@@ -196,7 +197,7 @@ class App extends Component {
             <Route path="/contact" component={Contact} />
             <Route path="/access" component={Access} />
           </Switch>
-        </AnimatedSwitch>·
+        </AnimatedSwitch>
       </div>
     );
   }
@@ -266,6 +267,7 @@ class App extends Component {
       setLogoType: this.setLogoType,
       setNavigations: this.setNavigations,
       setNavigators: this.setNavigators,
+      setNavigatorColor: this.setNavigatorColor,
       getWindowSize: this.getWindowSize
     }
   }

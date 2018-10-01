@@ -1,12 +1,12 @@
 .scene__thumbnail-object {
     margin: 0 auto;
-    width: 184px;
+    width: auto;
     height: 80px;
     background-color: #ddd;
 }
 .scene__thumbnail-image {
     display: block;
-    width: 100%;
+    width: auto;
     height: 100%;
 }
 
@@ -16,4 +16,46 @@
 .scene__thumbnail .scene__grid [class*=col-], 
 .scene__thumbnail .scene__grid [class^=col-] {
     margin-bottom: 64px;
+}
+
+@media screen and (max-width: 1024px) {
+    .scene__thumbnail-object {
+        height: 64px;
+    }
+
+    .scene__thumbnail .scene__grid-inner {
+        margin-bottom: -48px;
+    }
+    .scene__thumbnail .scene__grid [class*=col-], 
+    .scene__thumbnail .scene__grid [class^=col-] {
+        margin-bottom: 48px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .scene__thumbnail-object {
+        height: 60px;
+    }
+
+    .scene__thumbnail .scene__grid-inner {
+        margin-bottom: -44px;
+    }
+    .scene__thumbnail .scene__grid [class*=col-], 
+    .scene__thumbnail .scene__grid [class^=col-] {
+        margin-bottom: 44px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .scene__thumbnail-object {
+        height: 64px;
+    }
+
+    .scene__thumbnail .scene__grid-inner {
+        margin-bottom: -36px;
+    }
+    .scene__thumbnail .scene__grid [class*=col-], 
+    .scene__thumbnail .scene__grid [class^=col-] {
+        margin-bottom: 36px;
+    }
 }

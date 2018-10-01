@@ -8,6 +8,12 @@ const SCALE = 1.2;
 class About extends React.Component {
   static backgroundColor = '#f0f0f0';
   static logoColor = '#1a1a1a';
+  static navigatorColor = '#1a1a1a';
+
+  static navigators = [
+    { position: 'left', text: 'projects', path: '/' },
+    { position: 'right', text: 'let’s talk', path: '/contact' }
+  ];
 
   state = {
     waiting: false,
@@ -15,10 +21,12 @@ class About extends React.Component {
   }
 
   componentDidMount () {
-    const { setBackgroundColor, setLogoColor } = this.props;
+    const { setBackgroundColor, setLogoColor, setNavigators, setNavigatorColor } = this.props;
 
     setBackgroundColor(About.backgroundColor);
     setLogoColor(About.logoColor);
+    setNavigators(About.navigators);
+    setNavigatorColor(About.navigatorColor);
 
     window.addEventListener('scroll', this.onWindowScroll);
   }
