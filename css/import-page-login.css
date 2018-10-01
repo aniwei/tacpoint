@@ -1,3 +1,4 @@
+/* layout s */
 .sence-login {
     font-size: 0px;
     text-align: center;
@@ -19,7 +20,24 @@
 .sence-login__content {
     display: inline-block;
     vertical-align: middle;
+    width: 32%;
 }
+/* layout s */
+
+/* form s */
 .sence-login .sence__input-text {
     text-align: center;
+}
+/* form e */
+
+@media screen and (max-width: 768px) {
+    .sence-login__content {
+        width: 48%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .sence-login__content {
+        width: 100%;
+    }
 }

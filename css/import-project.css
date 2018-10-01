@@ -11,3 +11,17 @@
     color: #ffffff;
 }
 /* project e */
+
+@media screen and (max-width: 1024px) {
+    .sence__project-item {
+        line-height: 64px;
+        font-size: 56px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .sence__project-item {
+        line-height: 58px;
+        font-size: 48px;
+    }
+}
