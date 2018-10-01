@@ -27,4 +27,7 @@
     box-sizing: border-box;
     
 }
+.sence__input-text:focus {
+    border-color: #fff;
+}
 /* input e */

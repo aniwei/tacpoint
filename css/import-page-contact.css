@@ -26,3 +26,25 @@
     height: 100%;
 }
 /* map e */
+
+@media screen and (max-width: 1024px) {
+    .sence-contact__map {
+        margin-top: 64px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .sence-contact__map {
+        margin-top: 52px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .sence-contact__map {
+        margin-top: 64px;
+    }
+
+    .sence-contact__map {
+        padding-top: 106.6667%;
+    }
+}

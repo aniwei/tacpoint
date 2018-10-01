@@ -2,6 +2,7 @@ html {
     height: 100%;
 }
 body {
+    color: #1a1a1a;
     font-family: OpenSans;
     font-weight: 300;
     height: 100%;
@@ -11,7 +12,6 @@ input:focus,
 button:focus {
     outline: none;
 }
-<<<<<<< HEAD
 
 input::-webkit-input-placeholder{
     color: rgba(255, 2555, 255, .5);
@@ -64,5 +64,3 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     height: 100%;
     box-sizing: border-box;
 }
-=======
->>>>>>> f51d4da9499e42cb9fea3485cf87d93ef19b6c8c
