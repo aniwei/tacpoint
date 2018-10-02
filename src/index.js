@@ -203,9 +203,7 @@ class App extends Component {
   }
 
   layoutRender () {
-    const { logoColor, logoType, navigations, openNavigations, navigators } = this.state;
-
-    console.log(navigator)
+    const { logoColor, logoType, navigations, openNavigations, navigators, backgroundColor } = this.state;
 
     const classes = classnames({
       'app__navigation': true,
@@ -230,7 +228,7 @@ class App extends Component {
           <div className="app__copyright">©2018 Tacpoint, Inc.</div>
         </div>
 
-        <div className={classes}>
+        <div className={classes} style={{ backgroundColor }}>
           <div className="app__navigation-content">
             <div className="scene__grid">
               <div className="scene__grid-inner">
@@ -249,9 +247,9 @@ class App extends Component {
               </div>
             </div>
           </div>
-        </div>
 
-        {navigators}
+          {navigators}
+        </div>
       </div>
     );
   }

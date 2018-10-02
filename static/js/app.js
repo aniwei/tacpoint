@@ -323,10 +323,9 @@
 	          logoType = _state.logoType,
 	          navigations = _state.navigations,
 	          openNavigations = _state.openNavigations,
-	          navigators = _state.navigators;
+	          navigators = _state.navigators,
+	          backgroundColor = _state.backgroundColor;
 
-
-	      console.log(navigator);
 
 	      var classes = (0, _classnames3.default)({
 	        'app__navigation': true,
@@ -367,7 +366,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: classes },
+	          { className: classes, style: { backgroundColor: backgroundColor } },
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'app__navigation-content' },
@@ -401,9 +400,9 @@
 	                )
 	              )
 	            )
-	          )
-	        ),
-	        navigators
+	          ),
+	          navigators
+	        )
 	      );
 	    }
 	  }, {
@@ -23351,8 +23350,17 @@
 	          location = _props3.location,
 	          setNavigations = _props3.setNavigations,
 	          setNavigators = _props3.setNavigators;
+	      var _props4 = this.props,
+	          setBackgroundColor = _props4.setBackgroundColor,
+	          setLogoColor = _props4.setLogoColor,
+	          setNavigatorColor = _props4.setNavigatorColor;
 
 	      var query = _queryString2.default.parse(location.search);
+
+	      setBackgroundColor(Home.backgroundColor);
+	      setLogoColor(Home.logoColor);
+	      setNavigators(Home.navigators);
+	      setNavigatorColor(Home.navigatorColor);
 
 	      this.setState({
 	        selectedCategories: query.categories ? query.categories.split(',').map(function (cate) {
@@ -23363,8 +23371,6 @@
 	        }) : []
 	      }, function () {
 	        var promise = Promise.all([_this6.getProjectList(), _this6.getCategoryList(), _this6.getClientList()]);
-
-	        setNavigators(Home.navigators);
 
 	        promise.then(function (res) {
 	          var state = _extends({
@@ -23552,6 +23558,9 @@
 	  return Home;
 	}(_react.Component);
 
+	Home.backgroundColor = '#000';
+	Home.logoColor = '#f0f0f0';
+	Home.navigatorColor = '#f0f0f0';
 	Home.navigators = [{ position: 'left', text: 'About', path: '/about' }, { position: 'right', text: 'Let\'s talk', path: '/contact' }];
 	exports.default = (0, _reactRouterDom.withRouter)(function (props) {
 	  return _react2.default.createElement(

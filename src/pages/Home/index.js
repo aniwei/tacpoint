@@ -166,6 +166,9 @@ const Navigations = withRouter(class Navigations extends Component {
 });
 
 class Home extends Component {
+  static backgroundColor = '#000';
+  static logoColor = '#f0f0f0';
+  static navigatorColor = '#f0f0f0';
   static navigators = [
     { position: 'left', text: 'About', path: '/about' },
     { position: 'right', text: 'Let\'s talk', path: '/contact' }
@@ -183,7 +186,13 @@ class Home extends Component {
 
   componentDidMount () {
     const { location, setNavigations, setNavigators } = this.props;
+    const { setBackgroundColor, setLogoColor, setNavigatorColor } = this.props;
     const query = qs.parse(location.search);
+
+    setBackgroundColor(Home.backgroundColor);
+    setLogoColor(Home.logoColor);
+    setNavigators(Home.navigators);
+    setNavigatorColor(Home.navigatorColor);
 
     this.setState({
       selectedCategories: query.categories ? query.categories.split(',').map(cate => cate - 0) : [],
@@ -194,8 +203,6 @@ class Home extends Component {
         this.getCategoryList(),
         this.getClientList()
       ]);
-
-      setNavigators(Home.navigators);
 
       promise
         .then(res => {
@@ -209,6 +216,8 @@ class Home extends Component {
 
           this.setState(state, () => {
             setNavigations(this.navigationsRender());
+
+            
           });
         })
         .catch(error => {
