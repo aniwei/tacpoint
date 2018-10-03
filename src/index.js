@@ -20,7 +20,11 @@ import {
   COLORS, 
   WIDTH_LIST, 
   TRANSITION_PROPERTY,
-  GOOGLE_MAP_JS_URL
+  GOOGLE_MAP_JS_URL,
+  SOCIAL_LIST,
+  CONTACT_INFORMATION,
+  PARTNER_LIST,
+  FORM_INPUT_LIST
 } from './contants';
 
 class App extends Component {
@@ -42,14 +46,16 @@ class App extends Component {
     this.onResize();
   }
 
-  componentWillMount () {
-    
-  }
-
   componentWillUnmount () {
     window.removeEventListener('resize', this.onScroll);
   }
 
+  clearNavigations = () => {
+    this.setState({
+      navigations: null,
+      openNavigations: false
+    });
+  }
 
   onResize = () => {
     const { innerWidth: width, innerHeight: height } = window;
@@ -62,6 +68,10 @@ class App extends Component {
       transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
       isMobile: IS_MOBILE[WIDTH_LIST[index]] === 'MOBILE'
     });
+  }
+
+  onNavigatorClick = () => {
+    this.clearNavigations();
   }
 
   onNavigationClear = () => {
@@ -99,6 +109,14 @@ class App extends Component {
     this.isGoogleScriptLoaded = true;
   }
 
+  getContactInfomation = () => {
+    return CONTACT_INFORMATION;
+  }
+
+  getSocialList = () => {
+    return SOCIAL_LIST;
+  }
+
   setNavigatorColor = (navigatorColor) => {
     this.setState({
       navigatorColor
@@ -114,7 +132,9 @@ class App extends Component {
   setNavigations = (navigations) => {
     this.setState({
       navigations: cloneElement(navigations, {
-        ref: ref => this.navigations = ref
+        ref: ref => {
+          this.navigations = ref;
+        }
       })
     });
   }
@@ -140,7 +160,7 @@ class App extends Component {
   
         return (
           <div className={classes} key={position} style={{ color: navigatorColor }}>
-            <Link to={path}>
+            <Link to={path} onClick={this.onNavigatorClick}>
               {text}
             </Link>
           </div>
@@ -153,6 +173,14 @@ class App extends Component {
     this.setState({
       openNavigations: action === 'open'
     });
+  }
+
+  getPartnerList = () => {
+    return PARTNER_LIST;
+  }
+
+  getFormInputList = () => {
+    return FORM_INPUT_LIST;
   }
 
   getWindowSize = () => {
@@ -183,7 +211,7 @@ class App extends Component {
 
     return (
       <div className="scene">
-        <Home />
+        
         <AnimatedSwitch
           atEnter={this.getAnimatedProperty('from')}
           atLeave={this.getAnimatedProperty('from')}
@@ -192,6 +220,7 @@ class App extends Component {
           className="scene__animated"
         >
           <Switch>
+            <Route path="/" component={Home} exact />
             <Route path="/project" component={Project} />
             <Route path="/about" component={About} />
             <Route path="/contact" component={Contact} />
@@ -235,18 +264,20 @@ class App extends Component {
                 {navigations}
               </div>
             </div>
-          </div>
-          <div className="app__navigation-clear" onClick={this.onNavigationClear}>
-            <div className="scene__grid">
-              <div className="scene__grid-inner">
-                <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear" onClick={this.onNavigationClear}>
-                  <Link to="/">
-                    + all projects
-                  </Link>
+
+            <div className="app__navigation-clear" onClick={this.onNavigationClear}>
+              <div className="scene__grid">
+                <div className="scene__grid-inner">
+                  <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear" onClick={this.onNavigationClear}>
+                    <Link to="/">
+                      + all projects
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          
 
           {navigators}
         </div>
@@ -260,13 +291,18 @@ class App extends Component {
       isMobile: this.state.isMobile,
       openNavigator: this.openNavigator,
       closeNavigator: this.closeNavigator,
+      clearNavigations: this.clearNavigations,
       setBackgroundColor: this.setBackgroundColor,
       setLogoColor: this.setLogoColor,
       setLogoType: this.setLogoType,
       setNavigations: this.setNavigations,
       setNavigators: this.setNavigators,
       setNavigatorColor: this.setNavigatorColor,
-      getWindowSize: this.getWindowSize
+      getWindowSize: this.getWindowSize,
+      getContactInfomation: this.getContactInfomation,
+      getSocialList: this.getSocialList,
+      getPartnerList: this.getPartnerList,
+      getFormInputList: this.getFormInputList
     }
   }
 

@@ -1,14 +1,15 @@
 import React from 'react';
-
+import classnames from 'classnames';
 import Scene from '../../components/Scene';
 import Context from '../../Context';
 
 class Contact extends React.Component {
-  static backgroundColor = '#8b8b8b';
+  static backgroundColor = '#1a1a1a';
   static logoColor = '#1a1a1a';
 
   state = {
-    waiting: false
+    waiting: false,
+    fields: {}
   }
 
   componentDidMount () {
@@ -17,24 +18,49 @@ class Contact extends React.Component {
     setBackgroundColor(Contact.backgroundColor);
     setLogoColor(Contact.logoColor);
 
-    window.addEventListener('scroll', this.onWindowScroll);
-
     if (this.googleMap) {
       this.createGoogleMap();
     }
   }
 
   componentWillUnmount () {
-    window.removeEventListener('scroll', this.onWindowScroll);
   }
 
-  onWindowScroll = () => {
-    const { top } = this.getScrollRect();
+  onFormButtonClick = () => {
+    const { fields } = this.state;
 
-    this.setState({
-      categoryOffset: top
+    this.isSending = true;
+
+    fetch('./data/message.json', {
+      method: 'POST',
+      body: JSON.stringify(fields)
+    })
+    .then(res => {
+      return res.json();
+    })
+    .then(res => {
+      alert('Message successfully!');
+
+      this.isSending = false;
+    })
+    .catch(err => {
+      alert('Sorry, has a network error.');
+
+      this.isSending = true;
     });
   }
+
+  onFormInputChange = (name, { target }) => {
+    const { value } = target;
+    const { fields } = this.state;
+
+    fields[name] = value;
+
+    this.setState({
+      fields
+    });
+  }
+
 
   createGoogleMap () {
     const { application } = this.props;
@@ -57,13 +83,24 @@ class Contact extends React.Component {
     return { top, height };
   }
 
+  isEveryFieldsNull = () => {
+    const { fields } = this.state;
+    const keys = Object.getOwnPropertyNames(fields);
+
+    if (keys.length === 0) {
+      return true;
+    }
+
+    return !keys.some(key => fields[key]);
+  }
+
   headerRender () {
     return (
       <Scene.Header>
         <div className="scene__page-header-title-wrap">
           <div className="scene__grid">
             <div className="scene__grid-inner">
-              <div className="col-10">
+              <div className="col-20 col-s-24">
                 <h3 className="scene__page-header-title">Drop us a line</h3>
               </div>
             </div>
@@ -73,54 +110,115 @@ class Contact extends React.Component {
     );
   }
 
-  headerDescriptionRender () {
+  fieldRender () {
+    const { getFormInputList } = this.props;
+    const { fields } = this.state;
+    const inputList = getFormInputList();
+
+    const inputElements = inputList.map(input => {
+      const { key } = input;
+      return (
+        <li className="scene__form-item" key={key}>
+          <div className="scene__form-unit">
+            <input className="scene__input-text" value={fields[key]} {...input} onChange={(e) => this.onFormInputChange(key, e)} />
+          </div>
+        </li>
+      );
+    });
+
+    console.log('fields', fields, !this.isEveryFieldsNull())
+
+    const classes = classnames({
+      'scene__form-button': true,
+      'animated': true,
+      'fadeInUp': !this.isEveryFieldsNull()
+    });
+
     return (
-      <div className="scene__page-header-description-wrap">
-        <div className="scene__grid">
-          <div className="scene__grid-inner">
-            <div className="col-4 col-offset-7">
-              <div className="scene__page-header-description">
-                <div className="scene__page-header-description-inner">
-                  <p className="scene__page-header-description-text">
-                    Tacpoint is an innovative end-to-end interactive design and software development agency specializing in mobile, web, and custom enterprise applications.                                                         </p>
-                  <p className="scene__page-header-description-text">
-                    We are the intersection of design and technology. Our multidisciplinary team of strategists, designers, and technical architects work in unison to delivery iconic solutions that are scalable, adaptable, and grows with you over time. 
-                  </p>
-                </div>
-              </div>
-            </div>
+      <div className="scene-contact__form">
+        <div className="scene__form">
+          <div className="scene__form-body">
+            <ul className="scene__form-list">
+              {inputElements} 
+            </ul>
+          </div>
+          <div className="scene__form-footer">
+            <button className={classes} type="button" onClick={this.onFormButtonClick}>
+              <i className="scene-icon-arrow-right"></i>
+            </button>
           </div>
         </div>
       </div>
     );
   }
 
+  socialRender () {
+    const { getSocialList, getContactInfomation } = this.props;
+    const social = getSocialList();
+    const contactInformation = getContactInfomation();
+
+    const socialElements = social.map(soc => {
+      const { iconClassName, link, name } = soc;
+
+      return (
+        <a key={name} className="scene__page-footer-information-site-link" href={link}>
+          <i className={iconClassName}></i>
+        </a>
+      );
+    });
+
+    const infomationElements = (
+      <ul className="scene__page-footer-informationlist">
+        {
+          contactInformation.map(info => <li 
+            key={info.key}
+            className="scene__page-footer-information-item"
+          >
+            {info.value}
+          </li>)
+        }
+      </ul>
+    );
+  }
+
   footerRender () {
+    const { getSocialList, getContactInfomation } = this.props;
+    const social = getSocialList();
+    const contactInformation = getContactInfomation();
+
+    const socialElements = social.map(soc => {
+      const { iconClassName, link, name } = soc;
+
+      return (
+        <a key={name} className="scene__page-footer-information-site-link" href={link}>
+          <i className={iconClassName}></i>
+        </a>
+      );
+    });
+
+    const infomationElements = (
+      <ul className="scene__page-footer-informationlist">
+        {
+          contactInformation.map(info => <li 
+            key={info.key}
+            className="scene__page-footer-information-item"
+          >
+            {info.value}
+          </li>)
+        }
+      </ul>
+    );
+
     return (
       <Scene.Footer>
         <div className="scene__page-footer-inner">
           <h3 className="scene__page-footer-title">Visit us</h3>
           
           <div className="scene__page-footer-information">
-            <ul className="scene__page-footer-informationlist">
-              <li className="scene__page-footer-information-item">577 Airport Blvd, Suite 160, Burlingame, CA 94010</li>
-              <li className="scene__page-footer-information-item">hello@tacpoint.com</li>
-              <li className="scene__page-footer-information-item">650.577.3140</li>
-            </ul>
+            {infomationElements}
 
             <div className="scene__page-footer-information-site">
-              <a className="scene__page-footer-information-site-link" href="javascript:;">
-                  <i className="scene-icon-white-fb"></i>
-              </a>
-              <a className="scene__page-footer-information-site-link" href="javascript:;">
-                  <i className="scene-icon-white-tw"></i>
-              </a>
-              <a className="scene__page-footer-information-site-link" href="javascript:;">
-                  <i className="scene-icon-white-in"></i>
-              </a>
-              <a className="scene__page-footer-information-site-link" href="javascript:;">
-                  <i className="scene-icon-white-ig"></i>
-              </a>
+              {socialElements}
             </div>
           </div>
         </div>
@@ -128,41 +226,19 @@ class Contact extends React.Component {
     );
   }
 
+  googleMapRender () {
+    return (
+      <div className="scene-contact__map">
+        <div className="scene-contact__map-inner" ref={ref => this.googleMap = ref}></div>
+      </div>
+    );
+  }
+
   bodyRender () {
     return (
       <Scene.Body>
-        <div className="scene-contact__form">
-          <div className="scene__form">
-            <div className="scene__form-body">
-              <ul className="scene__form-list">
-                <li className="scene__form-item">
-                  <div className="scene__form-unit">
-                    <input className="scene__input-text" type="text" placeholder="name" />
-                  </div>
-                </li>
-                <li className="scene__form-item">
-                  <div className="scene__form-unit">
-                    <input className="scene__input-text" type="text" placeholder="email" />
-                  </div>
-                </li>
-                <li className="scene__form-item">
-                  <div className="scene__form-unit">
-                    <input className="scene__input-text" type="text" placeholder="message" />
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div className="scene__form-footer">
-              <button className="scene__form-button" type="button">
-                <i className="scene-icon-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="scene-contact__map">
-          <div className="scene-contact__map-inner" ref={ref => this.googleMap = ref}></div>
-        </div>
+        {this.fieldRender()}
+        {this.googleMapRender()}
       </Scene.Body>
     );
   }
@@ -170,9 +246,8 @@ class Contact extends React.Component {
   render () {
 
     return (
-      <Scene waiting={this.waiting}>
+      <Scene waiting={this.waiting} name="contact">
         {this.headerRender()}
-        
         {this.bodyRender()}
         {this.footerRender()}
       </Scene>

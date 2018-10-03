@@ -1,12 +1,12 @@
 import React, { Component, createElement, isValidElement } from 'react';
 import classnames from 'classnames';
 
-import Waiting from '../Waiting';
+import Loading from '../Loading';
 import NetworkError from '../NetworkError';
 import Context from './Context';
 
 const enableRender = ({ waiting, networkError, element }) => {
-  if (!waiting || !networkError) {
+  if (!waiting && !networkError) {
     return element;
   }
 }
@@ -37,7 +37,7 @@ const Body = ({ children }) => {
         networkError,
         element: (
           <div className="scene__page-body">
-            {isValidElement(children) || Array.isArray(children) ? Array.isArraychildren : createElement(children)}
+            {isValidElement(children) || Array.isArray(children) ? children : createElement(children)}
           </div>
         )
       })
@@ -69,7 +69,7 @@ export default class Scene extends Component {
   static Footer = Footer;
 
   render () {
-    const { waiting, networkError } = this.props;
+    const { waiting, networkError, name } = this.props;
     const { onReload } = this.props;
     const classes = classnames({
       'scene_content': true,
@@ -80,14 +80,16 @@ export default class Scene extends Component {
     return (
       <Context.Provider value={{ waiting, networkError }}>
         <div className="scene__container">
-          {
-            networkError ?
-              <NetworkError onReload={onReload} /> :
-              <Waiting {...this.props} waiting={waiting} onReload={onReload}  />    
-          }
-          
-          <div className={classes}>
-            {(networkError || waiting) ? null : this.props.children}
+          <div className={`scene-${name}`}>
+            {
+              networkError ?
+                <NetworkError onReload={onReload} /> :
+                <Loading {...this.props} waiting={waiting} onReload={onReload}  />    
+            }
+            
+            <div className={classes}>
+              {(networkError || waiting) ? null : this.props.children}
+            </div>
           </div>
         </div>
       </Context.Provider>

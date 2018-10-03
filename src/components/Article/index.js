@@ -7,23 +7,32 @@ class Image extends Component {
     const { images } = this.props;
 
     return images.map((image, index) => {
-      const imageElement = (
-        <div className="scene-detail__object" key={index}>
+      const element = image.xs ? 
+        (
+          <picture>
+            <source media="(max-width: 600px)" srcset={image.xs} />
+            <img 
+              className="scene-detail__image" 
+              src={image.url}
+            />
+          </picture>
+        ) : (
           <img 
             className="scene-detail__image" 
             src={image.url}
           />
+        );
+
+      const imageElement = (
+        <div className="scene-detail__object" key={index}>
+         {element} 
         </div>
       );
 
       if (image.grid) {
         return (
-          <div className="scene__grid">
-            <div className="scene__grid-inner">
-              <div className={image.grid}>
-                {imageElement}
-              </div>
-            </div>
+          <div className={image.grid}>
+            {imageElement}
           </div>
         );
       } 
@@ -33,18 +42,32 @@ class Image extends Component {
   }
 
   render () {
-    return this.imageRender();
+    return (
+      <div className="scene-detail__box">
+        <div className="scene__grid">
+          <div className="scene__grid-inner">
+            {this.imageRender()}
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
 class Text extends Component {
   render () {
-    return this.props.children;
+    return (
+      <div className="scene-detail__box">
+        {this.props.children}
+      </div>
+    );
   }
 }
 
 class Swiper extends Component {
-
+  render () {
+    return null;
+  }
 }
 
 export default class Article extends Component {
@@ -54,8 +77,7 @@ export default class Article extends Component {
 
   layoutRender () {
     const { layout } = this.props;
-
-    return layout.map(({ type, data }, index) => {
+    const layoutElements = layout.map(({ type, data }, index) => {
       switch (type) {
         case PROJECT_LAYOUT_TYPE.IMAGE:
           return <Image images={data} key={index} />;
@@ -70,9 +92,15 @@ export default class Article extends Component {
           break;
       }
     });
+
+    return layoutElements;
   }
 
   render () {
-    return this.layoutRender();
+    return (
+      <div className="scene-detail__box">
+        {this.layoutRender()}
+      </div>
+    );
   }
 }

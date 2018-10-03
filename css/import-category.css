@@ -46,7 +46,7 @@
     .scene__category-title {
         display: block;
     }
-    .scene__category-list {
+    .scene-home .scene__category-list {
         opacity: 0;
         transition: opacity 1.5s;
         pointer-events: none;

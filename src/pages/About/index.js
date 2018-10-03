@@ -16,8 +16,10 @@ class About extends React.Component {
   ];
 
   state = {
-    waiting: false,
-    categoryOffset: 0
+    waiting: true,
+    categoryOffset: 0,
+    clients: [],
+    categories: []
   }
 
   componentDidMount () {
@@ -27,6 +29,29 @@ class About extends React.Component {
     setLogoColor(About.logoColor);
     setNavigators(About.navigators);
     setNavigatorColor(About.navigatorColor);
+
+    const promise = Promise.all([
+      this.getCategoryList(),
+      this.getClientList()
+    ]);
+
+    promise
+      .then(res => {
+        const state = {
+          networkError: null,
+          waiting: false,
+          ...res[0],
+          ...res[1],
+          ...res[2]
+        };
+
+        this.setState(state);
+      })
+      .catch(error => {
+        this.setState({
+          networkError: error
+        });
+      });
 
     window.addEventListener('scroll', this.onWindowScroll);
   }
@@ -40,6 +65,36 @@ class About extends React.Component {
 
     this.setState({
       categoryOffset: top
+    });
+  }
+
+  getCategoryList () {
+    return new Promise((resolve, reject) => {
+      fetch('./data/categories.json', {
+        method: 'GET'
+      })
+      .then(res => res.json())
+      .then(res => resolve(res))
+      .catch(err => reject({
+        type: 'CATEGORY_LIST',
+        code: 'ERROR',
+        message: err.message
+      }));
+    });
+  }
+
+  getClientList () {
+    return new Promise((resolve, reject) => {
+      fetch('./data/clients.json', {
+        method: 'GET'
+      })
+      .then(res => res.json())
+      .then(res => resolve(res))
+      .catch(err => reject({
+        type: 'CLIENT_LIST',
+        code: 'ERROR',
+        message: err.message
+      }));
     });
   }
 
@@ -58,7 +113,7 @@ class About extends React.Component {
         <div className="scene__page-header-title-wrap">
           <div className="scene__grid">
             <div className="scene__grid-inner">
-              <div className="col-10">
+              <div className="col-20 col-m-16 col-s-18 col-xs-24">
                 <h3 className="scene__page-header-title">
                   <p>We craft delightful experiences.</p>
                   <p>We craft efficiency.</p>
@@ -78,7 +133,7 @@ class About extends React.Component {
       <div className="scene__page-header-description-wrap">
         <div className="scene__grid">
           <div className="scene__grid-inner">
-            <div className="col-4 col-offset-7">
+            <div className="col-8 col-offset-14 col-m-10 col-offset-m-12 col-s-12 col-offset-s-12 col-xs-24 col-offset-xs-0">
               <div className="scene__page-header-description">
                 <div className="scene__page-header-description-inner">
                   <p className="scene__page-header-description-text">
@@ -96,6 +151,33 @@ class About extends React.Component {
   }
 
   footerRender () {
+    const { getSocialList, getContactInfomation } = this.props;
+    const social = getSocialList();
+    const contactInformation = getContactInfomation();
+
+    const socialElements = social.map(soc => {
+      const { iconClassName, link, name } = soc;
+
+      return (
+        <a key={name} className="scene__page-footer-information-site-link" href={link}>
+          <i className={iconClassName}></i>
+        </a>
+      );
+    });
+
+    const infomationElements = (
+      <ul className="scene__page-footer-informationlist">
+        {
+          contactInformation.map(info => <li 
+            key={info.key}
+            className="scene__page-footer-information-item"
+          >
+            {info.value}
+          </li>)
+        }
+      </ul>
+    );
+
     return (
       <Scene.Footer>
         <div className="scene__page-footer-inner">
@@ -103,27 +185,12 @@ class About extends React.Component {
 
           <div className="scene__grid">
             <div className="scene__grid-inner">
-              <div className="col-4 col-offset-7">
+              <div className="col-8 col-offset-14 col-m-10 col-offset-m-12 col-s-9 col-offset-s-12 col-xs-24 col-offset-xs-0">
                 <div className="scene__page-footer-information">
-                  <ul className="scene__page-footer-informationlist">
-                    <li className="scene__page-footer-information-item">577 Airport Blvd, Suite 160, Burlingame, CA 94010</li>
-                    <li className="scene__page-footer-information-item">hello@tacpoint.com</li>
-                    <li className="scene__page-footer-information-item">650.577.3140</li>
-                  </ul>
+                  {infomationElements}
 
                   <div className="scene__page-footer-information-site">
-                    <a className="scene__page-footer-information-site-link" href="javascript:;">
-                      <i className="scene-icon-black-fb"></i>
-                    </a>
-                    <a className="scene__page-footer-information-site-link" href="javascript:;">
-                      <i className="scene-icon-black-tw"></i>
-                    </a>
-                    <a className="scene__page-footer-information-site-link" href="javascript:;">
-                      <i className="scene-icon-black-in"></i>
-                    </a>
-                    <a className="scene__page-footer-information-site-link" href="javascript:;">
-                      <i className="scene-icon-black-ig"></i>
-                    </a>
+                    {socialElements}
                   </div>
                 </div>
               </div>
@@ -134,61 +201,72 @@ class About extends React.Component {
     );
   }
 
-  bodyRender () {
-    const { categoryOffset } = this.state;
+  partnerRender () {
+    const { getPartnerList } = this.props;
+    const partnerList = getPartnerList();
+
+    const partnerElements = partnerList.map((partner, index) => {
+      const { url, alt } = partner;
+      return (
+        <div className="col-6 col-xs-12" key={index}>
+          <div className="scene__thumbnail-object">
+            <img className="scene__thumbnail-image" src={url} alt={alt} />
+          </div>
+        </div>
+      );
+    });
+
+    return (
+      <div className="scene-about__partner">
+        <div className="scene__thumbnail">
+          <div className="scene__grid">
+            <div className="scene__grid-inner">
+              {partnerElements}
+            </div>
+          </div>
+        </div>
+      </div>               
+    );
+  }
+
+  categoriesRender () {
+    const { categoryOffset, categories } = this.state;
+    const { isMobile } = this.props;
     const style = {
       transform: `translateY(${-categoryOffset}px)`
     };
+
+    const categoryElements = categories.map(cate => {
+      const { id, name } = cate;
+
+      return (
+        <div key={id} className="col-24 col-xs-12 scene__category-item">{name}</div>
+      );
+    })
+
+    return (
+      <div className="scene__category" style={isMobile ? null : style}>
+        <span className="scene__category-line" ></span>
+        <div className="scene__category-list">
+          <div className="scene__grid">
+            <div className="scene__grid-inner">
+              {categoryElements}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  bodyRender () {
+    
 
     return (
       <Scene.Body>
         <div className="scene__grid" >
           <div className="scene__grid-inner">
-            <div className="col-4">
-              <div className="scene__category" style={style}>
-                <span className="scene__category-line" style={{ transform: 'rotate(-35deg)' }}></span>
-                <div className="scene__grid">
-                    <div className="scene__grid-inner">
-                      <div className="col-6" >
-                          <ul className="scene__category-list">
-                            <li className="scene__category-item">
-                              <a href="">analytics</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">branding</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">data</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">graphics</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">ux/ui</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">development</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">marketing</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">presentation</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">app</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">strategy</a>
-                            </li>
-                            <li className="scene__category-item">
-                              <a href="">web</a>
-                            </li>
-                          </ul>
-                        </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="col-8 col-m-6 col-xs-24">
+              {this.categoriesRender()}
             </div>
 
             <div className="col-8">
@@ -198,6 +276,8 @@ class About extends React.Component {
             </div>
           </div>
         </div>
+
+        {this.partnerRender()}
       </Scene.Body>
     );
   }
@@ -205,7 +285,7 @@ class About extends React.Component {
   render () {
 
     return (
-      <Scene waiting={this.waiting}>
+      <Scene waiting={this.waiting} name="about">
         {this.headerRender()}
         
         {this.bodyRender()}

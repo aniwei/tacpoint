@@ -2,10 +2,15 @@ import React from 'react';
 
 import Scene from '../../components/Scene';
 import Context from '../../Context';
+import Article from '../../components/Article';
 
 class Project extends React.Component {
   static backgroundColor = '#ffffff';
   static logoColor = '#1a1a1a';
+  static navigatorColor = '';
+  static navigators = [
+    {}
+  ];
 
   state = {
     waiting: true,
@@ -13,20 +18,34 @@ class Project extends React.Component {
   }
 
   componentDidMount () {
-    const { setBackgroundColor, setLogoColor } = this.props;
+    const { 
+      setBackgroundColor, 
+      setLogoColor,
+      setNavigators,
+      setNavigatorColor
+    } = this.props;
 
     setBackgroundColor(Project.backgroundColor);
     setLogoColor(Project.logoColor);
+    setNavigatorColor(Project.navigatorColor);
+    setNavigators(Project.navigators);
 
     this.getProject();
   }
 
   getProject = () => {
+    const { setLogoColor } = this.props;
+
     fetch('./data/project.json', {
       method: 'GET'
     }).then(res => res.json())
-    .then(res => this.setState({ data: res.project, waiting: false }))
-    .catch(err => alert('Sorry, has a network error.'));
+    .then(res => this.setState({ data: res.project, waiting: false }, () => {
+      setLogoColor(res.project.color);
+    }))
+    .catch(err => {
+      console.log(err);
+      alert('Sorry, has a network error.');
+    });
   }
 
   
@@ -40,7 +59,7 @@ class Project extends React.Component {
             <div className="scene__page-header-title-wrap">
               <div className="scene__grid">
                 <div className="scene__grid-inner">
-                  <div className="col-10">
+                  <div className="col-20 col-m-16 col-s-18 col-xs-24">
                     <h3 className="scene__page-header-title">{data.name}</h3>
                   </div>
                 </div>
@@ -73,13 +92,11 @@ class Project extends React.Component {
         </p>
       );
 
-
-
       return (
         <div className="scene__page-header-description-wrap">
           <div className="scene__grid">
             <div className="scene__grid-inner">
-              <div className="col-4 col-offset-7">
+              <div className="col-8 col-offset-14 col-m-10 col-offset-m-12 col-s-12 col-offset-s-12 col-xs-24 col-offset-xs-0">
                 <div className="scene__page-header-description">
                   <div className="scene__page-header-description-inner">
                     {breifElement}
@@ -99,36 +116,8 @@ class Project extends React.Component {
       {
         () => (
           <div className="scene__page-footer-inner">
-            <h3 className="scene__page-footer-title">Let’s talk.</h3>
-
-            <div className="scene__grid">
-              <div className="scene__grid-inner">
-                <div className="col-4 col-offset-7">
-                  <div className="scene__page-footer-information">
-                    <ul className="scene__page-footer-informationlist">
-                      <li className="scene__page-footer-information-item">577 Airport Blvd, Suite 160, Burlingame, CA 94010</li>
-                      <li className="scene__page-footer-information-item">hello@tacpoint.com</li>
-                      <li className="scene__page-footer-information-item">650.577.3140</li>
-                    </ul>
-
-                    <div className="scene__page-footer-information-site">
-                      <a className="scene__page-footer-information-site-link" href="javascript:;">
-                        <i className="scene-icon-black-fb"></i>
-                      </a>
-                      <a className="scene__page-footer-information-site-link" href="javascript:;">
-                        <i className="scene-icon-black-tw"></i>
-                      </a>
-                      <a className="scene__page-footer-information-site-link" href="javascript:;">
-                        <i className="scene-icon-black-in"></i>
-                      </a>
-                      <a className="scene__page-footer-information-site-link" href="javascript:;">
-                        <i className="scene-icon-black-ig"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                </div>
-            </div>
+            <p className="scene__page-footer-label">next project</p>
+            <h3 className="scene__page-footer-title">Visa Prepaid</h3>
           </div>
         )
       }   
@@ -136,9 +125,15 @@ class Project extends React.Component {
   }
 
   bodyRender () {
+    const { data } = this.state;
 
     return (
       <Scene.Body>
+        {
+          () => (
+            <Article layout={data.layout} />
+          )
+        }
 
       </Scene.Body>
     );
@@ -147,7 +142,7 @@ class Project extends React.Component {
   render () {
 
     return (
-      <Scene waiting={this.waiting}>
+      <Scene waiting={this.state.waiting} name="detail">
         {this.headerRender()}
         {this.bodyRender()}
         {this.footerRender()}

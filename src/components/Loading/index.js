@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-export default class Waiting extends Component {
+export default class Loading extends Component {
   static propTypes = {
     dark: PropTypes.bool
   };
@@ -24,7 +24,7 @@ export default class Waiting extends Component {
 
     return (
       <div className={classes}>
-        Waiting...
+        Loading...
       </div>
     );
   }

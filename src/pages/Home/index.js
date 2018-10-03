@@ -6,7 +6,7 @@ import Context from '../../Context';
 
 import Scene from '../../components/Scene';
 
-const Navigations = withRouter(class Navigations extends Component {
+class Navigations extends Component {
   state = {
     type: 'categories'
   }
@@ -163,7 +163,7 @@ const Navigations = withRouter(class Navigations extends Component {
       </div>
     );
   }
-});
+}
 
 class Home extends Component {
   static backgroundColor = '#000';
@@ -182,6 +182,12 @@ class Home extends Component {
     clients: [],
     selectedCategories: [],
     selectedClients: []
+  }
+
+  componentWillMount () {
+    const { clearNavigations } = this.props;
+
+    clearNavigations();
   }
 
   componentDidMount () {
@@ -215,9 +221,7 @@ class Home extends Component {
           };
 
           this.setState(state, () => {
-            setNavigations(this.navigationsRender());
-
-            
+            setNavigations(this.navigationsRender());            
           });
         })
         .catch(error => {
@@ -229,13 +233,18 @@ class Home extends Component {
   }
 
   onClearSelectedList = () => {
+    const { setNavigations } = this.props;
+
     this.setState({
       selectedClients: [],
       selectedCategories: []
+    }, () => {
+      setNavigations(this.navigationsRender());
     });
   }
 
   onClientLinkClick = (client, isInclude) => {
+    const { setNavigations } = this.props;
     const { selectedClients } = this.state;
     const index = selectedClients.indexOf(client);
 
@@ -246,17 +255,22 @@ class Home extends Component {
 
       this.setState({
         selectedClients: newSelectedList
+      }, () => {
+        setNavigations(this.navigationsRender());
       });
     } else {
       newSelectedList.push(client);
 
       this.setState({
         selectedClients: newSelectedList
+      }, () => {
+        setNavigations(this.navigationsRender());
       });
     }
   }
 
   onCategoryLinkClick = (category, isInclude) => {
+    const { setNavigations } = this.props;
     const { selectedCategories } = this.state;
     const index = selectedCategories.indexOf(category);
 
@@ -267,12 +281,16 @@ class Home extends Component {
 
       this.setState({
         selectedCategories: newSelectedList
+      }, () => {
+        setNavigations(this.navigationsRender());
       });
     } else {
       newSelectedList.push(category);
 
       this.setState({
         selectedCategories: newSelectedList
+      }, () => {
+        setNavigations(this.navigationsRender());
       });
     }
   }
@@ -377,9 +395,11 @@ class Home extends Component {
   }
 
   navigationsRender = () => {
+
+
     return (
       <Navigations 
-        ref={ref => this.navigations = ref}
+        {...this.props}
         onCategoryLinkClick={this.onCategoryLinkClick}
         onClientLinkClick={this.onClientLinkClick}
         onClear={this.onClearSelectedList}
@@ -390,8 +410,6 @@ class Home extends Component {
 
   bodyRender () {
     const { isMobile } = this.props;
-
-    console.log(isMobile);
 
     return (
       <Scene.Body>
@@ -411,7 +429,7 @@ class Home extends Component {
 
   render () {
     return (
-      <Scene waiting={this.state.waiting} light>
+      <Scene waiting={this.state.waiting} light name="home">
         <div className="scene-home">
           {this.bodyRender()}
         </div>
