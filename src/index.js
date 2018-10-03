@@ -140,7 +140,7 @@ class App extends Component {
     this.setState({
       navigatorColor
     }, () => {
-      if (this.navigtors) {
+      if (this.navigators) {
         this.setNavigators(this.navigators);
       }
     });
@@ -173,6 +173,8 @@ class App extends Component {
   setNavigators = (navigators) => {
     const { navigatorColor } = this.state;
     this.navigators = navigators;
+
+    console.log(navigatorColor)
 
     this.setState({
       navigators: navigators.map(nav => {
@@ -227,6 +229,8 @@ class App extends Component {
     transitionProperty.map(({ name, value }) => {
       style[name] = value[type];
     });
+
+    console.log(style);
 
     return style;
   }

@@ -94,13 +94,15 @@
 }
 
 .app__navigation {
+  opacity: 0.95;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   display: none;
   left: 0;
   right: 0;
   bottom: 0;
   top: 0;
+  transition: opacity 1s;
 }
 
 .app__navigation a {
@@ -136,12 +138,19 @@
 .app__navigation-content .scene__grid-inner {
   height: 100%;
 }
-
+.app__simple-navigation {
+  height: 100%;
+}
 .app__simple-navigation-line {
-  width: 1px;
-  height: 384px;
-  transform: rotate(-65.25deg);
+  margin: auto;
+  display: block;
+  height: 1px;
+  width: 384px;
   background-color: #000000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-25.75deg);
 }
 
 @media screen and (max-width: 768px) {
@@ -150,7 +159,7 @@
   }
 
   .app__navigation.open {
-    animation-name: fadeIn;
+    opacity: 0.95;
     display: block;
   }
 

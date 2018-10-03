@@ -16,17 +16,17 @@ const TRANSITION_PROPERTY = {
   }],
   '768': [{
     name: 'transform',
-    value: { from: 80, to: 0 }
+    value: { from: '80', to: 0 }
   }, {
     name: 'opacity',
-    value: { from: 0, to: 1 }
+    value: { from: '0', to: 1 }
   }],
   '375': [{
     name: 'transform',
-    value: { from: 80, to: 0 }
+    value: { from: '80', to: 0 }
   }, {
     name: 'opacity',
-    value: { from: 0, to: 1 }
+    value: { from: '0', to: 1 }
   }],
 }
 

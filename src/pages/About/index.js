@@ -42,7 +42,7 @@ class About extends React.Component {
     setNavigations(
       <SimpleNavigation />
     );
-    setNavigationButtonColor(About.setNavigationButtonColor);
+    setNavigationButtonColor(About.navigationButtonColor);
 
     const promise = Promise.all([
       this.getCategoryList(),

@@ -206,7 +206,7 @@
 	      _this.setState({
 	        navigatorColor: navigatorColor
 	      }, function () {
-	        if (_this.navigtors) {
+	        if (_this.navigators) {
 	          _this.setNavigators(_this.navigators);
 	        }
 	      });
@@ -230,6 +230,8 @@
 	      var navigatorColor = _this.state.navigatorColor;
 
 	      _this.navigators = navigators;
+
+	      console.log(navigatorColor);
 
 	      _this.setState({
 	        navigators: navigators.map(function (nav) {
@@ -282,6 +284,8 @@
 
 	        style[name] = value[type];
 	      });
+
+	      console.log(style);
 
 	      return style;
 	    }, _this.provideContext = function () {
@@ -31485,17 +31489,17 @@
 	  }],
 	  '768': [{
 	    name: 'transform',
-	    value: { from: 80, to: 0 }
+	    value: { from: '80', to: 0 }
 	  }, {
 	    name: 'opacity',
-	    value: { from: 0, to: 1 }
+	    value: { from: '0', to: 1 }
 	  }],
 	  '375': [{
 	    name: 'transform',
-	    value: { from: 80, to: 0 }
+	    value: { from: '80', to: 0 }
 	  }, {
 	    name: 'opacity',
-	    value: { from: 0, to: 1 }
+	    value: { from: '0', to: 1 }
 	  }]
 	};
 
@@ -32984,7 +32988,7 @@
 	      setNavigators(About.navigators);
 	      setNavigatorColor(About.navigatorColor);
 	      setNavigations(_react2.default.createElement(_SimpleNavigation2.default, null));
-	      setNavigationButtonColor(About.setNavigationButtonColor);
+	      setNavigationButtonColor(About.navigationButtonColor);
 
 	      var promise = Promise.all([this.getCategoryList(), this.getClientList()]);
 
