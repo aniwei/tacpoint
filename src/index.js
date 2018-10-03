@@ -24,7 +24,9 @@ import {
   SOCIAL_LIST,
   CONTACT_INFORMATION,
   PARTNER_LIST,
-  FORM_INPUT_LIST
+  FORM_INPUT_LIST,
+  ABOUT_SWIPER_LIST,
+  ABOUT_SWIPER_OPTIONS
 } from './contants';
 
 class App extends Component {
@@ -35,6 +37,7 @@ class App extends Component {
     backgroundColor: COLORS.BLACK,
     logoColor: COLORS.WHITE,
     navigatorColor: COLORS.WHITE,
+    navigationButtonColor: COLORS.WHITE,
     logoType: 'simple',
     transitionProperty: TRANSITION_PROPERTY['1024'],
     isMobile: false
@@ -63,6 +66,8 @@ class App extends Component {
 
     this.width = width;
     this.height = height;
+
+    console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
 
     this.setState({
       transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
@@ -117,9 +122,27 @@ class App extends Component {
     return SOCIAL_LIST;
   }
 
+  getAboutSwiperList = () => {
+    return ABOUT_SWIPER_LIST;
+  }
+
+  getAboutSwiperOptions = () => {
+    return ABOUT_SWIPER_OPTIONS;
+  }
+
+  setNavigationButtonColor = (navigationButtonColor) => {
+    this.setState({
+      navigationButtonColor
+    });
+  }
+
   setNavigatorColor = (navigatorColor) => {
     this.setState({
       navigatorColor
+    }, () => {
+      if (this.navigtors) {
+        this.setNavigators(this.navigators);
+      }
     });
   }
 
@@ -149,6 +172,7 @@ class App extends Component {
 
   setNavigators = (navigators) => {
     const { navigatorColor } = this.state;
+    this.navigators = navigators;
 
     this.setState({
       navigators: navigators.map(nav => {
@@ -232,7 +256,15 @@ class App extends Component {
   }
 
   layoutRender () {
-    const { logoColor, logoType, navigations, openNavigations, navigators, backgroundColor } = this.state;
+    const { 
+      logoColor, 
+      logoType, 
+      navigations, 
+      openNavigations, 
+      navigators, 
+      backgroundColor,
+      navigationButtonColor
+    } = this.state;
 
     const classes = classnames({
       'app__navigation': true,
@@ -244,6 +276,7 @@ class App extends Component {
       <div className="app__layout">
         <div className="app__header">
           <NavigationButton 
+            color={navigationButtonColor}
             open={openNavigations}
             onOpen={() => this.onNavigationButtonClick('open')} 
             onClose={() => this.onNavigationButtonClick('close')} 
@@ -295,6 +328,7 @@ class App extends Component {
       setBackgroundColor: this.setBackgroundColor,
       setLogoColor: this.setLogoColor,
       setLogoType: this.setLogoType,
+      setNavigationButtonColor: this.setNavigationButtonColor,
       setNavigations: this.setNavigations,
       setNavigators: this.setNavigators,
       setNavigatorColor: this.setNavigatorColor,
@@ -302,7 +336,9 @@ class App extends Component {
       getContactInfomation: this.getContactInfomation,
       getSocialList: this.getSocialList,
       getPartnerList: this.getPartnerList,
-      getFormInputList: this.getFormInputList
+      getFormInputList: this.getFormInputList,
+      getAboutSwiperList: this.getAboutSwiperList,
+      getAboutSwiperOptions: this.getAboutSwiperOptions
     }
   }
 

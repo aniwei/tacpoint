@@ -117,11 +117,16 @@
 }
 
 .app__navigation-clear {
+  display: none;
   position: absolute;
   bottom: 0px;
   color: #fff;
   width: 100%;
   font-size: 18px;
+}
+
+.scene-home .app__navigation-clear {
+  display: block;
 }
 
 .app__navigation-content .scene__grid {
@@ -130,6 +135,13 @@
 
 .app__navigation-content .scene__grid-inner {
   height: 100%;
+}
+
+.app__simple-navigation-line {
+  width: 1px;
+  height: 384px;
+  transform: rotate(-65.25deg);
+  background-color: #000000;
 }
 
 @media screen and (max-width: 768px) {
@@ -147,7 +159,7 @@
   }
 
   .app__navigation-button {
-    left: 37px;
+    left: 50px;
     pointer-events: all;
     opacity: 1;
   }
@@ -157,5 +169,9 @@
   .app__layout,
   .app__navigation {
     padding: 80px 28px;
+  }
+
+  .app__navigation-button {
+    left: 28px;
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
+import ReactSwipe from 'react-swipe';
 
 import Scene from '../../components/Scene';
+import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 
 const SCALE = 1.2;
@@ -9,7 +11,7 @@ class About extends React.Component {
   static backgroundColor = '#f0f0f0';
   static logoColor = '#1a1a1a';
   static navigatorColor = '#1a1a1a';
-
+  static navigationButtonColor = '#1a1a1a';
   static navigators = [
     { position: 'left', text: 'projects', path: '/' },
     { position: 'right', text: 'let’s talk', path: '/contact' }
@@ -19,16 +21,28 @@ class About extends React.Component {
     waiting: true,
     categoryOffset: 0,
     clients: [],
-    categories: []
+    categories: [],
+    swiperIndex: 0
   }
 
   componentDidMount () {
-    const { setBackgroundColor, setLogoColor, setNavigators, setNavigatorColor } = this.props;
+    const { 
+      setBackgroundColor, 
+      setLogoColor, 
+      setNavigators, 
+      setNavigatorColor,
+      setNavigationButtonColor,
+      setNavigations
+    } = this.props;
 
     setBackgroundColor(About.backgroundColor);
     setLogoColor(About.logoColor);
     setNavigators(About.navigators);
     setNavigatorColor(About.navigatorColor);
+    setNavigations(
+      <SimpleNavigation />
+    );
+    setNavigationButtonColor(About.setNavigationButtonColor);
 
     const promise = Promise.all([
       this.getCategoryList(),
@@ -258,6 +272,54 @@ class About extends React.Component {
     );
   }
 
+  swiperRender () {
+    const { getAboutSwiperList, getAboutSwiperOptions } = this.props;
+    const { swiperIndex } = this.state;
+    const swiperList = getAboutSwiperList();
+
+    const swiperElements = swiperList.map((swiper, index) => {
+      const { alt, url } = swiper;
+
+      return (
+        <div className="scene__carousel-item-inner" key={index}>
+          <img 
+            className="scene-about__image" 
+            src={url}
+            alt={alt}
+            key={index} 
+          />
+        </div>
+      );
+    });
+
+    const options = {
+      ...getAboutSwiperOptions(),
+      transitionEnd: (index) => {
+        index = index + 1;
+        index = index < 10 ? `0${index}` : String(index);
+
+        this.setState({
+          swiperIndex: index
+        });
+      }
+    }
+
+    return (
+      <div className="scene__carousel">
+        <div className="scene__carousel-inner">
+          <div className="scene__carousel-slider">
+            <ReactSwipe swipeOptions={options}>
+              {swiperElements}
+            </ReactSwipe>
+          </div>
+          <div className="scene__carousel-order scene__carousel-order_brief">
+            <span className="scene__carousel-order-num scene__carousel-order_active">{swiperIndex}</span>/<span className="scene__carousel-order-num">{swiperElements.length}</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   bodyRender () {
     
 
@@ -269,10 +331,8 @@ class About extends React.Component {
               {this.categoriesRender()}
             </div>
 
-            <div className="col-8">
-              <div className="scene-about__object">
-                <img className="scene-about__image" src="image/img-about-office.jpg" alt="" />
-              </div>
+            <div className="col-16 col-m-18 col-xs-24">
+              {this.swiperRender()}
             </div>
           </div>
         </div>

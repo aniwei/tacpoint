@@ -1,11 +1,17 @@
 import React from 'react';
 import classnames from 'classnames';
 import Scene from '../../components/Scene';
+import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 
 class Contact extends React.Component {
-  static backgroundColor = '#1a1a1a';
+  static backgroundColor = '#8b8b8b';
   static logoColor = '#1a1a1a';
+  static navigationButtonColor = '#1a1a1a';
+  static navigators = [
+    { position: 'left', text: 'projects', path: '/' },
+    { position: 'right', text: 'about', path: '/about' }
+  ];
 
   state = {
     waiting: false,
@@ -13,10 +19,23 @@ class Contact extends React.Component {
   }
 
   componentDidMount () {
-    const { setBackgroundColor, setLogoColor } = this.props;
+    const { 
+      setBackgroundColor, 
+      setLogoColor, 
+      setNavigations, 
+      setNavigationButtonColor,
+      setNavigators
+    } = this.props;
 
     setBackgroundColor(Contact.backgroundColor);
     setLogoColor(Contact.logoColor);
+    setNavigations(
+      <SimpleNavigation />
+    );
+
+    setNavigators(Contact.navigators);
+
+    setNavigationButtonColor(Contact.navigationButtonColor);
 
     if (this.googleMap) {
       this.createGoogleMap();

@@ -133,6 +133,7 @@
 	      backgroundColor: _contants.COLORS.BLACK,
 	      logoColor: _contants.COLORS.WHITE,
 	      navigatorColor: _contants.COLORS.WHITE,
+	      navigationButtonColor: _contants.COLORS.WHITE,
 	      logoType: 'simple',
 	      transitionProperty: _contants.TRANSITION_PROPERTY['1024'],
 	      isMobile: false
@@ -152,6 +153,8 @@
 
 	      _this.width = width;
 	      _this.height = height;
+
+	      console.log(_contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]]);
 
 	      _this.setState({
 	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]],
@@ -191,9 +194,21 @@
 	      return _contants.CONTACT_INFORMATION;
 	    }, _this.getSocialList = function () {
 	      return _contants.SOCIAL_LIST;
+	    }, _this.getAboutSwiperList = function () {
+	      return _contants.ABOUT_SWIPER_LIST;
+	    }, _this.getAboutSwiperOptions = function () {
+	      return _contants.ABOUT_SWIPER_OPTIONS;
+	    }, _this.setNavigationButtonColor = function (navigationButtonColor) {
+	      _this.setState({
+	        navigationButtonColor: navigationButtonColor
+	      });
 	    }, _this.setNavigatorColor = function (navigatorColor) {
 	      _this.setState({
 	        navigatorColor: navigatorColor
+	      }, function () {
+	        if (_this.navigtors) {
+	          _this.setNavigators(_this.navigators);
+	        }
 	      });
 	    }, _this.setLogoType = function (logoType) {
 	      _this.setState({
@@ -214,6 +229,7 @@
 	    }, _this.setNavigators = function (navigators) {
 	      var navigatorColor = _this.state.navigatorColor;
 
+	      _this.navigators = navigators;
 
 	      _this.setState({
 	        navigators: navigators.map(function (nav) {
@@ -278,6 +294,7 @@
 	        setBackgroundColor: _this.setBackgroundColor,
 	        setLogoColor: _this.setLogoColor,
 	        setLogoType: _this.setLogoType,
+	        setNavigationButtonColor: _this.setNavigationButtonColor,
 	        setNavigations: _this.setNavigations,
 	        setNavigators: _this.setNavigators,
 	        setNavigatorColor: _this.setNavigatorColor,
@@ -285,7 +302,9 @@
 	        getContactInfomation: _this.getContactInfomation,
 	        getSocialList: _this.getSocialList,
 	        getPartnerList: _this.getPartnerList,
-	        getFormInputList: _this.getFormInputList
+	        getFormInputList: _this.getFormInputList,
+	        getAboutSwiperList: _this.getAboutSwiperList,
+	        getAboutSwiperOptions: _this.getAboutSwiperOptions
 	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
@@ -341,7 +360,8 @@
 	          navigations = _state.navigations,
 	          openNavigations = _state.openNavigations,
 	          navigators = _state.navigators,
-	          backgroundColor = _state.backgroundColor;
+	          backgroundColor = _state.backgroundColor,
+	          navigationButtonColor = _state.navigationButtonColor;
 
 
 	      var classes = (0, _classnames3.default)({
@@ -357,6 +377,7 @@
 	          'div',
 	          { className: 'app__header' },
 	          _react2.default.createElement(_NavigationButton2.default, {
+	            color: navigationButtonColor,
 	            open: openNavigations,
 	            onOpen: function onOpen() {
 	              return _this2.onNavigationButtonClick('open');
@@ -31505,6 +31526,18 @@
 
 	var FORM_INPUT_LIST = [{ key: 'name', placeholder: 'name', type: 'text' }, { key: 'email', placeholder: 'email', type: 'text' }, { key: 'message', placeholder: 'message', type: 'text' }];
 
+	var ABOUT_SWIPER_LIST = [{ url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }, { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }, { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }, { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }, { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }, { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }];
+
+	var ABOUT_SWIPER_OPTIONS = {
+	  speed: 400,
+	  auto: 3000,
+	  continuous: true,
+	  disableScroll: false,
+	  stopPropagation: false
+	};
+
+	exports.ABOUT_SWIPER_OPTIONS = ABOUT_SWIPER_OPTIONS;
+	exports.ABOUT_SWIPER_LIST = ABOUT_SWIPER_LIST;
 	exports.FORM_INPUT_LIST = FORM_INPUT_LIST;
 	exports.PARTNER_LIST = PARTNER_LIST;
 	exports.CONTACT_INFORMATION = CONTACT_INFORMATION;
@@ -32478,6 +32511,10 @@
 
 	var _Scene2 = _interopRequireDefault(_Scene);
 
+	var _SimpleNavigation = __webpack_require__(252);
+
+	var _SimpleNavigation2 = _interopRequireDefault(_SimpleNavigation);
+
 	var _Context = __webpack_require__(238);
 
 	var _Context2 = _interopRequireDefault(_Context);
@@ -32565,11 +32602,19 @@
 	    value: function componentDidMount() {
 	      var _props = this.props,
 	          setBackgroundColor = _props.setBackgroundColor,
-	          setLogoColor = _props.setLogoColor;
+	          setLogoColor = _props.setLogoColor,
+	          setNavigations = _props.setNavigations,
+	          setNavigationButtonColor = _props.setNavigationButtonColor,
+	          setNavigators = _props.setNavigators;
 
 
 	      setBackgroundColor(Contact.backgroundColor);
 	      setLogoColor(Contact.logoColor);
+	      setNavigations(_react2.default.createElement(_SimpleNavigation2.default, null));
+
+	      setNavigators(Contact.navigators);
+
+	      setNavigationButtonColor(Contact.navigationButtonColor);
 
 	      if (this.googleMap) {
 	        this.createGoogleMap();
@@ -32824,8 +32869,10 @@
 	  return Contact;
 	}(_react2.default.Component);
 
-	Contact.backgroundColor = '#1a1a1a';
+	Contact.backgroundColor = '#8b8b8b';
 	Contact.logoColor = '#1a1a1a';
+	Contact.navigationButtonColor = '#1a1a1a';
+	Contact.navigators = [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'about', path: '/about' }];
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(
@@ -32855,9 +32902,17 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactSwipe = __webpack_require__(250);
+
+	var _reactSwipe2 = _interopRequireDefault(_reactSwipe);
+
 	var _Scene = __webpack_require__(231);
 
 	var _Scene2 = _interopRequireDefault(_Scene);
+
+	var _SimpleNavigation = __webpack_require__(252);
+
+	var _SimpleNavigation2 = _interopRequireDefault(_SimpleNavigation);
 
 	var _Context = __webpack_require__(238);
 
@@ -32891,7 +32946,8 @@
 	      waiting: true,
 	      categoryOffset: 0,
 	      clients: [],
-	      categories: []
+	      categories: [],
+	      swiperIndex: 0
 	    }, _this.onWindowScroll = function () {
 	      var _this$getScrollRect = _this.getScrollRect(),
 	          top = _this$getScrollRect.top;
@@ -32918,13 +32974,17 @@
 	          setBackgroundColor = _props.setBackgroundColor,
 	          setLogoColor = _props.setLogoColor,
 	          setNavigators = _props.setNavigators,
-	          setNavigatorColor = _props.setNavigatorColor;
+	          setNavigatorColor = _props.setNavigatorColor,
+	          setNavigationButtonColor = _props.setNavigationButtonColor,
+	          setNavigations = _props.setNavigations;
 
 
 	      setBackgroundColor(About.backgroundColor);
 	      setLogoColor(About.logoColor);
 	      setNavigators(About.navigators);
 	      setNavigatorColor(About.navigatorColor);
+	      setNavigations(_react2.default.createElement(_SimpleNavigation2.default, null));
+	      setNavigationButtonColor(About.setNavigationButtonColor);
 
 	      var promise = Promise.all([this.getCategoryList(), this.getClientList()]);
 
@@ -33226,6 +33286,79 @@
 	      );
 	    }
 	  }, {
+	    key: 'swiperRender',
+	    value: function swiperRender() {
+	      var _this3 = this;
+
+	      var _props3 = this.props,
+	          getAboutSwiperList = _props3.getAboutSwiperList,
+	          getAboutSwiperOptions = _props3.getAboutSwiperOptions;
+	      var swiperIndex = this.state.swiperIndex;
+
+	      var swiperList = getAboutSwiperList();
+
+	      var swiperElements = swiperList.map(function (swiper, index) {
+	        var alt = swiper.alt,
+	            url = swiper.url;
+
+
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'scene__carousel-item-inner', key: index },
+	          _react2.default.createElement('img', {
+	            className: 'scene-about__image',
+	            src: url,
+	            alt: alt,
+	            key: index
+	          })
+	        );
+	      });
+
+	      var options = _extends({}, getAboutSwiperOptions(), {
+	        transitionEnd: function transitionEnd(index) {
+	          index = index + 1;
+	          index = index < 10 ? '0' + index : String(index);
+
+	          _this3.setState({
+	            swiperIndex: index
+	          });
+	        }
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'scene__carousel' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'scene__carousel-inner' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'scene__carousel-slider' },
+	            _react2.default.createElement(
+	              _reactSwipe2.default,
+	              { swipeOptions: options },
+	              swiperElements
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'scene__carousel-order scene__carousel-order_brief' },
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'scene__carousel-order-num scene__carousel-order_active' },
+	              swiperIndex
+	            ),
+	            '/',
+	            _react2.default.createElement(
+	              'span',
+	              { className: 'scene__carousel-order-num' },
+	              swiperElements.length
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }, {
 	    key: 'bodyRender',
 	    value: function bodyRender() {
 
@@ -33245,12 +33378,8 @@
 	            ),
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'col-8' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'scene-about__object' },
-	                _react2.default.createElement('img', { className: 'scene-about__image', src: 'image/img-about-office.jpg', alt: '' })
-	              )
+	              { className: 'col-16 col-m-18 col-xs-24' },
+	              this.swiperRender()
 	            )
 	          )
 	        ),
@@ -33277,6 +33406,7 @@
 	About.backgroundColor = '#f0f0f0';
 	About.logoColor = '#1a1a1a';
 	About.navigatorColor = '#1a1a1a';
+	About.navigationButtonColor = '#1a1a1a';
 	About.navigators = [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'let’s talk', path: '/contact' }];
 
 	exports.default = function (props) {
@@ -33693,6 +33823,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var color = this.props.color;
 	      var open = this.state.open;
 
 	      var classes = (0, _classnames2.default)({
@@ -33711,14 +33842,14 @@
 	            { stroke: 'none', strokeWidth: '1', fill: 'none', fillRule: 'evenodd', opacity: '0.5' },
 	            _react2.default.createElement(
 	              'g',
-	              { id: 'home-m', transform: 'translate(-37.000000, -21.000000)', fillRule: 'nonzero' },
+	              { transform: 'translate(-37.000000, -21.000000)', fillRule: 'nonzero' },
 	              _react2.default.createElement(
 	                'g',
 	                { transform: 'translate(37.000000, 21.000000)' },
-	                _react2.default.createElement('rect', { fill: '#D8D8D8', opacity: '0.01', x: '0', y: '0', width: '40', height: '40' }),
+	                _react2.default.createElement('rect', { fill: color, opacity: '0.01', x: '0', y: '0', width: '40', height: '40' }),
 	                _react2.default.createElement(
 	                  'g',
-	                  { fill: '#FFFFFF', transform: 'translate(20.000000, 20.000000) rotate(90.000000) translate(-20.000000, -20.000000) translate(10.000000, 10.000000)' },
+	                  { fill: color, transform: 'translate(20.000000, 20.000000) rotate(90.000000) translate(-20.000000, -20.000000) translate(10.000000, 10.000000)' },
 	                  _react2.default.createElement('rect', { x: '0', y: '9', width: '20', height: '2' }),
 	                  _react2.default.createElement('rect', { transform: 'translate(10.000000, 10.000000) rotate(90.000000) translate(-10.000000, -10.000000) ', x: '0', y: '9', width: '20', height: '2' })
 	                )
@@ -33742,6 +33873,827 @@
 	  onClose: noop
 	};
 		exports.default = NavigationButton;
+
+/***/ }),
+/* 250 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _swipeJsIso = __webpack_require__(251);
+
+	var _swipeJsIso2 = _interopRequireDefault(_swipeJsIso);
+
+	var _objectAssign = __webpack_require__(5);
+
+	var _objectAssign2 = _interopRequireDefault(_objectAssign);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ReactSwipe = function (_Component) {
+	  _inherits(ReactSwipe, _Component);
+
+	  function ReactSwipe() {
+	    _classCallCheck(this, ReactSwipe);
+
+	    return _possibleConstructorReturn(this, (ReactSwipe.__proto__ || Object.getPrototypeOf(ReactSwipe)).apply(this, arguments));
+	  }
+
+	  _createClass(ReactSwipe, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var swipeOptions = this.props.swipeOptions;
+
+
+	      this.swipe = (0, _swipeJsIso2.default)(this.container, swipeOptions);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps) {
+	      var _props = this.props,
+	          childCount = _props.childCount,
+	          swipeOptions = _props.swipeOptions;
+
+
+	      if (prevProps.childCount !== childCount) {
+	        this.swipe.kill();
+	        this.swipe = (0, _swipeJsIso2.default)(this.container, swipeOptions);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.swipe.kill();
+	      this.swipe = void 0;
+	    }
+	  }, {
+	    key: 'next',
+	    value: function next() {
+	      this.swipe.next();
+	    }
+	  }, {
+	    key: 'prev',
+	    value: function prev() {
+	      this.swipe.prev();
+	    }
+	  }, {
+	    key: 'slide',
+	    value: function slide() {
+	      var _swipe;
+
+	      (_swipe = this.swipe).slide.apply(_swipe, arguments);
+	    }
+	  }, {
+	    key: 'getPos',
+	    value: function getPos() {
+	      return this.swipe.getPos();
+	    }
+	  }, {
+	    key: 'getNumSlides',
+	    value: function getNumSlides() {
+	      return this.swipe.getNumSlides();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var _props2 = this.props,
+	          id = _props2.id,
+	          className = _props2.className,
+	          style = _props2.style,
+	          children = _props2.children;
+
+
+	      return _react2.default.createElement(
+	        'div',
+	        { ref: function ref(container) {
+	            return _this2.container = container;
+	          }, id: id, className: 'react-swipe-container ' + className, style: style.container },
+	        _react2.default.createElement(
+	          'div',
+	          { style: style.wrapper },
+	          _react2.default.Children.map(children, function (child) {
+	            if (!child) {
+	              return null;
+	            }
+
+	            var childStyle = child.props.style ? (0, _objectAssign2.default)({}, style.child, child.props.style) : style.child;
+
+	            return _react2.default.cloneElement(child, { style: childStyle });
+	          })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ReactSwipe;
+	}(_react.Component);
+
+	ReactSwipe.propTypes = {
+	  swipeOptions: _propTypes2.default.shape({
+	    startSlide: _propTypes2.default.number,
+	    speed: _propTypes2.default.number,
+	    auto: _propTypes2.default.number,
+	    continuous: _propTypes2.default.bool,
+	    disableScroll: _propTypes2.default.bool,
+	    stopPropagation: _propTypes2.default.bool,
+	    swiping: _propTypes2.default.func,
+	    callback: _propTypes2.default.func,
+	    transitionEnd: _propTypes2.default.func
+	  }),
+	  style: _propTypes2.default.shape({
+	    container: _propTypes2.default.object,
+	    wrapper: _propTypes2.default.object,
+	    child: _propTypes2.default.object
+	  }),
+	  id: _propTypes2.default.string,
+	  className: _propTypes2.default.string,
+	  childCount: _propTypes2.default.number
+	};
+	ReactSwipe.defaultProps = {
+	  swipeOptions: {},
+	  style: {
+	    container: {
+	      overflow: 'hidden',
+	      visibility: 'hidden',
+	      position: 'relative'
+	    },
+
+	    wrapper: {
+	      overflow: 'hidden',
+	      position: 'relative'
+	    },
+
+	    child: {
+	      float: 'left',
+	      width: '100%',
+	      position: 'relative',
+	      transitionProperty: 'transform'
+	    }
+	  },
+	  className: '',
+	  childCount: 0
+	};
+	exports.default = ReactSwipe;
+	module.exports = exports['default'];
+
+
+/***/ }),
+/* 251 */
+/***/ (function(module, exports) {
+
+	/*
+	 * Swipe 2.0.0
+	 * Brad Birdsall
+	 * https://github.com/thebird/Swipe
+	 * Copyright 2013-2015, MIT License
+	 *
+	*/
+
+	(function (root, factory) {
+	    if (typeof module !== 'undefined' && module.exports) {
+	        module.exports = factory();
+	    } else {
+	        root.Swipe = factory();
+	    }
+	}(this, function () {
+	  'use strict';
+
+	  return function Swipe (container, options) {
+	    // utilities
+	    var noop = function() {}; // simple no operation function
+	    var offloadFn = function(fn) { setTimeout(fn || noop, 0); }; // offload a functions execution
+
+	    // check browser capabilities
+	    var browser = {
+	      addEventListener: !!window.addEventListener,
+	      touch: ('ontouchstart' in window) || window.DocumentTouch && document instanceof window.DocumentTouch,
+	      transitions: (function(temp) {
+	        var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'];
+	        for ( var i in props ) if (temp.style[ props[i] ] !== undefined) return true;
+	        return false;
+	      })(document.createElement('swipe'))
+	    };
+
+	    // quit if no root element
+	    if (!container) return;
+	    var element = container.children[0];
+	    var slides, slidePos, width, length;
+	    options = options || {};
+	    var index = parseInt(options.startSlide, 10) || 0;
+	    var speed = options.speed || 300;
+	    var continuous = options.continuous = options.continuous !== undefined ? options.continuous : true;
+
+	    function setup() {
+
+	      // cache slides
+	      slides = element.children;
+	      length = slides.length;
+
+	      // set continuous to false if only one slide
+	      continuous = slides.length < 2 ? false : options.continuous;
+
+	      //special case if two slides
+	      if (browser.transitions && continuous && slides.length < 3) {
+	        element.appendChild(slides[0].cloneNode(true));
+	        element.appendChild(element.children[1].cloneNode(true));
+	        slides = element.children;
+	      }
+
+	      // create an array to store current positions of each slide
+	      slidePos = new Array(slides.length);
+
+	      // determine width of each slide
+	      width = Math.round(container.getBoundingClientRect().width || container.offsetWidth);
+
+	      element.style.width = (slides.length * width) + 'px';
+
+	      // stack elements
+	      var pos = slides.length;
+	      while(pos--) {
+
+	        var slide = slides[pos];
+
+	        slide.style.width = width + 'px';
+	        slide.setAttribute('data-index', pos);
+
+	        if (browser.transitions) {
+	          slide.style.left = (pos * -width) + 'px';
+	          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+	        }
+
+	      }
+
+	      // reposition elements before and after index
+	      if (continuous && browser.transitions) {
+	        move(circle(index-1), -width, 0);
+	        move(circle(index+1), width, 0);
+	      }
+
+	      if (!browser.transitions) element.style.left = (index * -width) + 'px';
+
+	      container.style.visibility = 'visible';
+
+	    }
+
+	    function prev() {
+
+	      if (continuous) slide(index-1);
+	      else if (index) slide(index-1);
+
+	    }
+
+	    function next() {
+
+	      if (continuous) slide(index+1);
+	      else if (index < slides.length - 1) slide(index+1);
+
+	    }
+
+	    function circle(index) {
+
+	      // a simple positive modulo using slides.length
+	      return (slides.length + (index % slides.length)) % slides.length;
+
+	    }
+
+	    function slide(to, slideSpeed) {
+
+	      // do nothing if already on requested slide
+	      if (index == to) return;
+
+	      if (browser.transitions) {
+
+	        var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
+
+	        // get the actual position of the slide
+	        if (continuous) {
+	          var natural_direction = direction;
+	          direction = -slidePos[circle(to)] / width;
+
+	          // if going forward but to < index, use to = slides.length + to
+	          // if going backward but to > index, use to = -slides.length + to
+	          if (direction !== natural_direction) to =  -direction * slides.length + to;
+
+	        }
+
+	        var diff = Math.abs(index-to) - 1;
+
+	        // move all the slides between index and to in the right direction
+	        while (diff--) move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+
+	        to = circle(to);
+
+	        move(index, width * direction, slideSpeed || speed);
+	        move(to, 0, slideSpeed || speed);
+
+	        if (continuous) move(circle(to - direction), -(width * direction), 0); // we need to get the next in place
+
+	      } else {
+
+	        to = circle(to);
+	        animate(index * -width, to * -width, slideSpeed || speed);
+	        //no fallback for a circular continuous if the browser does not accept transitions
+	      }
+
+	      index = to;
+	      offloadFn(options.callback && options.callback(index, slides[index]));
+	    }
+
+	    function move(index, dist, speed) {
+
+	      translate(index, dist, speed);
+	      slidePos[index] = dist;
+
+	    }
+
+	    function translate(index, dist, speed) {
+
+	      var slide = slides[index];
+	      var style = slide && slide.style;
+
+	      if (!style) return;
+
+	      style.webkitTransitionDuration =
+	      style.MozTransitionDuration =
+	      style.msTransitionDuration =
+	      style.OTransitionDuration =
+	      style.transitionDuration = speed + 'ms';
+
+	      style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+	      style.msTransform =
+	      style.MozTransform =
+	      style.OTransform = 'translateX(' + dist + 'px)';
+
+	    }
+
+	    function animate(from, to, speed) {
+
+	      // if not an animation, just reposition
+	      if (!speed) {
+
+	        element.style.left = to + 'px';
+	        return;
+
+	      }
+
+	      var start = +new Date();
+
+	      var timer = setInterval(function() {
+
+	        var timeElap = +new Date() - start;
+
+	        if (timeElap > speed) {
+
+	          element.style.left = to + 'px';
+
+	          if (delay) begin();
+
+	          options.transitionEnd && options.transitionEnd.call(event, index, slides[index]);
+
+	          clearInterval(timer);
+	          return;
+
+	        }
+
+	        element.style.left = (( (to - from) * (Math.floor((timeElap / speed) * 100) / 100) ) + from) + 'px';
+
+	      }, 4);
+
+	    }
+
+	    // setup auto slideshow
+	    var delay = options.auto || 0;
+	    var interval;
+
+	    function begin() {
+	      clearTimeout(interval);
+	      interval = setTimeout(next, delay);
+
+	    }
+
+	    function stop() {
+
+	      delay = 0;
+	      clearTimeout(interval);
+
+	    }
+
+
+	    // setup initial vars
+	    var start = {};
+	    var delta = {};
+	    var isScrolling;
+
+	    // setup event capturing
+	    var events = {
+
+	      handleEvent: function(event) {
+
+	        switch (event.type) {
+	          case 'touchstart': this.start(event); break;
+	          case 'touchmove': this.move(event); break;
+	          case 'touchend': offloadFn(this.end(event)); break;
+	          case 'webkitTransitionEnd':
+	          case 'msTransitionEnd':
+	          case 'oTransitionEnd':
+	          case 'otransitionend':
+	          case 'transitionend': offloadFn(this.transitionEnd(event)); break;
+	          case 'resize': offloadFn(setup); break;
+	        }
+
+	        if (options.stopPropagation) event.stopPropagation();
+
+	      },
+	      start: function(event) {
+
+	        var touches = event.touches[0];
+
+	        // measure start values
+	        start = {
+
+	          // get initial touch coords
+	          x: touches.pageX,
+	          y: touches.pageY,
+
+	          // store time to determine touch duration
+	          time: +new Date()
+
+	        };
+
+	        // used for testing first move event
+	        isScrolling = undefined;
+
+	        // reset delta and end measurements
+	        delta = {};
+
+	        // attach touchmove and touchend listeners
+	        element.addEventListener('touchmove', this, false);
+	        element.addEventListener('touchend', this, false);
+
+	      },
+	      move: function(event) {
+
+	        // ensure swiping with one touch and not pinching
+	        if ( event.touches.length > 1 || event.scale && event.scale !== 1) return;
+
+	        if (options.disableScroll) return;
+
+	        var touches = event.touches[0];
+
+	        // measure change in x and y
+	        delta = {
+	          x: touches.pageX - start.x,
+	          y: touches.pageY - start.y
+	        };
+
+	        // determine if scrolling test has run - one time test
+	        if ( typeof isScrolling == 'undefined') {
+	          isScrolling = !!( isScrolling || Math.abs(delta.x) < Math.abs(delta.y) );
+	        }
+
+	        // if user is not trying to scroll vertically
+	        if (!isScrolling) {
+
+	          // prevent native scrolling
+	          event.preventDefault();
+
+	          // stop slideshow
+	          stop();
+
+	          // increase resistance if first or last slide
+	          if (continuous) { // we don't add resistance at the end
+
+	            translate(circle(index-1), delta.x + slidePos[circle(index-1)], 0);
+	            translate(index, delta.x + slidePos[index], 0);
+	            translate(circle(index+1), delta.x + slidePos[circle(index+1)], 0);
+
+	          } else {
+
+	            delta.x =
+	              delta.x /
+	                ( (!index && delta.x > 0 ||         // if first slide and sliding left
+	                  index == slides.length - 1 &&     // or if last slide and sliding right
+	                  delta.x < 0                       // and if sliding at all
+	                ) ?
+	                ( Math.abs(delta.x) / width + 1 )      // determine resistance level
+	                : 1 );                                 // no resistance if false
+
+	            // translate 1:1
+	            translate(index-1, delta.x + slidePos[index-1], 0);
+	            translate(index, delta.x + slidePos[index], 0);
+	            translate(index+1, delta.x + slidePos[index+1], 0);
+	          }
+	          options.swiping && options.swiping(-delta.x / width);
+
+	        }
+
+	      },
+	      end: function(event) {
+
+	        // measure duration
+	        var duration = +new Date() - start.time;
+
+	        // determine if slide attempt triggers next/prev slide
+	        var isValidSlide =
+	              Number(duration) < 250 &&         // if slide duration is less than 250ms
+	              Math.abs(delta.x) > 20 ||         // and if slide amt is greater than 20px
+	              Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
+
+	        // determine if slide attempt is past start and end
+	        var isPastBounds =
+	              !index && delta.x > 0 ||                      // if first slide and slide amt is greater than 0
+	              index == slides.length - 1 && delta.x < 0;    // or if last slide and slide amt is less than 0
+
+	        if (continuous) isPastBounds = false;
+
+	        // determine direction of swipe (true:right, false:left)
+	        var direction = delta.x < 0;
+
+	        // if not scrolling vertically
+	        if (!isScrolling) {
+
+	          if (isValidSlide && !isPastBounds) {
+
+	            if (direction) {
+
+	              if (continuous) { // we need to get the next in this direction in place
+
+	                move(circle(index-1), -width, 0);
+	                move(circle(index+2), width, 0);
+
+	              } else {
+	                move(index-1, -width, 0);
+	              }
+
+	              move(index, slidePos[index]-width, speed);
+	              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+	              index = circle(index+1);
+
+	            } else {
+	              if (continuous) { // we need to get the next in this direction in place
+
+	                move(circle(index+1), width, 0);
+	                move(circle(index-2), -width, 0);
+
+	              } else {
+	                move(index+1, width, 0);
+	              }
+
+	              move(index, slidePos[index]+width, speed);
+	              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+	              index = circle(index-1);
+
+	            }
+
+	            options.callback && options.callback(index, slides[index]);
+
+	          } else {
+
+	            if (continuous) {
+
+	              move(circle(index-1), -width, speed);
+	              move(index, 0, speed);
+	              move(circle(index+1), width, speed);
+
+	            } else {
+
+	              move(index-1, -width, speed);
+	              move(index, 0, speed);
+	              move(index+1, width, speed);
+	            }
+
+	          }
+
+	        }
+
+	        // kill touchmove and touchend event listeners until touchstart called again
+	        element.removeEventListener('touchmove', events, false);
+	        element.removeEventListener('touchend', events, false);
+	        element.removeEventListener('touchforcechange', function() {}, false);
+
+	      },
+	      transitionEnd: function(event) {
+
+	        if (parseInt(event.target.getAttribute('data-index'), 10) == index) {
+
+	          if (delay) begin();
+
+	          options.transitionEnd && options.transitionEnd.call(event, index, slides[index]);
+
+	        }
+
+	      }
+
+	    };
+
+	    // trigger setup
+	    setup();
+
+	    // start auto slideshow if applicable
+	    if (delay) begin();
+
+
+	    // add event listeners
+	    if (browser.addEventListener) {
+
+	      // set touchstart event on element
+	      if (browser.touch) {
+	        element.addEventListener('touchstart', events, false);
+	        element.addEventListener('touchforcechange', function() {}, false);
+	      }
+
+	      if (browser.transitions) {
+	        element.addEventListener('webkitTransitionEnd', events, false);
+	        element.addEventListener('msTransitionEnd', events, false);
+	        element.addEventListener('oTransitionEnd', events, false);
+	        element.addEventListener('otransitionend', events, false);
+	        element.addEventListener('transitionend', events, false);
+	      }
+
+	      // set resize event on window
+	      window.addEventListener('resize', events, false);
+
+	    } else {
+
+	      window.onresize = function () { setup(); }; // to play nice with old IE
+
+	    }
+
+	    // expose the Swipe API
+	    return {
+	      setup: function() {
+
+	        setup();
+
+	      },
+	      slide: function(to, speed) {
+
+	        // cancel slideshow
+	        stop();
+
+	        slide(to, speed);
+
+	      },
+	      prev: function() {
+
+	        // cancel slideshow
+	        stop();
+
+	        prev();
+
+	      },
+	      next: function() {
+
+	        // cancel slideshow
+	        stop();
+
+	        next();
+
+	      },
+	      stop: function() {
+
+	        // cancel slideshow
+	        stop();
+
+	      },
+	      getPos: function() {
+
+	        // return current index position
+	        return index;
+
+	      },
+	      getNumSlides: function() {
+
+	        // return total number of slides
+	        return length;
+	      },
+	      kill: function() {
+
+	        // cancel slideshow
+	        stop();
+
+	        // reset element
+	        element.style.width = '';
+	        element.style.left = '';
+
+	        // reset slides
+	        var pos = slides.length;
+	        while(pos--) {
+
+	          var slide = slides[pos];
+	          slide.style.width = '';
+	          slide.style.left = '';
+
+	          if (browser.transitions) translate(pos, 0, 0);
+	        }
+
+	        // removed event listeners
+	        if (browser.addEventListener) {
+
+	          // remove current event listeners
+	          element.removeEventListener('touchstart', events, false);
+	          element.removeEventListener('webkitTransitionEnd', events, false);
+	          element.removeEventListener('msTransitionEnd', events, false);
+	          element.removeEventListener('oTransitionEnd', events, false);
+	          element.removeEventListener('otransitionend', events, false);
+	          element.removeEventListener('transitionend', events, false);
+	          window.removeEventListener('resize', events, false);
+
+	        } else {
+	          window.onresize = null;
+	        }
+	      }
+	    };
+	  };
+	}));
+
+
+/***/ }),
+/* 252 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _classnames = __webpack_require__(185);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var noop = function noop() {};
+
+	var SimpleNavigation = function (_Component) {
+	  _inherits(SimpleNavigation, _Component);
+
+	  function SimpleNavigation() {
+	    _classCallCheck(this, SimpleNavigation);
+
+	    return _possibleConstructorReturn(this, (SimpleNavigation.__proto__ || Object.getPrototypeOf(SimpleNavigation)).apply(this, arguments));
+	  }
+
+	  _createClass(SimpleNavigation, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props,
+	          backgroundColor = _props.backgroundColor,
+	          lineColor = _props.lineColor;
+
+	      var style = { backgroundColor: backgroundColor };
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app__simple-navigation', style: style },
+	        _react2.default.createElement('span', { className: 'app__simple-navigation-line', style: { borderColor: lineColor } })
+	      );
+	    }
+	  }]);
+
+	  return SimpleNavigation;
+	}(_react.Component);
+
+		exports.default = SimpleNavigation;
 
 /***/ })
 /******/ ]);

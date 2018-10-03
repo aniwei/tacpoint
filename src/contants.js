@@ -83,14 +83,32 @@ const PARTNER_LIST = [
   { url: '' }
 ];
 
-
 const FORM_INPUT_LIST = [
   { key: 'name', placeholder: 'name', type: 'text' },
   { key: 'email', placeholder: 'email', type: 'text' },
   { key: 'message', placeholder: 'message', type: 'text' }
 ];
 
+const ABOUT_SWIPER_LIST = [
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }
+];
+
+const ABOUT_SWIPER_OPTIONS = {
+  speed: 400,
+  auto: 3000,
+  continuous: true,
+  disableScroll: false,
+  stopPropagation: false,
+};
+
 export {
+  ABOUT_SWIPER_OPTIONS,
+  ABOUT_SWIPER_LIST,
   FORM_INPUT_LIST,
   PARTNER_LIST,
   CONTACT_INFORMATION,
