@@ -35,6 +35,7 @@ class App extends Component {
     openNavigations: false,
     navigations: null,
     navigators: [],
+    outterNavigators: [],
     backgroundColor: COLORS.BLACK,
     logoColor: COLORS.WHITE,
     navigatorColor: COLORS.WHITE,
@@ -68,7 +69,7 @@ class App extends Component {
     this.width = width;
     this.height = height;
 
-    console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
+    // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
 
     this.setState({
       transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
@@ -90,11 +91,15 @@ class App extends Component {
     if (styles.transform !== undefined) {
       return {
         ...styles,
-        transform: `translateX(${styles.transform}%)`
+        transform: `translateX(${styles.transform}%)`,
+        height: '100%'
       }
     }
 
-    return styles;
+    return {
+      ...styles,
+      height: '100%'
+    }
   }
 
   appendGoogleMapScript = (onLoaded) => {
@@ -282,6 +287,11 @@ class App extends Component {
     return (
       <div className="app__layout">
         <div className="app__header">
+          <div className="app__navigation-clear" onClick={this.onNavigationClear}>
+              <Link to="/">
+                + all projects
+              </Link>        
+          </div>
           <NavigationButton 
             color={navigationButtonColor}
             open={openNavigations}
@@ -297,6 +307,10 @@ class App extends Component {
           <div className="app__copyright">©2018 Tacpoint, Inc.</div>
         </div>
 
+        <div className="app__outter-navigator">
+          {navigators}
+        </div>
+      
         <div className={classes} style={{ backgroundColor }}>
           <div className="app__navigation-content">
             <div className="scene__grid">

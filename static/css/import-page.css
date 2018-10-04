@@ -1,9 +1,14 @@
 /* header s */
 .scene__animated {
     position: relative;
+    height: 100%;
 }
 
 .scene_content {
+    height: 100%;
+}
+
+.scene__page-body {
     height: 100%;
 }
 

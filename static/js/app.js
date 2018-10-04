@@ -130,6 +130,7 @@
 	      openNavigations: false,
 	      navigations: null,
 	      navigators: [],
+	      outterNavigators: [],
 	      backgroundColor: _contants.COLORS.BLACK,
 	      logoColor: _contants.COLORS.WHITE,
 	      navigatorColor: _contants.COLORS.WHITE,
@@ -154,7 +155,7 @@
 	      _this.width = width;
 	      _this.height = height;
 
-	      console.log(_contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]]);
+	      // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
 
 	      _this.setState({
 	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]],
@@ -169,11 +170,14 @@
 	    }, _this.onMapStyles = function (styles) {
 	      if (styles.transform !== undefined) {
 	        return _extends({}, styles, {
-	          transform: 'translateX(' + styles.transform + '%)'
+	          transform: 'translateX(' + styles.transform + '%)',
+	          height: '100%'
 	        });
 	      }
 
-	      return styles;
+	      return _extends({}, styles, {
+	        height: '100%'
+	      });
 	    }, _this.appendGoogleMapScript = function (onLoaded) {
 	      if (_this.isGoogleScriptLoaded) {
 	        return onLoaded();
@@ -379,6 +383,15 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app__header' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'app__navigation-clear', onClick: this.onNavigationClear },
+	            _react2.default.createElement(
+	              _reactRouterDom.Link,
+	              { to: '/' },
+	              '+ all projects'
+	            )
+	          ),
 	          _react2.default.createElement(_NavigationButton2.default, {
 	            color: navigationButtonColor,
 	            open: openNavigations,
@@ -404,6 +417,11 @@
 	            { className: 'app__copyright' },
 	            '\xA92018 Tacpoint, Inc.'
 	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'app__outter-navigator' },
+	          navigators
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -31805,9 +31823,15 @@
 	          'scene__category-item': true
 	        });
 
-	        var categories = (isInclude ? selectedCategories.concat().splice(index, 1) : selectedCategories.concat(id)).join(',');
+	        var categories = selectedCategories.slice();
 
-	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { categories: categories }));
+	        if (isInclude) {
+	          categories.splice(index, 1);
+	        } else {
+	          categories = selectedCategories.concat(id);
+	        }
+
+	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { categories: categories.join(',') }));
 
 	        return _react2.default.createElement(
 	          'li',
@@ -32326,7 +32350,7 @@
 	Home.logoColor = '#f0f0f0';
 	Home.navigatorColor = '#f0f0f0';
 	Home.navigationButtonCOlor = '#f0f0f0';
-	Home.navigators = [{ position: 'left', text: 'About', path: '/about' }, { position: 'right', text: 'Let\'s talk', path: '/contact' }];
+	Home.navigators = [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }];
 	exports.default = (0, _reactRouterDom.withRouter)(function (props) {
 	  return _react2.default.createElement(
 	    _Context2.default.Consumer,

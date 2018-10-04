@@ -8,6 +8,7 @@
     -webkit-flex: 1;
     -ms-flex: 1;
     overflow: hidden;
+    height: 100%;
 }
 .scene-home .scene__grid,
 .scene-home .scene__grid-inner,

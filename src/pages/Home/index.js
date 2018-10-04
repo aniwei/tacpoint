@@ -52,13 +52,15 @@ class Navigations extends Component {
         'scene__category-item': true
       });
 
-      const categories = (
-        isInclude ? 
-          selectedCategories.concat().splice(index, 1) : 
-          selectedCategories.concat(id)
-      ).join(',');
+      let categories = selectedCategories.slice();
 
-      const to = `/?${qs.stringify({ ...query, categories })}`;
+      if (isInclude) {
+        categories.splice(index, 1);
+      } else {
+        categories = selectedCategories.concat(id)
+      }
+
+      const to = `/?${qs.stringify({ ...query, categories: categories.join(',') })}`;
 
       return (
         <li className={classes} key={id}>
@@ -171,8 +173,8 @@ class Home extends Component {
   static navigatorColor = '#f0f0f0';
   static navigationButtonCOlor = '#f0f0f0';
   static navigators = [
-    { position: 'left', text: 'About', path: '/about' },
-    { position: 'right', text: 'Let\'s talk', path: '/contact' }
+    { position: 'left', text: 'about', path: '/about' },
+    { position: 'right', text: 'let\'s talk', path: '/contact' }
   ];
 
   state = {
@@ -280,7 +282,7 @@ class Home extends Component {
   }
 
   onCategoryLinkClick = (category, isInclude) => {
-    const { setNavigations } = this.props;
+    const { setNavigations, } = this.props;
     const { selectedCategories } = this.state;
     const index = selectedCategories.indexOf(category);
 

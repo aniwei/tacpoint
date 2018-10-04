@@ -7,6 +7,10 @@
   -webkit-transition: background-color 1s;
   -o-transition: background-color 1s;
   min-height: 100%;
+  height: 100%;
+}
+.scene {
+  height: 100%;
 }
 
 .app__scene {
@@ -16,7 +20,7 @@
 .app__layout,
 .app__navigation {
   height: 100%;
-  padding: 72px 50px;
+  padding: 72px 105px;
   position: relative;
   box-sizing: border-box;
 }
@@ -123,9 +127,7 @@
 }
 
 .app__navigation-clear {
-  display: none;
   position: absolute;
-  bottom: 0px;
   color: #fff;
   width: 100%;
   font-size: 18px;
@@ -166,6 +168,13 @@
   transform: translate(-50%, -50%) rotate(-25.75deg);
 }
 
+.app__header .app__navigation-clear {
+  top: 50%;
+  left: 105px;
+  color:rgba(255, 255, 255, 0.25);
+  transform: translate(0, -50%);
+}
+
 @media screen and (max-width: 768px) {
   .app__layout {
     padding: 80px 50px;
@@ -184,6 +193,20 @@
     left: 50px;
     pointer-events: all;
     opacity: 1;
+  }
+
+  .app__outter-navigator {
+    display: none;
+  }
+
+  .app__navigation-clear {
+    bottom: 0px;
+    display: block;
+  }
+
+  .app__header .app__navigation-clear {
+
+    display: none;
   }
 }
 
