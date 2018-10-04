@@ -203,7 +203,7 @@
     display: block;
   }
 
-  .app__navigation.open .scene__category-list .active a {
+  .app__navigation.open .active .scene__category-list a {
     pointer-events: all;
   }
 
@@ -252,5 +252,5 @@
 
   .scene-home {
     height: auto!important;
-  
+  }
 }
