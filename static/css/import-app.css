@@ -172,6 +172,10 @@
   display: block;
 }
 
+.scene-home .scene__category-item {
+  color:rgba(255, 255, 255, 0.25);
+}
+
 .app__header .app__navigation-clear {
   display: none;
   top: 50%;
