@@ -10,7 +10,7 @@
       "id": 1,
       "key": "CyberSource",
       "name": "CyberSource",
-      "color": "#D0021B"
+      "color": "#49c5b1"
     },
     {
       "id": 2,
@@ -22,7 +22,7 @@
       "id": 3,
       "key": "IDL",
       "name": "IDL",
-      "color": "#D0021B"
+      "color": "#49c5b1"
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "id": 5,
       "key": "Stanford",
       "name": "Stanford",
-      "color": "#D0021B"
+      "color": "#49c5b1"
     },
     {
       "id": 6,
@@ -46,7 +46,7 @@
       "id": 7,
       "key": "Tacpoint",
       "name": "Tacpoint",
-      "color": "#D0021B"
+      "color": "#49c5b1"
     },
     {
       "id": 8,
@@ -58,7 +58,7 @@
       "id": 9,
       "key": "Visa",
       "name": "Visa",
-      "color": "#D0021B"
+      "color": "#49c5b1"
     }
   ]
 }

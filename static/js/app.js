@@ -40798,7 +40798,7 @@
 
 	      var query = _queryString2.default.parse(location.search);
 
-	      console.log(selectedClients);
+	      // console.log(selectedClients);
 	      query.clients = query.clients || [];
 
 	      var clientElements = clients.map(function (client, i) {
@@ -40965,7 +40965,9 @@
 	      });
 	    }, _this4.onClientLinkClick = function (client, index, isInclude) {
 	      var clients = _this4.state.clients;
-	      var setNavigations = _this4.props.setNavigations;
+	      var _this4$props = _this4.props,
+	          setNavigations = _this4$props.setNavigations,
+	          setLogoColor = _this4$props.setLogoColor;
 
 
 	      _this4.setState({
@@ -40973,7 +40975,11 @@
 	        selectedClientIndex: isInclude ? null : index,
 	        lineAngle: 135 + 110 / clients.length * index
 	      }, function () {
+	        var selectedClients = _this4.state.selectedClients;
+
+
 	        setNavigations(_this4.navigationsRender());
+	        setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
 	      });
 	    }, _this4.onCategoryLinkClick = function (category, isInclude) {
 	      var setNavigations = _this4.props.setNavigations;
@@ -41061,7 +41067,13 @@
 	          }, res[0], res[1], res[2]);
 
 	          _this5.setState(state, function () {
+	            var _state = _this5.state,
+	                selectedClients = _state.selectedClients,
+	                clients = _state.clients;
+
 	            setNavigations(_this5.navigationsRender());
+
+	            setLogoColor(typeof selectedClients === 'number' ? (clients[selectedClients] || { color: 'white' }).color : Home.logoColor);
 	          });
 	        }).catch(function (error) {
 	          _this5.setState({
@@ -41159,10 +41171,10 @@
 	    value: function projectsRender() {
 	      var _this6 = this;
 
-	      var _state = this.state,
-	          projects = _state.projects,
-	          selectedCategories = _state.selectedCategories,
-	          selectedClients = _state.selectedClients;
+	      var _state2 = this.state,
+	          projects = _state2.projects,
+	          selectedCategories = _state2.selectedCategories,
+	          selectedClients = _state2.selectedClients;
 
 
 	      var projectElements = projects.map(function (project, index) {
@@ -41261,11 +41273,11 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state2 = this.state,
-	          selectedClients = _state2.selectedClients,
-	          selectedClientIndex = _state2.selectedClientIndex,
-	          clients = _state2.clients,
-	          lineAngle = _state2.lineAngle;
+	      var _state3 = this.state,
+	          selectedClients = _state3.selectedClients,
+	          selectedClientIndex = _state3.selectedClientIndex,
+	          clients = _state3.clients,
+	          lineAngle = _state3.lineAngle;
 
 	      var style = {
 	        transform: 'rotate(' + lineAngle + 'deg)',
@@ -41282,7 +41294,7 @@
 	          _react2.default.createElement('div', { className: (0, _classnames2.default)({
 	              'scene-home__line': true,
 	              'animated': true,
-	              'fadeIn': selectedClients != null
+	              'fadeIn': typeof selectedClients === 'number'
 	            }), style: style })
 	        )
 	      );

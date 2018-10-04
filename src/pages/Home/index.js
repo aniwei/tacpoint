@@ -101,7 +101,7 @@ class Navigations extends Component {
     const query = qs.parse(location.search);
 
 
-    console.log(selectedClients);
+    // console.log(selectedClients);
     query.clients = query.clients || [];
 
     const clientElements = clients.map((client, i) => {
@@ -240,7 +240,10 @@ class Home extends Component {
           };
 
           this.setState(state, () => {
-            setNavigations(this.navigationsRender());            
+            const { selectedClients, clients } = this.state;
+            setNavigations(this.navigationsRender());    
+            
+            setLogoColor(typeof selectedClients === 'number' ? (clients[selectedClients] || { color: 'white' }).color : Home.logoColor);
           });
         })
         .catch(error => {
@@ -264,14 +267,17 @@ class Home extends Component {
 
   onClientLinkClick = (client, index, isInclude) => {
     const { clients } = this.state;
-    const { setNavigations } = this.props;
+    const { setNavigations, setLogoColor } = this.props;
 
     this.setState({
       selectedClients: isInclude ? null : client,
       selectedClientIndex: isInclude ? null : index,
       lineAngle: 135 + 110 / clients.length * index
     }, () => {
+      const { selectedClients } = this.state;
+      
       setNavigations(this.navigationsRender());
+      setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
     });
   }
 
@@ -484,7 +490,7 @@ class Home extends Component {
           <div className={classnames({
             'scene-home__line': true,
             'animated': true,
-            'fadeIn': selectedClients != null
+            'fadeIn': typeof selectedClients === 'number'
           })} style={style}></div>
         </div>
       </Scene>

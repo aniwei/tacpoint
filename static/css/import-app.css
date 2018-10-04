@@ -182,7 +182,7 @@
 }
 
 .scene-home {
-  min-height: 800px!important;
+  height: 800px!important;
 }
 
 .app__header .app__navigation-clear {
@@ -236,7 +236,7 @@
   }
 
   .scene-home {
-    min-height: auto!important;
+    height: auto!important;
   }
 }
 
@@ -251,6 +251,6 @@
   }
 
   .scene-home {
-    min-height: auto!important;
+    height: auto!important;
   
 }
