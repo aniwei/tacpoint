@@ -81,11 +81,11 @@ export default class Scene extends Component {
       <Context.Provider value={{ waiting, networkError }}>
         <div className="scene__container">
           <div className={`scene-${name}`}>
-            {
+            {/* {
               networkError ?
                 <NetworkError onReload={onReload} /> :
                 <Loading {...this.props} waiting={waiting} onReload={onReload}  />    
-            }
+            } */}
             
             <div className={classes}>
               {(networkError || waiting) ? null : this.props.children}

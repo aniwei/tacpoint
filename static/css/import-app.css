@@ -127,6 +127,15 @@
   font-size: 18px;
 }
 
+.app__navigation-more {
+  position: absolute;
+  bottom: 0px;
+  color: #1a1a1a;
+  width: 100%;
+  font-size: 18px;
+  text-align: center;
+}
+
 .scene-home .app__navigation-clear {
   display: block;
 }
@@ -145,7 +154,7 @@
   margin: auto;
   display: block;
   height: 1px;
-  width: 384px;
+  width: 83.2%;
   background-color: #000000;
   position: absolute;
   top: 50%;

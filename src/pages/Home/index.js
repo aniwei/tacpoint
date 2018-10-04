@@ -169,6 +169,7 @@ class Home extends Component {
   static backgroundColor = '#000';
   static logoColor = '#f0f0f0';
   static navigatorColor = '#f0f0f0';
+  static navigationButtonCOlor = '#f0f0f0';
   static navigators = [
     { position: 'left', text: 'About', path: '/about' },
     { position: 'right', text: 'Let\'s talk', path: '/contact' }
@@ -190,15 +191,24 @@ class Home extends Component {
     clearNavigations();
   }
 
+  componentWillUnmount () {
+  }
+
   componentDidMount () {
     const { location, setNavigations, setNavigators } = this.props;
-    const { setBackgroundColor, setLogoColor, setNavigatorColor } = this.props;
+    const { 
+      setBackgroundColor, 
+      setLogoColor, 
+      setNavigatorColor,
+      setNavigationButtonColor
+    } = this.props;
     const query = qs.parse(location.search);
 
     setBackgroundColor(Home.backgroundColor);
     setLogoColor(Home.logoColor);
     setNavigators(Home.navigators);
     setNavigatorColor(Home.navigatorColor);
+    setNavigationButtonColor(Home.navigationButtonCOlor);
 
     this.setState({
       selectedCategories: query.categories ? query.categories.split(',').map(cate => cate - 0) : [],

@@ -90,12 +90,12 @@ const FORM_INPUT_LIST = [
 ];
 
 const ABOUT_SWIPER_LIST = [
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' },
-  { url: 'http://127.0.0.1:8080/image/img-about-office.jpg', alt: '' }
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' }
 ];
 
 const ABOUT_SWIPER_OPTIONS = {
@@ -106,7 +106,14 @@ const ABOUT_SWIPER_OPTIONS = {
   stopPropagation: false,
 };
 
+const PROJECT_SWIPER_OPTIONS = {
+  slidesPerView: 'auto',
+  centeredSlides: true,
+  loop: true
+};
+
 export {
+  PROJECT_SWIPER_OPTIONS,
   ABOUT_SWIPER_OPTIONS,
   ABOUT_SWIPER_LIST,
   FORM_INPUT_LIST,

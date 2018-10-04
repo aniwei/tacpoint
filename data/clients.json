@@ -2,8 +2,53 @@
   "clients": [
     {
       "id": 0,
+      "key": "Analytics",
+      "name": "Analytics"
+    },
+    {
+      "id": 1,
+      "key": "CyberSource",
+      "name": "CyberSource"
+    },
+    {
+      "id": 2,
+      "key": "Elle",
+      "name": "Elle"
+    },
+    {
+      "id": 3,
+      "key": "IDL",
+      "name": "IDL"
+    },
+    {
+      "id": 4,
       "key": "analytics",
       "name": "Analytics"
+    },
+    {
+      "id": 5,
+      "key": "Stanford",
+      "name": "Stanford"
+    },
+    {
+      "id": 6,
+      "key": "Swing",
+      "name": "Swing"
+    },
+    {
+      "id": 7,
+      "key": "Tacpoint",
+      "name": "Tacpoint"
+    },
+    {
+      "id": 8,
+      "key": "Trend",
+      "name": "Trend"
+    },
+    {
+      "id": 9,
+      "key": "Visa",
+      "name": "Visa"
     }
   ]
 }

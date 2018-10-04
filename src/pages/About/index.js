@@ -22,7 +22,8 @@ class About extends React.Component {
     categoryOffset: 0,
     clients: [],
     categories: [],
-    swiperIndex: 0
+    swiperIndex: '01',
+    lineAngle: 35
   }
 
   componentDidMount () {
@@ -75,10 +76,15 @@ class About extends React.Component {
   }
 
   onWindowScroll = () => {
-    const { top } = this.getScrollRect();
+    const { getWindowSize } = this.props;
+    const { top, height: contentHeight } = this.getScrollRect();
+    const { height } = getWindowSize();
+
+    const angle = parseInt((top / (contentHeight - height)) * 90 - 55);
 
     this.setState({
-      categoryOffset: top
+      categoryOffset: top,
+      lineAngle: angle
     });
   }
 
@@ -244,7 +250,7 @@ class About extends React.Component {
   }
 
   categoriesRender () {
-    const { categoryOffset, categories } = this.state;
+    const { categoryOffset, categories, lineAngle } = this.state;
     const { isMobile } = this.props;
     const style = {
       transform: `translateY(${-categoryOffset}px)`
@@ -260,7 +266,7 @@ class About extends React.Component {
 
     return (
       <div className="scene__category" style={isMobile ? null : style}>
-        <span className="scene__category-line" ></span>
+        <span className="scene__category-line" style={{ transform: `rotate(${lineAngle}deg)` }}></span>
         <div className="scene__category-list">
           <div className="scene__grid">
             <div className="scene__grid-inner">
@@ -304,16 +310,21 @@ class About extends React.Component {
       }
     }
 
+    const length = swiperElements.length;
+    const total = length < 10 ? `0${length}` : length;
+
     return (
       <div className="scene__carousel">
         <div className="scene__carousel-inner">
-          <div className="scene__carousel-slider">
-            <ReactSwipe swipeOptions={options}>
-              {swiperElements}
-            </ReactSwipe>
+          <div className="scene-about__object">
+            <div className="scene__carousel-slider">
+              <ReactSwipe swipeOptions={options}>
+                {swiperElements}
+              </ReactSwipe>
+            </div>
           </div>
           <div className="scene__carousel-order scene__carousel-order_brief">
-            <span className="scene__carousel-order-num scene__carousel-order_active">{swiperIndex}</span>/<span className="scene__carousel-order-num">{swiperElements.length}</span>
+            <span className="scene__carousel-order-num scene__carousel-order_active">{swiperIndex}</span>/<span className="scene__carousel-order-num">{total}</span>
           </div>
         </div>
       </div>

@@ -26,7 +26,8 @@ import {
   PARTNER_LIST,
   FORM_INPUT_LIST,
   ABOUT_SWIPER_LIST,
-  ABOUT_SWIPER_OPTIONS
+  ABOUT_SWIPER_OPTIONS,
+  PROJECT_SWIPER_OPTIONS
 } from './contants';
 
 class App extends Component {
@@ -126,6 +127,10 @@ class App extends Component {
     return ABOUT_SWIPER_LIST;
   }
 
+  getProjectSwiperOptions = () => {
+    return PROJECT_SWIPER_OPTIONS;
+  }
+
   getAboutSwiperOptions = () => {
     return ABOUT_SWIPER_OPTIONS;
   }
@@ -173,8 +178,6 @@ class App extends Component {
   setNavigators = (navigators) => {
     const { navigatorColor } = this.state;
     this.navigators = navigators;
-
-    console.log(navigatorColor)
 
     this.setState({
       navigators: navigators.map(nav => {
@@ -230,8 +233,6 @@ class App extends Component {
       style[name] = value[type];
     });
 
-    console.log(style);
-
     return style;
   }
 
@@ -275,6 +276,8 @@ class App extends Component {
       'animated': true,
       'open': openNavigations
     });
+
+
 
     return (
       <div className="app__layout">
@@ -342,7 +345,8 @@ class App extends Component {
       getPartnerList: this.getPartnerList,
       getFormInputList: this.getFormInputList,
       getAboutSwiperList: this.getAboutSwiperList,
-      getAboutSwiperOptions: this.getAboutSwiperOptions
+      getAboutSwiperOptions: this.getAboutSwiperOptions,
+      getProjectSwiperOptions: this.getProjectSwiperOptions
     }
   }
 

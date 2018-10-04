@@ -13,6 +13,7 @@ export default class SimpleNavigation extends Component {
     return (
       <div className="app__simple-navigation" style={style}>
         <span className="app__simple-navigation-line" style={{ borderColor: lineColor }}></span>
+        {this.props.children}
       </div>
     );
   }

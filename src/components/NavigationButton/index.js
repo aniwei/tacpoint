@@ -16,13 +16,16 @@ export default class NavigationButton extends Component {
   }
 
   state = {
-    open: this.props.openNaviagtions
+    open: this.props.open
+  }
+
+  componentWillUnmount () {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.openNaviagtions !== this.state.open) {
+    if (nextProps.open !== this.state.open) {
       this.setState({
-        open: nextProps.openNaviagtions
+        open: nextProps.open
       });
     }
   }

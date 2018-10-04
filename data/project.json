@@ -29,7 +29,7 @@
         "type": "image",
         "data": [
           { 
-            "url": "http://127.0.0.1:8080/image/img-project1.jpg"
+            "url": "http://127.0.0.1:8080/static/image/img-project1.jpg"
           }
         ]
       },
@@ -37,13 +37,13 @@
         "type": "image",
         "data": [
           { 
-            "url": "http://127.0.0.1:8080/image/img-project2.jpg", 
-            "xs": "http://127.0.0.1:8080/image/img-project-xs1.jpg",
+            "url": "http://127.0.0.1:8080/static/image/img-project2.jpg", 
+            "xs": "http://127.0.0.1:8080/static/image/img-project-xs1.jpg",
             "grid": "col-12 col-xs-24" 
           },
           { 
-            "url": "http://127.0.0.1:8080/image/img-project3.jpg", 
-            "xs": "http://127.0.0.1:8080/image/img-project-xs2.jpg",
+            "url": "http://127.0.0.1:8080/static/image/img-project3.jpg", 
+            "xs": "http://127.0.0.1:8080/static/image/img-project-xs2.jpg",
             "grid": "col-12 col-xs-24" 
           }
         ]
@@ -51,7 +51,7 @@
       {
         "type": "image",
         "data": [
-          { "url": "http://127.0.0.1:8080/image/img-project4.jpg" }
+          { "url": "http://127.0.0.1:8080/static/image/img-project4.jpg" }
         ]
       },
       {
@@ -64,13 +64,13 @@
         "type": "image",
         "data": [
           { 
-            "url": "http://127.0.0.1:8080/image/img-project5.jpg", 
-            "xs": "http://127.0.0.1:8080/image/img-project-xs3.jpg",
+            "url": "http://127.0.0.1:8080/static/image/img-project5.jpg", 
+            "xs": "http://127.0.0.1:8080/static/image/img-project-xs3.jpg",
             "grid": "col-6 col-xs-24" 
           },
           { 
-            "url": "http://127.0.0.1:8080/image/img-project6.jpg", 
-            "xs": "http://127.0.0.1:8080/image/img-project-xs4.jpg",
+            "url": "http://127.0.0.1:8080/static/image/img-project6.jpg", 
+            "xs": "http://127.0.0.1:8080/static/image/img-project-xs4.jpg",
             "grid": "col-18 col-xs-24" 
           }
         ]
@@ -78,20 +78,23 @@
       {
         "type": "image",
         "data": [
-          { "url": "http://127.0.0.1:8080/image/img-project7.jpg" }
+          { "url": "http://127.0.0.1:8080/static/image/img-project7.jpg" }
         ]
       },
       
       {
         "type": "swiper",
         "data": [
-          ""
+          { "url": "http://127.0.0.1:8080/static/image/img-project8.jpg", "alt": "" },
+          { "url": "http://127.0.0.1:8080/static/image/img-project8.jpg", "alt": "" },
+          { "url": "http://127.0.0.1:8080/static/image/img-project8.jpg", "alt": "" },
+          { "url": "http://127.0.0.1:8080/static/image/img-project8.jpg", "alt": "" }
         ]
       },
       {
         "type": "image",
         "data": [
-          { "url": "http://127.0.0.1:8080/image/img-project9.jpg" }
+          { "url": "http://127.0.0.1:8080/static/image/img-project9.jpg" }
         ]
       }
     ]

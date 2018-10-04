@@ -2,6 +2,7 @@
   "projects": [
     {
       "id": 0,
+      "color": "#003eaa",
       "categories": [
           {
             "id": 3,
@@ -14,8 +15,44 @@
             "name": "UI/UX"
           }  
       ],
-      "client": 1,
+      "client": 9,
       "name": "Visa Fraud",
+      "thumbnail": ""
+    }, 
+    {
+      "id": 0,
+      "categories": [
+          {
+            "id": 3,
+            "key": "graphics",
+            "name": "Graphics"
+          },
+          {
+            "id": 4,
+            "key": "UI/UX",
+            "name": "UI/UX"
+          }  
+      ],
+      "client": 9,
+      "name": "Visa Mobile App",
+      "thumbnail": ""
+    }, 
+    {
+      "id": 0,
+      "categories": [
+          {
+            "id": 3,
+            "key": "graphics",
+            "name": "Graphics"
+          },
+          {
+            "id": 4,
+            "key": "UI/UX",
+            "name": "UI/UX"
+          }  
+      ],
+      "client": 9,
+      "name": "Visa Prepaid",
       "thumbnail": ""
     }
   ]

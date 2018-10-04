@@ -1,15 +1,20 @@
 import React from 'react';
+import qs from 'query-string';
+import { Link } from 'react-router-dom';
 
 import Scene from '../../components/Scene';
+import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 import Article from '../../components/Article';
 
 class Project extends React.Component {
   static backgroundColor = '#ffffff';
   static logoColor = '#1a1a1a';
-  static navigatorColor = '';
+  static navigatorColor = '#1a1a1a';
+  static navigationButtonColor = '#1a1a1a';
   static navigators = [
-    {}
+    { position: 'left', text: 'about', path: '/about' },
+    { position: 'right', text: 'let\'s talk', path: '/contact' }
   ];
 
   state = {
@@ -22,21 +27,38 @@ class Project extends React.Component {
       setBackgroundColor, 
       setLogoColor,
       setNavigators,
-      setNavigatorColor
+      setNavigatorColor,
+      setNavigationButtonColor,
+      setNavigations,
+      location
     } = this.props;
+    
+    this.query = qs.parse(location.search);
 
     setBackgroundColor(Project.backgroundColor);
     setLogoColor(Project.logoColor);
-    setNavigatorColor(Project.navigatorColor);
     setNavigators(Project.navigators);
+    setNavigatorColor(Project.navigatorColor);
+    setNavigationButtonColor(Project.navigationButtonColor);
+    setNavigations(
+      <SimpleNavigation>
+        {this.moreNavigationRender()}
+      </SimpleNavigation>
+    );
 
-    this.getProject();
+    this.getProject(this.query.id);
   }
 
-  getProject = () => {
+  onNavigationMore = () => {
+    const { location } = this.props;
+
+    location.href = '/';
+  }
+
+  getProject = (id) => {
     const { setLogoColor } = this.props;
 
-    fetch('./data/project.json', {
+    fetch(`./data/project.json?id=${id}`, {
       method: 'GET'
     }).then(res => res.json())
     .then(res => this.setState({ data: res.project, waiting: false }, () => {
@@ -46,6 +68,10 @@ class Project extends React.Component {
       console.log(err);
       alert('Sorry, has a network error.');
     });
+  }
+
+  onNextProjectClick = () => {
+    this.getProject(parseInt(this.query.id) + 1);
   }
 
   
@@ -70,6 +96,16 @@ class Project extends React.Component {
         )
       }
     </Scene.Header>;
+  }
+
+  moreNavigationRender() {
+    return (
+      <div className="app__navigation-more" onClick={this.onNavigationMore}>
+        <Link to="/">
+          + more projects
+        </Link>
+      </div>
+    );
   }
 
   headerDescriptionRender () {
@@ -116,7 +152,11 @@ class Project extends React.Component {
       {
         () => (
           <div className="scene__page-footer-inner">
-            <p className="scene__page-footer-label">next project</p>
+            <p className="scene__page-footer-label">
+              <Link to={`/project?id=${parseInt(this.query.id) + 1}`} onClick={this.onNextProjectClick}>
+                next project
+              </Link>
+            </p>
             <h3 className="scene__page-footer-title">Visa Prepaid</h3>
           </div>
         )
@@ -126,12 +166,14 @@ class Project extends React.Component {
 
   bodyRender () {
     const { data } = this.state;
+    const { getProjectSwiperOptions } = this.props;
+    const swipeOptions = getProjectSwiperOptions();
 
     return (
       <Scene.Body>
         {
           () => (
-            <Article layout={data.layout} />
+            <Article layout={data.layout} swipeOptions={swipeOptions} />
           )
         }
 
