@@ -305,6 +305,14 @@ class Home extends Component {
     }
   }
 
+  onProjectMouseEnter = (project, e) => {
+    console.log(e);
+  }
+
+  onProjectMouseLeave = () => {
+
+  }
+
   getProjectList () {
     return new Promise((resolve, reject) => {
       fetch('./data/projects.json', {
@@ -368,7 +376,12 @@ class Home extends Component {
           selectedClients.includes(clientId)
         ) {
           return (
-            <li className={classes} key={id}>
+            <li 
+              className={classes} 
+              key={id} 
+              onMouseEnter={(e) => this.onProjectMouseLeave(project, e)}
+              onMouseLeave={(e) => this.onProjectMouseEnter(project, e)}
+            >
               <Link
                 to={to}
               >

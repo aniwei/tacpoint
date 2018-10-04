@@ -31955,32 +31955,32 @@
 	}(_react.Component);
 
 	var _initialiseProps = function _initialiseProps() {
-	  var _this7 = this;
+	  var _this8 = this;
 
 	  this.state = {
 	    type: 'categories'
 	  };
 
 	  this.onCategoryLinkClick = function () {
-	    var onCategoryLinkClick = _this7.props.onCategoryLinkClick;
+	    var onCategoryLinkClick = _this8.props.onCategoryLinkClick;
 
 
 	    onCategoryLinkClick.apply(undefined, arguments);
 	  };
 
 	  this.onClientLinkClick = function () {
-	    var onClientLinkClick = _this7.props.onClientLinkClick;
+	    var onClientLinkClick = _this8.props.onClientLinkClick;
 
 
 	    onClientLinkClick.apply(undefined, arguments);
 	  };
 
 	  this.onTitleClick = function (type) {
-	    _this7.setState({ type: type });
+	    _this8.setState({ type: type });
 	  };
 
 	  this.clear = function () {
-	    var onClear = _this7.props.onClear;
+	    var onClear = _this8.props.onClear;
 
 
 	    if (typeof onClear === 'function') {
@@ -32071,7 +32071,9 @@
 	          setNavigations(_this4.navigationsRender());
 	        });
 	      }
-	    }, _this4.navigationsRender = function () {
+	    }, _this4.onProjectMouseEnter = function (project, e) {
+	      console.log(e);
+	    }, _this4.onProjectMouseLeave = function () {}, _this4.navigationsRender = function () {
 
 	      return _react2.default.createElement(Navigations, _extends({}, _this4.props, {
 	        onCategoryLinkClick: _this4.onCategoryLinkClick,
@@ -32201,6 +32203,8 @@
 	  }, {
 	    key: 'projectsRender',
 	    value: function projectsRender() {
+	      var _this6 = this;
+
 	      var _state = this.state,
 	          projects = _state.projects,
 	          selectedCategories = _state.selectedCategories,
@@ -32226,7 +32230,16 @@
 	          }) || selectedClients.includes(clientId)) {
 	            return _react2.default.createElement(
 	              'li',
-	              { className: classes, key: id },
+	              {
+	                className: classes,
+	                key: id,
+	                onMouseEnter: function onMouseEnter(e) {
+	                  return _this6.onProjectMouseLeave(project, e);
+	                },
+	                onMouseLeave: function onMouseLeave(e) {
+	                  return _this6.onProjectMouseEnter(project, e);
+	                }
+	              },
 	              _react2.default.createElement(
 	                _reactRouterDom.Link,
 	                {
@@ -32269,7 +32282,7 @@
 	  }, {
 	    key: 'bodyRender',
 	    value: function bodyRender() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      var isMobile = this.props.isMobile;
 
@@ -32284,8 +32297,8 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: 'scene__grid-inner' },
-	              _this6.projectsRender(),
-	              !isMobile && _this6.navigationsRender()
+	              _this7.projectsRender(),
+	              !isMobile && _this7.navigationsRender()
 	            )
 	          );
 	        }

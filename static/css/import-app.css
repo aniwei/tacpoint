@@ -9,6 +9,10 @@
   min-height: 100%;
 }
 
+.app__scene {
+  height: 100%;
+}
+
 .app__layout,
 .app__navigation {
   height: 100%;

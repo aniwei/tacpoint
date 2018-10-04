@@ -2,6 +2,11 @@
 .scene__animated {
     position: relative;
 }
+
+.scene_content {
+    height: 100%;
+}
+
 .scene__page-header {
     margin-bottom: 64px;
 }

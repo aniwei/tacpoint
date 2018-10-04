@@ -17,7 +17,7 @@
       ],
       "client": 9,
       "name": "Visa Fraud",
-      "thumbnail": ""
+      "thumbnail": "http://127.0.0.1:8080/static/image/project-cover.png"
     }, 
     {
       "id": 0,
@@ -35,7 +35,7 @@
       ],
       "client": 9,
       "name": "Visa Mobile App",
-      "thumbnail": ""
+      "thumbnail": "http://127.0.0.1:8080/static/image/project-cover.png"
     }, 
     {
       "id": 0,
@@ -53,7 +53,7 @@
       ],
       "client": 9,
       "name": "Visa Prepaid",
-      "thumbnail": ""
+      "thumbnail": "http://127.0.0.1:8080/static/image/project-cover.png"
     }
   ]
 }
