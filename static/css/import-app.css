@@ -7,7 +7,7 @@
   -webkit-transition: background-color 1s;
   -o-transition: background-color 1s;
   min-height: 100%;
-  height: 100%;
+  /* height: 100%; */
 }
 .scene {
   height: 100%;
@@ -168,7 +168,12 @@
   transform: translate(-50%, -50%) rotate(-25.75deg);
 }
 
+.scene-home .app__navigation-clear {
+  display: block;
+}
+
 .app__header .app__navigation-clear {
+  display: none;
   top: 50%;
   left: 105px;
   color:rgba(255, 255, 255, 0.25);
