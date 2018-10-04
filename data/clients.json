@@ -2,53 +2,63 @@
   "clients": [
     {
       "id": 0,
-      "key": "Analytics",
-      "name": "Analytics"
+      "key": "8x8",
+      "name": "8x8",
+      "color": "#D0021B"
     },
     {
       "id": 1,
       "key": "CyberSource",
-      "name": "CyberSource"
+      "name": "CyberSource",
+      "color": "#D0021B"
     },
     {
       "id": 2,
       "key": "Elle",
-      "name": "Elle"
+      "name": "Elle",
+      "color": "#D0021B"
     },
     {
       "id": 3,
       "key": "IDL",
-      "name": "IDL"
+      "name": "IDL",
+      "color": "#D0021B"
     },
     {
       "id": 4,
       "key": "analytics",
-      "name": "Analytics"
+      "name": "Analytics",
+      "color": "#D0021B"
     },
     {
       "id": 5,
       "key": "Stanford",
-      "name": "Stanford"
+      "name": "Stanford",
+      "color": "#D0021B"
     },
     {
       "id": 6,
       "key": "Swing",
-      "name": "Swing"
+      "name": "Swing",
+      "color": "#D0021B"
     },
     {
       "id": 7,
       "key": "Tacpoint",
-      "name": "Tacpoint"
+      "name": "Tacpoint",
+      "color": "#D0021B"
     },
     {
       "id": 8,
       "key": "Trend",
-      "name": "Trend"
+      "name": "Trend",
+      "color": "#D0021B"
     },
     {
       "id": 9,
       "key": "Visa",
-      "name": "Visa"
+      "name": "Visa",
+      "color": "#D0021B"
     }
   ]
 }

@@ -100,22 +100,26 @@ class Navigations extends Component {
     const { selectedClients, clients } = this.props;
     const query = qs.parse(location.search);
 
+
+    console.log(selectedClients);
     query.clients = query.clients || [];
 
-    const clientElements = clients.map((client) => {
+    const clientElements = clients.map((client, i) => {
       const { id, name } = client;
-      const index = selectedClients.indexOf(id);
-      const isInclude = index !== -1;
+      // const index = selectedClients === id;
+      const isInclude = selectedClients === id
       const classes = classnames({
         'scene__category-item_highlight': isInclude,
         'scene__category-item': true
       });
 
-      const clients = (
-        isInclude ? 
-          selectedClients.concat().splice(index, 1) : 
-          selectedClients.concat(id)
-      ).join(',');
+      // const clients = (
+      //   isInclude ? 
+      //     selectedClients.concat().splice(index, 1) : 
+      //     selectedClients.concat(id)
+      // ).join(',');
+
+      const clients = id;
 
       const to = `/?${qs.stringify({ ...query, clients })}`;
 
@@ -123,7 +127,7 @@ class Navigations extends Component {
         <li className={classes} key={id} >
           <Link 
             to={to}
-            onClick={() => this.onClientLinkClick(id, isInclude)}
+            onClick={() => this.onClientLinkClick(id, i, isInclude)}
           >
             {name}
           </Link>
@@ -184,7 +188,9 @@ class Home extends Component {
     categories: [],
     clients: [],
     selectedCategories: [],
-    selectedClients: []
+    selectedClients: null,
+    selectedClientIndex: 0,
+    lineAngle: 135
   }
 
   componentWillMount () {
@@ -214,7 +220,8 @@ class Home extends Component {
 
     this.setState({
       selectedCategories: query.categories ? query.categories.split(',').map(cate => cate - 0) : [],
-      selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
+      // selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
+      selectedClients: query.clients - 0
     }, () => {
       const promise = Promise.all([
         this.getProjectList(),
@@ -248,38 +255,51 @@ class Home extends Component {
     const { setNavigations } = this.props;
 
     this.setState({
-      selectedClients: [],
+      selectedClients: null,
       selectedCategories: []
     }, () => {
       setNavigations(this.navigationsRender());
     });
   }
 
-  onClientLinkClick = (client, isInclude) => {
+  onClientLinkClick = (client, index, isInclude) => {
+    const { clients } = this.state;
     const { setNavigations } = this.props;
-    const { selectedClients } = this.state;
-    const index = selectedClients.indexOf(client);
 
-    const newSelectedList = selectedClients.slice();
-
-    if (isInclude) {
-      newSelectedList.splice(index, 1);
-
-      this.setState({
-        selectedClients: newSelectedList
-      }, () => {
-        setNavigations(this.navigationsRender());
-      });
-    } else {
-      newSelectedList.push(client);
-
-      this.setState({
-        selectedClients: newSelectedList
-      }, () => {
-        setNavigations(this.navigationsRender());
-      });
-    }
+    this.setState({
+      selectedClients: isInclude ? null : client,
+      selectedClientIndex: isInclude ? null : index,
+      lineAngle: 135 + 110 / clients.length * index
+    }, () => {
+      setNavigations(this.navigationsRender());
+    });
   }
+
+  // onClientLinkClick = (client, isInclude) => {
+  //   const { setNavigations } = this.props;
+  //   const { selectedClients } = this.state;
+  //   const index = selectedClients.indexOf(client);
+
+  //   const newSelectedList = selectedClients.slice();
+
+  //   if (isInclude) {
+  //     newSelectedList.splice(index, 1);
+
+  //     this.setState({
+  //       selectedClients: newSelectedList
+  //     }, () => {
+  //       setNavigations(this.navigationsRender());
+  //     });
+  //   } else {
+  //     newSelectedList.push(client);
+
+  //     this.setState({
+  //       selectedClients: newSelectedList
+  //     }, () => {
+  //       setNavigations(this.navigationsRender());
+  //     });
+  //   }
+  // }
 
   onCategoryLinkClick = (category, isInclude) => {
     const { setNavigations, } = this.props;
@@ -372,10 +392,10 @@ class Home extends Component {
       const { name, id, clientId, categories } = project;
       const to = `/project?id=${id}`;
 
-      if (selectedCategories.length > 0 || selectedClients.length > 0) {
+      if (selectedCategories.length > 0 || selectedClients) {
         if (
           categories.some(cate => selectedCategories.includes(cate.id)) ||
-          selectedClients.includes(clientId)
+          selectedClients === clientId
         ) {
           return (
             <li 
@@ -420,8 +440,6 @@ class Home extends Component {
   }
 
   navigationsRender = () => {
-
-
     return (
       <Navigations 
         {...this.props}
@@ -453,10 +471,21 @@ class Home extends Component {
   }
 
   render () {
+    const { selectedClients, selectedClientIndex, clients, lineAngle } = this.state;
+    const style = {
+      transform: `rotate(${lineAngle}deg)`,
+      backgroundColor: (clients[selectedClientIndex] || { color: 'white' }).color
+    }
+
     return (
       <Scene waiting={this.state.waiting} light name="home">
         <div className="scene-home">
           {this.bodyRender()}
+          <div className={classnames({
+            'scene-home__line': true,
+            'animated': true,
+            'fadeIn': selectedClients != null
+          })} style={style}></div>
         </div>
       </Scene>
     );

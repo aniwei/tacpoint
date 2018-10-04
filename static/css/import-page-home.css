@@ -47,7 +47,23 @@
 }
 /* category e */
 
+.scene-home__line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    opacity: 0;
+    height: 1px;
+    width: 50%;
+    margin-left: -25%;
+    transition: transform 1s;
+}
+
 @media screen and (max-width: 768px) {
+    .scene-home__line {
+        display: none;
+    }
+
     .scene-home__category-content {
         margin-top: -62px;
     }
