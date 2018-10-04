@@ -190,7 +190,9 @@ class App extends Component {
         const classes = classnames({
           'app__navigator': true,
           [`app__navigator-${position}`]: true
-        })
+        });
+
+        console.log(path)
   
         return (
           <div className={classes} key={position} style={{ color: navigatorColor }}>

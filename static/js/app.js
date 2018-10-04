@@ -247,6 +247,8 @@
 	            'app__navigator': true
 	          }, 'app__navigator-' + position, true));
 
+	          console.log(path);
+
 	          return _react2.default.createElement(
 	            'div',
 	            { className: classes, key: position, style: { color: navigatorColor } },
