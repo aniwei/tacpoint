@@ -176,6 +176,10 @@
   color:rgba(255, 255, 255, 0.25);
 }
 
+.scene-home {
+  min-height: 800px;
+}
+
 .app__header .app__navigation-clear {
   display: none;
   top: 50%;
