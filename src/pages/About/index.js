@@ -124,7 +124,12 @@ class About extends React.Component {
       scrollHeight: height
     } = document.documentElement;
 
-    return { top, height };
+
+
+    return { 
+      top: top === 0 ? document.body.scrollTop : top, 
+      height 
+    };
   }
 
   headerRender () {

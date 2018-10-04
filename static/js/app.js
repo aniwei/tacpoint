@@ -41807,7 +41807,10 @@
 	          height = _document$documentEle.scrollHeight;
 
 
-	      return { top: top, height: height };
+	      return {
+	        top: top === 0 ? document.body.scrollTop : top,
+	        height: height
+	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
