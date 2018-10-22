@@ -42,7 +42,7 @@ export default class SimpleNavigation extends Component {
     const { alpha, beta, gamma } = this.state;
     const { backgroundColor, lineColor } = this.props;
     const style = { backgroundColor };
-    const transform = `rotateY(${beta}deg)`;
+    const transform = `rotateZ(${beta}deg)`;
 
     return (
       <div className="app__simple-navigation" style={style}>

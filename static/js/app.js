@@ -31827,7 +31827,7 @@
 	          lineColor = _props.lineColor;
 
 	      var style = { backgroundColor: backgroundColor };
-	      var transform = 'rotateY(' + beta + 'deg)';
+	      var transform = 'rotateZ(' + beta + 'deg)';
 
 	      return _react2.default.createElement(
 	        'div',

@@ -152,6 +152,7 @@
 }
 .app__simple-navigation {
   height: 100%;
+  transform: perspective(1000);
 }
 .app__simple-navigation-line {
   margin: auto;
