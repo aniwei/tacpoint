@@ -6,6 +6,8 @@ import Context from '../../Context';
 
 import Scene from '../../components/Scene';
 
+const MOUSE_MOVING_SCALE = 15;
+
 class Navigations extends Component {
   state = {
     type: 'categories'
@@ -190,7 +192,8 @@ class Home extends Component {
     selectedCategories: [],
     selectedClients: null,
     selectedClientIndex: 0,
-    lineAngle: 135
+    lineAngle: 135,
+    mouseMoveAngle: 0
   }
 
   componentWillMount () {
@@ -200,10 +203,15 @@ class Home extends Component {
   }
 
   componentWillUnmount () {
+    const { isMobile } = this.props;
+
+    if (isMobile) {
+      document.removeEventListener('moving', this.onMoving);
+    }
   }
 
   componentDidMount () {
-    const { location, setNavigations, setNavigators } = this.props;
+    const { location, setNavigations, setNavigators, isMobile, setLogoType, setLogoEvent } = this.props;
     const { 
       setBackgroundColor, 
       setLogoColor, 
@@ -217,17 +225,37 @@ class Home extends Component {
     setNavigators(Home.navigators);
     setNavigatorColor(Home.navigatorColor);
     setNavigationButtonColor(Home.navigationButtonCOlor);
+    setLogoEvent(() => {
+      this.setState({
+        selectedCategories: [],
+        selectedClientIndex: null,
+        selectedClients: null
+      }, () => {
+        setNavigations(this.navigationsRender());
+        setLogoType('full');
+        setLogoColor(Home.logoColor);
+      });
+    });
+
+    if (!isMobile) {
+      document.addEventListener('moving', this.onMoving, false);
+    }
 
     this.setState({
       selectedCategories: query.categories ? query.categories.split(',').map(cate => cate - 0) : [],
       // selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
-      selectedClients: query.clients - 0
+      selectedClients: query.clients ? query.clients - 0 : null
     }, () => {
+      const { selectedCategories, selectedClients } = this.state;
+      const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
       const promise = Promise.all([
         this.getProjectList(),
         this.getCategoryList(),
         this.getClientList()
       ]);
+
+      setLogoType(isUnselected ? 'full' : 'simple');
 
       promise
         .then(res => {
@@ -254,6 +282,15 @@ class Home extends Component {
     });
   }
 
+  onMoving = ({ data: { x, y }}) => {
+    const { getWindowSize } = this.props;
+    const size = getWindowSize();
+
+    this.setState({
+      mouseMoveAngle: parseInt((y / size.height) * MOUSE_MOVING_SCALE)
+    });
+  }
+
   onClearSelectedList = () => {
     const { setNavigations } = this.props;
 
@@ -267,14 +304,17 @@ class Home extends Component {
 
   onClientLinkClick = (client, index, isInclude) => {
     const { clients } = this.state;
-    const { setNavigations, setLogoColor } = this.props;
+    const { setNavigations, setLogoColor, setLogoType } = this.props;
 
     this.setState({
       selectedClients: isInclude ? null : client,
       selectedClientIndex: isInclude ? null : index,
       lineAngle: 135 + 110 / clients.length * index
     }, () => {
-      const { selectedClients } = this.state;
+      const { selectedClients, selectedCategories } = this.state;
+      const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+      setLogoType(isUnselected ? 'full' : 'simple');
       
       setNavigations(this.navigationsRender());
       setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
@@ -308,7 +348,7 @@ class Home extends Component {
   // }
 
   onCategoryLinkClick = (category, isInclude) => {
-    const { setNavigations, } = this.props;
+    const { setNavigations, setLogoType } = this.props;
     const { selectedCategories } = this.state;
     const index = selectedCategories.indexOf(category);
 
@@ -320,6 +360,11 @@ class Home extends Component {
       this.setState({
         selectedCategories: newSelectedList
       }, () => {
+        const { selectedClients, selectedCategories } = this.state;
+        const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+        setLogoType(isUnselected ? 'full' : 'simple');
+
         setNavigations(this.navigationsRender());
       });
     } else {
@@ -328,6 +373,11 @@ class Home extends Component {
       this.setState({
         selectedCategories: newSelectedList
       }, () => {
+        const { selectedClients, selectedCategories } = this.state;
+        const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+        setLogoType(isUnselected ? 'full' : 'simple');
+
         setNavigations(this.navigationsRender());
       });
     }
@@ -339,6 +389,10 @@ class Home extends Component {
 
   onProjectMouseLeave = () => {
 
+  }
+
+  onMouseOver = (e) => {
+    console.log(e);
   }
 
   getProjectList () {
@@ -477,9 +531,9 @@ class Home extends Component {
   }
 
   render () {
-    const { selectedClients, selectedClientIndex, clients, lineAngle } = this.state;
+    const { selectedClients, selectedClientIndex, clients, lineAngle, mouseMoveAngle } = this.state;
     const style = {
-      transform: `rotate(${lineAngle}deg)`,
+      transform: `rotate(${lineAngle + mouseMoveAngle}deg)`,
       backgroundColor: (clients[selectedClientIndex] || { color: 'white' }).color
     }
 

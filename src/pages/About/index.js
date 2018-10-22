@@ -5,7 +5,7 @@ import Scene from '../../components/Scene';
 import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 
-const SCALE = 1.2;
+const SCALE = 2.5;
 
 class About extends React.Component {
   static backgroundColor = '#f0f0f0';
@@ -41,7 +41,9 @@ class About extends React.Component {
     setNavigators(About.navigators);
     setNavigatorColor(About.navigatorColor);
     setNavigations(
-      <SimpleNavigation />
+      <Context.Consumer>
+        {ctx => <SimpleNavigation {...ctx} />}
+      </Context.Consumer>
     );
     setNavigationButtonColor(About.navigationButtonColor);
 
@@ -258,7 +260,7 @@ class About extends React.Component {
     const { categoryOffset, categories, lineAngle } = this.state;
     const { isMobile } = this.props;
     const style = {
-      transform: `translateY(${-categoryOffset}px)`
+      transform: `translateY(${-categoryOffset / SCALE}px)`
     };
 
     const categoryElements = categories.map(cate => {

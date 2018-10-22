@@ -112,6 +112,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var THROTTLE_TIMEOUT = 50;
+
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 
@@ -136,6 +138,7 @@
 	      navigatorColor: _contants.COLORS.WHITE,
 	      navigationButtonColor: _contants.COLORS.WHITE,
 	      logoType: 'simple',
+	      logoEvent: function logoEvent() {},
 	      transitionProperty: _contants.TRANSITION_PROPERTY['1024'],
 	      isMobile: false
 	    }, _this.clearNavigations = function () {
@@ -143,6 +146,50 @@
 	        navigations: null,
 	        openNavigations: false
 	      });
+	    }, _this.createEventEmitter = function (type, data) {
+	      var event = document.createEvent('HTMLEvents');
+
+	      event.initEvent(type, true, true);
+	      event.data = data;
+
+	      document.dispatchEvent(event);
+	    }, _this.onDeviceOrientation = function (e) {
+	      var alpha = e.alpha,
+	          beta = e.beta,
+	          gamma = e.gamma;
+	      var isMobile = _this.state.isMobile;
+
+
+	      if (isMobile) {
+	        if (!_this.isOrientating) {
+	          _this.isOrientating = true;
+	          setTimeout(function () {
+	            _this.createEventEmitter('orientation', {
+	              alpha: alpha, beta: beta, gamma: gamma
+	            });
+
+	            _this.isOrientating = false;
+	          }, THROTTLE_TIMEOUT);
+	        }
+	      }
+	    }, _this.onMouseMove = function (e) {
+	      var isMobile = _this.state.isMobile;
+	      var x = e.pageX,
+	          y = e.pageY;
+
+
+	      if (!isMobile) {
+	        if (!_this.isMouseMoving) {
+	          _this.isMouseMoving = true;
+	          setTimeout(function () {
+	            _this.createEventEmitter('moving', {
+	              x: x, y: y
+	            });
+
+	            _this.isMouseMoving = false;
+	          }, THROTTLE_TIMEOUT);
+	        }
+	      }
 	    }, _this.onResize = function () {
 	      var _window = window,
 	          width = _window.innerWidth,
@@ -156,10 +203,11 @@
 	      _this.height = height;
 
 	      // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
+	      _this.isMobile = _contants.IS_MOBILE[_contants.WIDTH_LIST[index]] === 'MOBILE';
 
 	      _this.setState({
 	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]],
-	        isMobile: _contants.IS_MOBILE[_contants.WIDTH_LIST[index]] === 'MOBILE'
+	        isMobile: _this.isMobile
 	      });
 	    }, _this.onNavigatorClick = function () {
 	      _this.clearNavigations();
@@ -194,6 +242,18 @@
 	      document.body.appendChild(script);
 
 	      _this.isGoogleScriptLoaded = true;
+	    }, _this.setLogoEvent = function () {
+	      var _logoEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+
+	      _this.setState({
+	        logoEvent: function logoEvent() {
+	          _logoEvent();
+
+	          _this.setState({
+	            openNavigations: false
+	          });
+	        }
+	      });
 	    }, _this.getContactInfomation = function () {
 	      return _contants.CONTACT_INFORMATION;
 	    }, _this.getSocialList = function () {
@@ -293,9 +353,15 @@
 
 	      return style;
 	    }, _this.provideContext = function () {
+	      var _this2 = _this,
+	          state = _this2.state;
+
+
 	      return {
 	        application: _this,
-	        isMobile: _this.state.isMobile,
+	        get isMobile() {
+	          return state.isMobile;
+	        },
 	        openNavigator: _this.openNavigator,
 	        closeNavigator: _this.closeNavigator,
 	        clearNavigations: _this.clearNavigations,
@@ -306,6 +372,7 @@
 	        setNavigations: _this.setNavigations,
 	        setNavigators: _this.setNavigators,
 	        setNavigatorColor: _this.setNavigatorColor,
+	        setLogoEvent: _this.setLogoEvent,
 	        getWindowSize: _this.getWindowSize,
 	        getContactInfomation: _this.getContactInfomation,
 	        getSocialList: _this.getSocialList,
@@ -322,13 +389,20 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      window.addEventListener('resize', this.onResize);
-
 	      this.onResize();
+
+	      if (this.isMobile && window.DeviceOrientationEvent) {
+	        window.addEventListener('deviceorientation', this.onDeviceOrientation, false);
+	      }
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      window.removeEventListener('resize', this.onScroll);
+
+	      if (this.isMobile) {
+	        window.removeEventListener('deviceorientation', this.onDeviceOrientation, false);
+	      }
 	    }
 	  }, {
 	    key: 'scenesRender',
@@ -361,7 +435,7 @@
 	  }, {
 	    key: 'layoutRender',
 	    value: function layoutRender() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var _state = this.state,
 	          logoColor = _state.logoColor,
@@ -370,7 +444,8 @@
 	          openNavigations = _state.openNavigations,
 	          navigators = _state.navigators,
 	          backgroundColor = _state.backgroundColor,
-	          navigationButtonColor = _state.navigationButtonColor;
+	          navigationButtonColor = _state.navigationButtonColor,
+	          logoEvent = _state.logoEvent;
 
 
 	      var classes = (0, _classnames3.default)({
@@ -381,7 +456,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'app__layout' },
+	        { className: 'app__layout', onMouseMove: this.onMouseMove },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app__header' },
@@ -398,13 +473,13 @@
 	            color: navigationButtonColor,
 	            open: openNavigations,
 	            onOpen: function onOpen() {
-	              return _this2.onNavigationButtonClick('open');
+	              return _this3.onNavigationButtonClick('open');
 	            },
 	            onClose: function onClose() {
-	              return _this2.onNavigationButtonClick('close');
+	              return _this3.onNavigationButtonClick('close');
 	            }
 	          }),
-	          _react2.default.createElement(_Logo2.default, { color: logoColor, type: logoType })
+	          _react2.default.createElement(_Logo2.default, { color: logoColor, type: logoType, clearSelected: this.onNavigationClear })
 	        ),
 	        _react2.default.createElement(
 	          'div',
@@ -30512,6 +30587,8 @@
 	  _createClass(Project, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      var _this2 = this;
+
 	      var _props = this.props,
 	          setBackgroundColor = _props.setBackgroundColor,
 	          setLogoColor = _props.setLogoColor,
@@ -30530,9 +30607,15 @@
 	      setNavigatorColor(Project.navigatorColor);
 	      setNavigationButtonColor(Project.navigationButtonColor);
 	      setNavigations(_react2.default.createElement(
-	        _SimpleNavigation2.default,
+	        _Context2.default.Consumer,
 	        null,
-	        this.moreNavigationRender()
+	        function (ctx) {
+	          return _react2.default.createElement(
+	            _SimpleNavigation2.default,
+	            ctx,
+	            _this2.moreNavigationRender()
+	          );
+	        }
 	      ));
 
 	      this.getProject(this.query.id);
@@ -30540,7 +30623,7 @@
 	  }, {
 	    key: 'headerRender',
 	    value: function headerRender() {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      var data = this.state.data;
 
@@ -30573,7 +30656,7 @@
 	                )
 	              )
 	            ),
-	            _this2.headerDescriptionRender()
+	            _this3.headerDescriptionRender()
 	          );
 	        }
 	      );
@@ -30649,7 +30732,7 @@
 	  }, {
 	    key: 'footerRender',
 	    value: function footerRender() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      return _react2.default.createElement(
 	        _Scene2.default.Footer,
@@ -30663,7 +30746,7 @@
 	              { className: 'scene__page-footer-label' },
 	              _react2.default.createElement(
 	                _reactRouterDom.Link,
-	                { to: '/project?id=' + (parseInt(_this3.query.id) + 1), onClick: _this3.onNextProjectClick },
+	                { to: '/project?id=' + (parseInt(_this4.query.id) + 1), onClick: _this4.onNextProjectClick },
 	                'next project'
 	              )
 	            ),
@@ -31677,28 +31760,79 @@
 
 	var noop = function noop() {};
 
+	var LINE_INIT_ANGLE = -25.75;
+	var ANGLE_SCALE = 60 / 180;
+
 	var SimpleNavigation = function (_Component) {
 	  _inherits(SimpleNavigation, _Component);
 
 	  function SimpleNavigation() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
 	    _classCallCheck(this, SimpleNavigation);
 
-	    return _possibleConstructorReturn(this, (SimpleNavigation.__proto__ || Object.getPrototypeOf(SimpleNavigation)).apply(this, arguments));
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SimpleNavigation.__proto__ || Object.getPrototypeOf(SimpleNavigation)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      alpha: LINE_INIT_ANGLE,
+	      beta: 0,
+	      gamma: 0
+	    }, _this.onOrientation = function (_ref2) {
+	      var _ref2$data = _ref2.data,
+	          alpha = _ref2$data.alpha,
+	          beta = _ref2$data.beta,
+	          gamma = _ref2$data.gamma;
+
+	      _this.setState({
+	        alpha: LINE_INIT_ANGLE + parseInt(alpha * ANGLE_SCALE),
+	        beta: parseInt(ANGLE_SCALE * beta),
+	        gamma: parseInt(ANGLE_SCALE * gamma)
+	      });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
 	  _createClass(SimpleNavigation, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var isMobile = this.props.isMobile;
+
+
+	      if (isMobile) {
+	        document.addEventListener('orientation', this.onOrientation, false);
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      var isMobile = this.props.isMobile;
+
+
+	      if (isMobile) {
+	        document.removeEventListener('orientation', this.onOrientation, false);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _state = this.state,
+	          alpha = _state.alpha,
+	          beta = _state.beta,
+	          gamma = _state.gamma;
 	      var _props = this.props,
 	          backgroundColor = _props.backgroundColor,
 	          lineColor = _props.lineColor;
 
 	      var style = { backgroundColor: backgroundColor };
+	      var transform = 'rotateY(' + beta + 'deg)';
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'app__simple-navigation', style: style },
-	        _react2.default.createElement('span', { className: 'app__simple-navigation-line', style: { borderColor: lineColor } }),
+	        _react2.default.createElement('span', { className: 'app__simple-navigation-line', style: { borderColor: lineColor, transform: transform } }),
 	        this.props.children
 	      );
 	    }
@@ -40691,6 +40825,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var MOUSE_MOVING_SCALE = 15;
+
 	var Navigations = function (_Component) {
 	  _inherits(Navigations, _Component);
 
@@ -40954,7 +41090,19 @@
 	      selectedCategories: [],
 	      selectedClients: null,
 	      selectedClientIndex: 0,
-	      lineAngle: 135
+	      lineAngle: 135,
+	      mouseMoveAngle: 0
+	    }, _this4.onMoving = function (_ref3) {
+	      var _ref3$data = _ref3.data,
+	          x = _ref3$data.x,
+	          y = _ref3$data.y;
+	      var getWindowSize = _this4.props.getWindowSize;
+
+	      var size = getWindowSize();
+
+	      _this4.setState({
+	        mouseMoveAngle: parseInt(y / size.height * MOUSE_MOVING_SCALE)
+	      });
 	    }, _this4.onClearSelectedList = function () {
 	      var setNavigations = _this4.props.setNavigations;
 
@@ -40969,7 +41117,8 @@
 	      var clients = _this4.state.clients;
 	      var _this4$props = _this4.props,
 	          setNavigations = _this4$props.setNavigations,
-	          setLogoColor = _this4$props.setLogoColor;
+	          setLogoColor = _this4$props.setLogoColor,
+	          setLogoType = _this4$props.setLogoType;
 
 
 	      _this4.setState({
@@ -40977,14 +41126,21 @@
 	        selectedClientIndex: isInclude ? null : index,
 	        lineAngle: 135 + 110 / clients.length * index
 	      }, function () {
-	        var selectedClients = _this4.state.selectedClients;
+	        var _this4$state = _this4.state,
+	            selectedClients = _this4$state.selectedClients,
+	            selectedCategories = _this4$state.selectedCategories;
 
+	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+	        setLogoType(isUnselected ? 'full' : 'simple');
 
 	        setNavigations(_this4.navigationsRender());
 	        setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
 	      });
 	    }, _this4.onCategoryLinkClick = function (category, isInclude) {
-	      var setNavigations = _this4.props.setNavigations;
+	      var _this4$props2 = _this4.props,
+	          setNavigations = _this4$props2.setNavigations,
+	          setLogoType = _this4$props2.setLogoType;
 	      var selectedCategories = _this4.state.selectedCategories;
 
 	      var index = selectedCategories.indexOf(category);
@@ -40997,6 +41153,14 @@
 	        _this4.setState({
 	          selectedCategories: newSelectedList
 	        }, function () {
+	          var _this4$state2 = _this4.state,
+	              selectedClients = _this4$state2.selectedClients,
+	              selectedCategories = _this4$state2.selectedCategories;
+
+	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+	          setLogoType(isUnselected ? 'full' : 'simple');
+
 	          setNavigations(_this4.navigationsRender());
 	        });
 	      } else {
@@ -41005,12 +41169,22 @@
 	        _this4.setState({
 	          selectedCategories: newSelectedList
 	        }, function () {
+	          var _this4$state3 = _this4.state,
+	              selectedClients = _this4$state3.selectedClients,
+	              selectedCategories = _this4$state3.selectedCategories;
+
+	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
+	          setLogoType(isUnselected ? 'full' : 'simple');
+
 	          setNavigations(_this4.navigationsRender());
 	        });
 	      }
 	    }, _this4.onProjectMouseEnter = function (project, e) {
 	      console.log(e);
-	    }, _this4.onProjectMouseLeave = function () {}, _this4.navigationsRender = function () {
+	    }, _this4.onProjectMouseLeave = function () {}, _this4.onMouseOver = function (e) {
+	      console.log(e);
+	    }, _this4.navigationsRender = function () {
 	      return _react2.default.createElement(Navigations, _extends({}, _this4.props, {
 	        onCategoryLinkClick: _this4.onCategoryLinkClick,
 	        onClientLinkClick: _this4.onClientLinkClick,
@@ -41029,7 +41203,14 @@
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
+	    value: function componentWillUnmount() {
+	      var isMobile = this.props.isMobile;
+
+
+	      if (isMobile) {
+	        document.removeEventListener('moving', this.onMoving);
+	      }
+	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
@@ -41038,7 +41219,10 @@
 	      var _props3 = this.props,
 	          location = _props3.location,
 	          setNavigations = _props3.setNavigations,
-	          setNavigators = _props3.setNavigators;
+	          setNavigators = _props3.setNavigators,
+	          isMobile = _props3.isMobile,
+	          setLogoType = _props3.setLogoType,
+	          setLogoEvent = _props3.setLogoEvent;
 	      var _props4 = this.props,
 	          setBackgroundColor = _props4.setBackgroundColor,
 	          setLogoColor = _props4.setLogoColor,
@@ -41052,15 +41236,38 @@
 	      setNavigators(Home.navigators);
 	      setNavigatorColor(Home.navigatorColor);
 	      setNavigationButtonColor(Home.navigationButtonCOlor);
+	      setLogoEvent(function () {
+	        _this5.setState({
+	          selectedCategories: [],
+	          selectedClientIndex: null,
+	          selectedClients: null
+	        }, function () {
+	          setNavigations(_this5.navigationsRender());
+	          setLogoType('full');
+	          setLogoColor(Home.logoColor);
+	        });
+	      });
+
+	      if (!isMobile) {
+	        document.addEventListener('moving', this.onMoving, false);
+	      }
 
 	      this.setState({
 	        selectedCategories: query.categories ? query.categories.split(',').map(function (cate) {
 	          return cate - 0;
 	        }) : [],
 	        // selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
-	        selectedClients: query.clients - 0
+	        selectedClients: query.clients ? query.clients - 0 : null
 	      }, function () {
+	        var _state = _this5.state,
+	            selectedCategories = _state.selectedCategories,
+	            selectedClients = _state.selectedClients;
+
+	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
+
 	        var promise = Promise.all([_this5.getProjectList(), _this5.getCategoryList(), _this5.getClientList()]);
+
+	        setLogoType(isUnselected ? 'full' : 'simple');
 
 	        promise.then(function (res) {
 	          var state = _extends({
@@ -41069,9 +41276,9 @@
 	          }, res[0], res[1], res[2]);
 
 	          _this5.setState(state, function () {
-	            var _state = _this5.state,
-	                selectedClients = _state.selectedClients,
-	                clients = _state.clients;
+	            var _state2 = _this5.state,
+	                selectedClients = _state2.selectedClients,
+	                clients = _state2.clients;
 
 	            setNavigations(_this5.navigationsRender());
 
@@ -41173,10 +41380,10 @@
 	    value: function projectsRender() {
 	      var _this6 = this;
 
-	      var _state2 = this.state,
-	          projects = _state2.projects,
-	          selectedCategories = _state2.selectedCategories,
-	          selectedClients = _state2.selectedClients;
+	      var _state3 = this.state,
+	          projects = _state3.projects,
+	          selectedCategories = _state3.selectedCategories,
+	          selectedClients = _state3.selectedClients;
 
 
 	      var projectElements = projects.map(function (project, index) {
@@ -41275,14 +41482,15 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state3 = this.state,
-	          selectedClients = _state3.selectedClients,
-	          selectedClientIndex = _state3.selectedClientIndex,
-	          clients = _state3.clients,
-	          lineAngle = _state3.lineAngle;
+	      var _state4 = this.state,
+	          selectedClients = _state4.selectedClients,
+	          selectedClientIndex = _state4.selectedClientIndex,
+	          clients = _state4.clients,
+	          lineAngle = _state4.lineAngle,
+	          mouseMoveAngle = _state4.mouseMoveAngle;
 
 	      var style = {
-	        transform: 'rotate(' + lineAngle + 'deg)',
+	        transform: 'rotate(' + (lineAngle + mouseMoveAngle) + 'deg)',
 	        backgroundColor: (clients[selectedClientIndex] || { color: 'white' }).color
 	      };
 
@@ -41446,7 +41654,13 @@
 
 	      setBackgroundColor(Contact.backgroundColor);
 	      setLogoColor(Contact.logoColor);
-	      setNavigations(_react2.default.createElement(_SimpleNavigation2.default, null));
+	      setNavigations(_react2.default.createElement(
+	        _Context2.default.Consumer,
+	        null,
+	        function (ctx) {
+	          return _react2.default.createElement(_SimpleNavigation2.default, ctx);
+	        }
+	      ));
 
 	      setNavigators(Contact.navigators);
 
@@ -41762,7 +41976,7 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var SCALE = 1.2;
+	var SCALE = 2.5;
 
 	var About = function (_React$Component) {
 	  _inherits(About, _React$Component);
@@ -41832,7 +42046,13 @@
 	      setLogoColor(About.logoColor);
 	      setNavigators(About.navigators);
 	      setNavigatorColor(About.navigatorColor);
-	      setNavigations(_react2.default.createElement(_SimpleNavigation2.default, null));
+	      setNavigations(_react2.default.createElement(
+	        _Context2.default.Consumer,
+	        null,
+	        function (ctx) {
+	          return _react2.default.createElement(_SimpleNavigation2.default, ctx);
+	        }
+	      ));
 	      setNavigationButtonColor(About.navigationButtonColor);
 
 	      var promise = Promise.all([this.getCategoryList(), this.getClientList()]);
@@ -42101,7 +42321,7 @@
 	      var isMobile = this.props.isMobile;
 
 	      var style = {
-	        transform: 'translateY(' + -categoryOffset + 'px)'
+	        transform: 'translateY(' + -categoryOffset / SCALE + 'px)'
 	      };
 
 	      var categoryElements = categories.map(function (cate) {
@@ -43244,6 +43464,8 @@
 
 	var _classnames4 = _interopRequireDefault(_classnames3);
 
+	var _reactRouterDom = __webpack_require__(186);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -43345,11 +43567,19 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'app__logo' },
-	        this.simpleLogoRender(),
-	        this.fullLogoRender()
+	        _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          { to: '/', onClick: function onClick() {
+	              return _this2.props.clearSelected();
+	            } },
+	          this.simpleLogoRender(),
+	          this.fullLogoRender()
+	        )
 	      );
 	    }
 	  }]);

@@ -30,6 +30,8 @@ import {
   PROJECT_SWIPER_OPTIONS
 } from './contants';
 
+const THROTTLE_TIMEOUT = 50;
+
 class App extends Component {
   state = {
     openNavigations: false,
@@ -41,18 +43,26 @@ class App extends Component {
     navigatorColor: COLORS.WHITE,
     navigationButtonColor: COLORS.WHITE,
     logoType: 'simple',
+    logoEvent: () => {},
     transitionProperty: TRANSITION_PROPERTY['1024'],
     isMobile: false
   }
 
   componentDidMount () {
     window.addEventListener('resize', this.onResize);
-    
     this.onResize();
+
+    if (this.isMobile && window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', this.onDeviceOrientation, false);
+    }
   }
 
   componentWillUnmount () {
     window.removeEventListener('resize', this.onScroll);
+
+    if (this.isMobile) {
+      window.removeEventListener('deviceorientation', this.onDeviceOrientation, false);
+    }
   }
 
   clearNavigations = () => {
@@ -60,6 +70,51 @@ class App extends Component {
       navigations: null,
       openNavigations: false
     });
+  }
+
+  createEventEmitter = (type, data) => {
+    const event = document.createEvent('HTMLEvents');
+
+    event.initEvent(type, true, true);
+    event.data = data;
+    
+    document.dispatchEvent(event);
+  }
+
+  onDeviceOrientation = (e) => {
+    const { alpha, beta, gamma } = e;
+    const { isMobile } = this.state;
+
+    if (isMobile) {
+      if (!this.isOrientating) {
+        this.isOrientating = true;
+        setTimeout(() => {
+          this.createEventEmitter('orientation', {
+            alpha, beta, gamma
+          });
+  
+          this.isOrientating = false;
+        }, THROTTLE_TIMEOUT);
+      }
+    }
+  }
+
+  onMouseMove = (e) => {
+    const { isMobile } = this.state;
+    const { pageX: x, pageY: y } = e;
+
+    if (!isMobile) {
+      if (!this.isMouseMoving) {
+        this.isMouseMoving = true;
+        setTimeout(() => {
+          this.createEventEmitter('moving', {
+            x, y
+          });
+  
+          this.isMouseMoving = false;
+        }, THROTTLE_TIMEOUT);
+      }
+    }
   }
 
   onResize = () => {
@@ -70,10 +125,11 @@ class App extends Component {
     this.height = height;
 
     // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
+    this.isMobile = IS_MOBILE[WIDTH_LIST[index]] === 'MOBILE';
 
     this.setState({
       transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
-      isMobile: IS_MOBILE[WIDTH_LIST[index]] === 'MOBILE'
+      isMobile: this.isMobile
     });
   }
 
@@ -118,6 +174,18 @@ class App extends Component {
     document.body.appendChild(script);
 
     this.isGoogleScriptLoaded = true;
+  }
+
+  setLogoEvent = (logoEvent = function () {}) => {
+    this.setState({
+      logoEvent: () => {
+        logoEvent();
+
+        this.setState({
+          openNavigations: false,
+        });
+      }
+    });
   }
 
   getContactInfomation = () => {
@@ -275,7 +343,8 @@ class App extends Component {
       openNavigations, 
       navigators, 
       backgroundColor,
-      navigationButtonColor
+      navigationButtonColor,
+      logoEvent
     } = this.state;
 
     const classes = classnames({
@@ -287,7 +356,7 @@ class App extends Component {
 
 
     return (
-      <div className="app__layout">
+      <div className="app__layout" onMouseMove={this.onMouseMove}>
         <div className="app__header">
           <div className="app__navigation-clear" onClick={this.onNavigationClear}>
               <Link to="/">
@@ -300,7 +369,7 @@ class App extends Component {
             onOpen={() => this.onNavigationButtonClick('open')} 
             onClose={() => this.onNavigationButtonClick('close')} 
           />
-          <Logo color={logoColor} type={logoType} />
+          <Logo color={logoColor} type={logoType} clearSelected={this.onNavigationClear} />
         </div>
         <div className="app__scene">
           {this.scenesRender()}
@@ -342,9 +411,13 @@ class App extends Component {
   }
 
   provideContext = () => {
+    const { state } = this;
+
     return {
       application: this,
-      isMobile: this.state.isMobile,
+      get isMobile () {
+        return state.isMobile;
+      },
       openNavigator: this.openNavigator,
       closeNavigator: this.closeNavigator,
       clearNavigations: this.clearNavigations,
@@ -355,6 +428,7 @@ class App extends Component {
       setNavigations: this.setNavigations,
       setNavigators: this.setNavigators,
       setNavigatorColor: this.setNavigatorColor,
+      setLogoEvent: this.setLogoEvent,
       getWindowSize: this.getWindowSize,
       getContactInfomation: this.getContactInfomation,
       getSocialList: this.getSocialList,

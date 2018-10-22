@@ -41,9 +41,9 @@ class Project extends React.Component {
     setNavigatorColor(Project.navigatorColor);
     setNavigationButtonColor(Project.navigationButtonColor);
     setNavigations(
-      <SimpleNavigation>
-        {this.moreNavigationRender()}
-      </SimpleNavigation>
+      <Context.Consumer>
+        {ctx => <SimpleNavigation {...ctx}>{this.moreNavigationRender()}</SimpleNavigation>}
+      </Context.Consumer>
     );
 
     this.getProject(this.query.id);

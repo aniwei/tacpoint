@@ -162,7 +162,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(-25.75deg);
+  margin-left: -41.5%;
+  transform: rotate(-25.75deg);
+  transition: all 0.5s;
 }
 
 .scene-home .app__navigation-clear {
@@ -186,7 +188,7 @@
 }
 
 .app__header .app__navigation-clear {
-  display: none;
+  display: block;
   top: 50%;
   left: 105px;
   color:rgba(255, 255, 255, 0.25);

@@ -53,7 +53,7 @@
     left: 50%;
     display: block;
     opacity: 0;
-    height: 1px;
+    height: 2px;
     width: 50%;
     margin-left: -25%;
     transition: transform 1s;
@@ -62,6 +62,11 @@
 @media screen and (max-width: 768px) {
     .scene-home__line {
         display: none;
+    }
+
+    .scene-home .scene__category-item {
+        font-size: 18px;
+        color: rgba(255, 255, 255, 1);
     }
 
     .scene-home__category-content {

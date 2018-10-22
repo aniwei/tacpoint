@@ -30,7 +30,9 @@ class Contact extends React.Component {
     setBackgroundColor(Contact.backgroundColor);
     setLogoColor(Contact.logoColor);
     setNavigations(
-      <SimpleNavigation />
+      <Context.Consumer>
+        {ctx => <SimpleNavigation {...ctx} />}
+      </Context.Consumer>
     );
 
     setNavigators(Contact.navigators);

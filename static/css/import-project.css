@@ -3,7 +3,7 @@
 .scene__project-item {
     line-height: 72px;
     font-size: 64px;
-    font-weight: 300;
+    font-weight: inherit;
     color: rgba(255, 255, 255, 0.25);
 }
 
@@ -16,6 +16,7 @@
     .scene__project-item {
         line-height: 64px;
         font-size: 56px;
+        color: rgba(255, 255, 255, 1);
     }
 }
 

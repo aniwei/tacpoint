@@ -1,3 +1,4 @@
+@import url("//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700");
 html {
     height: 100%;
 }
@@ -38,6 +39,8 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     -moz-transition: background-color 1s;
     -webkit-transition: background-color 1s;
     -o-transition: background-color 1s;
+    font-family: 'Open Sans';
+    font-weight: lighter;
 }
 
 .scene__container {
