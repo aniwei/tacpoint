@@ -52,10 +52,10 @@ const PROJECT_LAYOUT_TYPE = {
 };
 
 const SOCIAL_LIST = [
-  { name: 'facebook', link: '', iconClassName: 'scene-icon-black-fb' },
-  { name: 'twitter', link: '', iconClassName: 'scene-icon-black-tw' },
-  { name: 'in', link: '', iconClassName: 'scene-icon-black-in' },
-  { name: 'instagram', link: '', iconClassName: 'scene-icon-black-ig' }
+  { name: 'facebook', link: '', iconClassName: 'fb' },
+  { name: 'twitter', link: '', iconClassName: 'tw' },
+  { name: 'in', link: '', iconClassName: 'in' },
+  { name: 'instagram', link: '', iconClassName: 'ig' }
 ];
 
 const CONTACT_INFORMATION = [

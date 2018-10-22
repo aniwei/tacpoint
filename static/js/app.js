@@ -40743,7 +40743,7 @@
 	  SWIPER: 'swiper'
 	};
 
-	var SOCIAL_LIST = [{ name: 'facebook', link: '', iconClassName: 'scene-icon-black-fb' }, { name: 'twitter', link: '', iconClassName: 'scene-icon-black-tw' }, { name: 'in', link: '', iconClassName: 'scene-icon-black-in' }, { name: 'instagram', link: '', iconClassName: 'scene-icon-black-ig' }];
+	var SOCIAL_LIST = [{ name: 'facebook', link: '', iconClassName: 'fb' }, { name: 'twitter', link: '', iconClassName: 'tw' }, { name: 'in', link: '', iconClassName: 'in' }, { name: 'instagram', link: '', iconClassName: 'ig' }];
 
 	var CONTACT_INFORMATION = [{ key: 'address', value: '577 Airport Blvd, Suite 160, Burlingame, CA 94010' }, { key: 'email', value: 'hello@tacpoint.com' }, { key: 'phoneNumber', value: '650.577.3140' }];
 
@@ -41836,7 +41836,7 @@
 	        return _react2.default.createElement(
 	          'a',
 	          { key: name, className: 'scene__page-footer-information-site-link', href: link },
-	          _react2.default.createElement('i', { className: iconClassName })
+	          _react2.default.createElement('i', { className: 'scene-icon-white-' + iconClassName })
 	        );
 	      });
 
@@ -42216,7 +42216,7 @@
 	        return _react2.default.createElement(
 	          'a',
 	          { key: name, className: 'scene__page-footer-information-site-link', href: link },
-	          _react2.default.createElement('i', { className: iconClassName })
+	          _react2.default.createElement('i', { className: 'scene-icon-black-' + iconClassName })
 	        );
 	      });
 

@@ -212,7 +212,7 @@ class Contact extends React.Component {
 
       return (
         <a key={name} className="scene__page-footer-information-site-link" href={link}>
-          <i className={iconClassName}></i>
+          <i className={`scene-icon-white-${iconClassName}`}></i>
         </a>
       );
     });
