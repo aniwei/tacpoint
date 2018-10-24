@@ -44,13 +44,16 @@ class Project extends AppPage {
   }
 
   getProject = (id) => {
-    const { setLogoColor } = this.props;
+    const { application } = this.context;
 
     fetch(`./data/project.json?id=${id}`, {
       method: 'GET'
     }).then(res => res.json())
     .then(res => this.setState({ data: res.project, waiting: false }, () => {
-      setLogoColor(res.project.color);
+
+      application.setLogoStyle({
+        color: res.project.color
+      });
     }))
     .catch(err => {
       console.log(err);

@@ -30407,7 +30407,7 @@
 
 	      location.href = '/';
 	    }, _this.getProject = function (id) {
-	      var setLogoColor = _this.props.setLogoColor;
+	      var application = _this.context.application;
 
 
 	      fetch('./data/project.json?id=' + id, {
@@ -30416,7 +30416,10 @@
 	        return res.json();
 	      }).then(function (res) {
 	        return _this.setState({ data: res.project, waiting: false }, function () {
-	          setLogoColor(res.project.color);
+
+	          application.setLogoStyle({
+	            color: res.project.color
+	          });
 	        });
 	      }).catch(function (err) {
 	        console.log(err);
