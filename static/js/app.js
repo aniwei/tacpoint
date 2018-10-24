@@ -30344,6 +30344,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -30357,6 +30359,10 @@
 	var _Scene = __webpack_require__(234);
 
 	var _Scene2 = _interopRequireDefault(_Scene);
+
+	var _AppPage2 = __webpack_require__(261);
+
+	var _AppPage3 = _interopRequireDefault(_AppPage2);
 
 	var _SimpleNavigation = __webpack_require__(241);
 
@@ -30378,8 +30384,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Project = function (_React$Component) {
-	  _inherits(Project, _React$Component);
+	var Project = function (_AppPage) {
+	  _inherits(Project, _AppPage);
 
 	  function Project() {
 	    var _ref;
@@ -30424,43 +30430,16 @@
 	  _createClass(Project, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      var _props = this.props,
-	          setBackgroundColor = _props.setBackgroundColor,
-	          setLogoColor = _props.setLogoColor,
-	          setNavigators = _props.setNavigators,
-	          setNavigatorColor = _props.setNavigatorColor,
-	          setNavigationButtonColor = _props.setNavigationButtonColor,
-	          setNavigations = _props.setNavigations,
-	          location = _props.location;
-
+	      _get(Project.prototype.__proto__ || Object.getPrototypeOf(Project.prototype), 'componentDidMount', this).call(this);
 
 	      this.query = _queryString2.default.parse(location.search);
-
-	      setBackgroundColor(Project.backgroundColor);
-	      setLogoColor(Project.logoColor);
-	      setNavigators(Project.navigators);
-	      setNavigatorColor(Project.navigatorColor);
-	      setNavigationButtonColor(Project.navigationButtonColor);
-	      setNavigations(_react2.default.createElement(
-	        _Context2.default.Consumer,
-	        null,
-	        function (ctx) {
-	          return _react2.default.createElement(
-	            _SimpleNavigation2.default,
-	            ctx,
-	            _this2.moreNavigationRender()
-	          );
-	        }
-	      ));
 
 	      this.getProject(this.query.id);
 	    }
 	  }, {
 	    key: 'headerRender',
 	    value: function headerRender() {
-	      var _this3 = this;
+	      var _this2 = this;
 
 	      var data = this.state.data;
 
@@ -30493,7 +30472,7 @@
 	                )
 	              )
 	            ),
-	            _this3.headerDescriptionRender()
+	            _this2.headerDescriptionRender()
 	          );
 	        }
 	      );
@@ -30569,7 +30548,7 @@
 	  }, {
 	    key: 'footerRender',
 	    value: function footerRender() {
-	      var _this4 = this;
+	      var _this3 = this;
 
 	      return _react2.default.createElement(
 	        _Scene2.default.Footer,
@@ -30583,7 +30562,7 @@
 	              { className: 'scene__page-footer-label' },
 	              _react2.default.createElement(
 	                _reactRouterDom.Link,
-	                { to: '/project?id=' + (parseInt(_this4.query.id) + 1), onClick: _this4.onNextProjectClick },
+	                { to: '/project?id=' + (parseInt(_this3.query.id) + 1), onClick: _this3.onNextProjectClick },
 	                'next project'
 	              )
 	            ),
@@ -30627,13 +30606,19 @@
 	  }]);
 
 	  return Project;
-	}(_react2.default.Component);
+	}(_AppPage3.default);
 
 	Project.backgroundColor = '#ffffff';
-	Project.logoColor = '#1a1a1a';
-	Project.navigatorColor = '#1a1a1a';
-	Project.navigationButtonColor = '#1a1a1a';
-	Project.navigators = [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }];
+	Project.logo = {
+	  color: '#000000',
+	  type: 'simple'
+	};
+	Project.navigationButtonColor = '#000000';
+	Project.navigationLineColor = '#000000';
+	Project.navigators = {
+	  color: '#000000',
+	  data: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
+	};
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(
@@ -41359,7 +41344,7 @@
 	};
 	Home.navigators = {
 	  color: '#f0f0f0',
-	  list: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
+	  data: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
 	};
 	Home.navigations = {
 	  component: Navigations,
@@ -42329,7 +42314,7 @@
 	};
 	About.navigators = {
 	  color: '#1a1a1a',
-	  data: [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'let’s talk', path: '/contact' }]
+	  data: [{ position: 'left', text: 'let’s talk', path: '/contact' }, { position: 'right', text: 'projects', path: '/' }]
 	};
 
 	exports.default = function (props) {
@@ -44296,22 +44281,13 @@
 
 	    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props, context));
 
-	    var location = props.location;
+	    _this.setApplicationStyle = function () {
+	      var application = _this.context.application;
 
+	      var constructor = _this.constructor;
 
-	    _this.query = _queryString2.default.parse(location.search);
-	    return _this;
-	  }
-
-	  _createClass(Home, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var application = this.context.application;
-
-	      var constructor = this.constructor;
-
-	      constructor.navigations.props = _extends({}, this.props, constructor.navigations.props, {
-	        isMobile: this.props.isMobile,
+	      constructor.navigations.props = _extends({}, _this.props, constructor.navigations.props, {
+	        isMobile: _this.props.isMobile,
 	        color: constructor.navigationLineColor
 	      });
 
@@ -44326,6 +44302,19 @@
 	        application.setSimpleNavigationLineColor(constructor.navigationLineColor);
 	      }
 	      application.changeNavigationButtonState('close');
+	    };
+
+	    var location = props.location;
+
+
+	    _this.query = _queryString2.default.parse(location.search);
+	    return _this;
+	  }
+
+	  _createClass(Home, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.setApplicationStyle();
 	    }
 	  }]);
 

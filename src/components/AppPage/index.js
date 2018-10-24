@@ -41,7 +41,7 @@ export default  class Home extends Component {
     this.query = qs.parse(location.search);
   }
 
-  componentDidMount () {
+  setApplicationStyle = () => {
     const { application } = this.context;
     const constructor = this.constructor;
     
@@ -63,6 +63,10 @@ export default  class Home extends Component {
       application.setSimpleNavigationLineColor(constructor.navigationLineColor);
     }
     application.changeNavigationButtonState('close');
+  }
+
+  componentDidMount () {
+    this.setApplicationStyle();
   }
 }
 

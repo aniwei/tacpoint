@@ -22,8 +22,8 @@ class About extends AppPage {
   static navigators = {
     color: '#1a1a1a',
     data: [
-      { position: 'left', text: 'projects', path: '/' },
-      { position: 'right', text: 'let’s talk', path: '/contact' }
+      { position: 'left', text: 'let’s talk', path: '/contact' },
+      { position: 'right', text: 'projects', path: '/' }
     ]
   }
 

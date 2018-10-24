@@ -192,7 +192,7 @@ class Home extends AppPage {
   }
   static navigators = {
     color: '#f0f0f0',
-    list: [
+    data: [
       { position: 'left', text: 'about', path: '/about' },
       { position: 'right', text: 'let\'s talk', path: '/contact' }
     ]

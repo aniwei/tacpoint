@@ -3,19 +3,26 @@ import qs from 'query-string';
 import { Link } from 'react-router-dom';
 
 import Scene from '../../components/Scene';
+import AppPage from '../../components/AppPage';
 import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 import Article from '../../components/Article';
 
-class Project extends React.Component {
+class Project extends AppPage {
   static backgroundColor = '#ffffff';
-  static logoColor = '#1a1a1a';
-  static navigatorColor = '#1a1a1a';
-  static navigationButtonColor = '#1a1a1a';
-  static navigators = [
-    { position: 'left', text: 'about', path: '/about' },
-    { position: 'right', text: 'let\'s talk', path: '/contact' }
-  ];
+  static logo = {
+    color: '#000000',
+    type: 'simple'
+  };
+  static navigationButtonColor = '#000000';
+  static navigationLineColor = '#000000';
+  static navigators = {
+    color: '#000000',
+    data: [
+      { position: 'left', text: 'about', path: '/about' },
+      { position: 'right', text: 'let\'s talk', path: '/contact' }
+    ]
+  }
 
   state = {
     waiting: true,
@@ -23,28 +30,9 @@ class Project extends React.Component {
   }
 
   componentDidMount () {
-    const { 
-      setBackgroundColor, 
-      setLogoColor,
-      setNavigators,
-      setNavigatorColor,
-      setNavigationButtonColor,
-      setNavigations,
-      location
-    } = this.props;
+    super.componentDidMount();
     
     this.query = qs.parse(location.search);
-
-    setBackgroundColor(Project.backgroundColor);
-    setLogoColor(Project.logoColor);
-    setNavigators(Project.navigators);
-    setNavigatorColor(Project.navigatorColor);
-    setNavigationButtonColor(Project.navigationButtonColor);
-    setNavigations(
-      <Context.Consumer>
-        {ctx => <SimpleNavigation {...ctx}>{this.moreNavigationRender()}</SimpleNavigation>}
-      </Context.Consumer>
-    );
 
     this.getProject(this.query.id);
   }
