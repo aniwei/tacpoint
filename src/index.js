@@ -1,18 +1,18 @@
 import 'whatwg-fetch';
 import React, { Component, cloneElement } from 'react';
 import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, HashRouter as Router, Switch, Link } from 'react-router-dom';
 import { AnimatedSwitch } from 'react-router-transition';
 
-import Project from './pages/Project';
-import Home from './pages/Home';
-import Contact from './pages/Contact';
-import About from './pages/About';
-import Access from './pages/Access';
 
-import Logo from './components/Logo';
-import NavigationButton from './components/NavigationButton';
+
+import AppBar from './components/AppBar';
+import AppFooter from './components/AppFooter';
+import AppNavigator from './components/AppNavigator';
+import AppNavigationPanel from './components/AppNavigationPanel';
+import AppScene from './components/AppScene';
 
 import Context from './Context';
 import { 
@@ -31,37 +31,55 @@ import {
 } from './contants';
 
 const THROTTLE_TIMEOUT = 50;
+const noop = (() => {});
 
 class App extends Component {
-  state = {
-    openNavigations: false,
-    navigations: null,
-    navigators: [],
-    outterNavigators: [],
-    backgroundColor: COLORS.BLACK,
-    logoColor: COLORS.WHITE,
-    navigatorColor: COLORS.WHITE,
-    navigationButtonColor: COLORS.WHITE,
-    logoType: 'simple',
-    logoEvent: () => {},
-    transitionProperty: TRANSITION_PROPERTY['1024'],
-    isMobile: false
+  static sharedApplication = () => {
+    return App.application;
+  }
+
+  static childContextTypes = {
+    application: PropTypes.object
+  }
+
+  constructor () {
+    super();
+
+    this.setIsMobile();
+
+    this.state = {
+      isMobile: this.isMobile
+    };
+
+    App.application = this;
+  }
+
+  getChildContext () {
+    return {
+      application: this
+    }
   }
 
   componentDidMount () {
     window.addEventListener('resize', this.onResize);
     this.onResize();
 
+    document.addEventListener('navigationstatechange', this.onNavigationStateChange, false);
+
     if (this.isMobile && window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', this.onDeviceOrientation, false);
+      // window.addEventListener('scroll', this.onScroll, false);
     }
   }
 
   componentWillUnmount () {
     window.removeEventListener('resize', this.onScroll);
 
+    document.removeEventListener('navigationstatechange', this.onNavigationStateChange, false);
+
     if (this.isMobile) {
       window.removeEventListener('deviceorientation', this.onDeviceOrientation, false);
+      // window.removeEventListener('scroll', this.onScroll, false);
     }
   }
 
@@ -79,6 +97,10 @@ class App extends Component {
     event.data = data;
     
     document.dispatchEvent(event);
+  }
+
+  onNavigationStateChange = (state) => {
+    this.navigationState = state;
   }
 
   onDeviceOrientation = (e) => {
@@ -117,20 +139,43 @@ class App extends Component {
     }
   }
 
-  onResize = () => {
+  setIsMobile = () => {
     const { innerWidth: width, innerHeight: height } = window;
     const index = WIDTH_LIST.concat(width).sort((x, y) => x - y).indexOf(width);
 
     this.width = width;
     this.height = height;
 
-    // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
     this.isMobile = IS_MOBILE[WIDTH_LIST[index]] === 'MOBILE';
+    this.widthIndex = index;
+  }
 
-    this.setState({
-      transitionProperty: TRANSITION_PROPERTY[WIDTH_LIST[index]],
-      isMobile: this.isMobile
-    });
+  onResize = () => {
+    
+    if (!this.isResizing) {
+      this.isResizing = true;
+
+      this.setIsMobile();
+      this.createEventEmitter('navigationstatechange', {
+        type: 'close'
+      });
+
+      const transitionProperty = TRANSITION_PROPERTY[WIDTH_LIST[this.widthIndex]];
+
+      if (this.state.transitionProperty !== transitionProperty) {
+        setTimeout(() => {
+          this.createEventEmitter('modechange', {
+            transitionProperty
+          });
+  
+          this.isResizing = false;
+        }, THROTTLE_TIMEOUT);
+      }
+      
+      this.setState({
+        isMobile: this.isMobile
+      });
+    }
   }
 
   onNavigatorClick = () => {
@@ -143,20 +188,6 @@ class App extends Component {
     }
   }
 
-  onMapStyles = (styles) => {
-    if (styles.transform !== undefined) {
-      return {
-        ...styles,
-        transform: `translateX(${styles.transform}%)`,
-        height: '100%'
-      }
-    }
-
-    return {
-      ...styles,
-      height: '100%'
-    }
-  }
 
   appendGoogleMapScript = (onLoaded) => {
     if (this.isGoogleScriptLoaded) {
@@ -176,16 +207,8 @@ class App extends Component {
     this.isGoogleScriptLoaded = true;
   }
 
-  setLogoEvent = (logoEvent = function () {}) => {
-    this.setState({
-      logoEvent: () => {
-        logoEvent();
-
-        this.setState({
-          openNavigations: false,
-        });
-      }
-    });
+  setBackgroundColor = (backgroundColor) => {
+    this.setState({ backgroundColor });
   }
 
   getContactInfomation = () => {
@@ -206,77 +229,6 @@ class App extends Component {
 
   getAboutSwiperOptions = () => {
     return ABOUT_SWIPER_OPTIONS;
-  }
-
-  setNavigationButtonColor = (navigationButtonColor) => {
-    this.setState({
-      navigationButtonColor
-    });
-  }
-
-  setNavigatorColor = (navigatorColor) => {
-    this.setState({
-      navigatorColor
-    }, () => {
-      if (this.navigators) {
-        this.setNavigators(this.navigators);
-      }
-    });
-  }
-
-  setLogoType = (logoType) => {
-    this.setState({
-      logoType
-    });
-  }
-
-  setNavigations = (navigations) => {
-    this.setState({
-      navigations: cloneElement(navigations, {
-        ref: ref => {
-          this.navigations = ref;
-        }
-      })
-    });
-  }
-
-  setBackgroundColor = (backgroundColor) => {
-    this.setState({ backgroundColor });
-  }
-
-  setLogoColor = (logoColor) => {
-    this.setState({ logoColor });
-  }
-
-  setNavigators = (navigators) => {
-    const { navigatorColor } = this.state;
-    this.navigators = navigators;
-
-    this.setState({
-      navigators: navigators.map(nav => {
-        const { position, text, path } = nav;  
-        const classes = classnames({
-          'app__navigator': true,
-          [`app__navigator-${position}`]: true
-        });
-
-        console.log(path)
-  
-        return (
-          <div className={classes} key={position} style={{ color: navigatorColor }}>
-            <Link to={path} onClick={this.onNavigatorClick}>
-              {text}
-            </Link>
-          </div>
-        );
-      })
-    });
-  }
-
-  onNavigationButtonClick = (action) => {
-    this.setState({
-      openNavigations: action === 'open'
-    });
   }
 
   getPartnerList = () => {
@@ -300,135 +252,32 @@ class App extends Component {
     };
   }
 
-  getAnimatedProperty = (type) => {
-    const { transitionProperty } = this.state;
-    const style = {};
-
-    transitionProperty.map(({ name, value }) => {
-      style[name] = value[type];
-    });
-
-    return style;
-  }
-
-  scenesRender () {
-
-    return (
-      <div className="scene">
-        
-        <AnimatedSwitch
-          atEnter={this.getAnimatedProperty('from')}
-          atLeave={this.getAnimatedProperty('from')}
-          atActive={this.getAnimatedProperty('to')}
-          mapStyles={this.onMapStyles}
-          className="scene__animated"
-        >
-          <Switch>
-            <Route path="/" component={Home} exact />
-            <Route path="/project" component={Project} />
-            <Route path="/about" component={About} />
-            <Route path="/contact" component={Contact} />
-            <Route path="/access" component={Access} />
-          </Switch>
-        </AnimatedSwitch>
-      </div>
-    );
-  }
-
   layoutRender () {
-    const { 
-      logoColor, 
-      logoType, 
-      navigations, 
-      openNavigations, 
-      navigators, 
-      backgroundColor,
-      navigationButtonColor,
-      logoEvent
-    } = this.state;
-
-    const classes = classnames({
-      'app__navigation': true,
-      'animated': true,
-      'open': openNavigations
-    });
-
-
+    const { isMobile } = this.state;
 
     return (
       <div className="app__layout" onMouseMove={this.onMouseMove}>
-        <div className="app__header">
-          <div className="app__navigation-clear" onClick={this.onNavigationClear}>
-              <Link to="/">
-                + all projects
-              </Link>        
-          </div>
-          <NavigationButton 
-            color={navigationButtonColor}
-            open={openNavigations}
-            onOpen={() => this.onNavigationButtonClick('open')} 
-            onClose={() => this.onNavigationButtonClick('close')} 
-          />
-          <Logo color={logoColor} type={logoType} clearSelected={this.onNavigationClear} />
-        </div>
-        <div className="app__scene">
-          {this.scenesRender()}
-        </div>
-        <div className="app__footer">
-          <div className="app__copyright">©2018 Tacpoint, Inc.</div>
-        </div>
-
-        <div className="app__outter-navigator">
-          {navigators}
-        </div>
-      
-        <div className={classes} style={{ backgroundColor }}>
-          <div className="app__navigation-content">
-            <div className="scene__grid">
-              <div className="scene__grid-inner">
-                {navigations}
-              </div>
-            </div>
-
-            <div className="app__navigation-clear" onClick={this.onNavigationClear}>
-              <div className="scene__grid">
-                <div className="scene__grid-inner">
-                  <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear" onClick={this.onNavigationClear}>
-                    <Link to="/">
-                      + all projects
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-
-          {navigators}
-        </div>
+        <AppBar />
+        <AppScene />
+        <AppFooter />
+        { !isMobile && <AppNavigator /> }
+        <AppNavigationPanel>  
+          { isMobile && <AppNavigator /> }
+        </AppNavigationPanel>  
       </div>
     );
   }
 
   provideContext = () => {
-    const { state } = this;
+    const context = this;
+    const { 
+      state
+    } = context;
 
     return {
-      application: this,
       get isMobile () {
         return state.isMobile;
       },
-      openNavigator: this.openNavigator,
-      closeNavigator: this.closeNavigator,
-      clearNavigations: this.clearNavigations,
-      setBackgroundColor: this.setBackgroundColor,
-      setLogoColor: this.setLogoColor,
-      setLogoType: this.setLogoType,
-      setNavigationButtonColor: this.setNavigationButtonColor,
-      setNavigations: this.setNavigations,
-      setNavigators: this.setNavigators,
-      setNavigatorColor: this.setNavigatorColor,
-      setLogoEvent: this.setLogoEvent,
       getWindowSize: this.getWindowSize,
       getContactInfomation: this.getContactInfomation,
       getSocialList: this.getSocialList,
@@ -445,14 +294,9 @@ class App extends Component {
   }
 
   render () {
-    const { backgroundColor } = this.state;
-    const style = {
-      backgroundColor
-    };
-
     return (
       <Context.Provider value={this.provideContext()}>
-        <div className="app" style={style}>
+        <div className="app" style={{ backgroundColor: this.state.backgroundColor }}>
           {this.layoutRender()}
         </div>
       </Context.Provider>

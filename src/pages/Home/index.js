@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import qs from 'query-string';
 import Context from '../../Context';
 
 import Scene from '../../components/Scene';
+import AppPage from '../../components/AppPage';
 
 const MOUSE_MOVING_SCALE = 15;
 
 class Navigations extends Component {
+  static contextTypes = {
+    application: PropTypes.object
+  }
+
   state = {
     type: 'categories'
   }
@@ -114,6 +120,7 @@ class Navigations extends Component {
         'scene__category-item_highlight': isInclude,
         'scene__category-item': true
       });
+      
 
       // const clients = (
       //   isInclude ? 
@@ -123,7 +130,7 @@ class Navigations extends Component {
 
       const clients = id;
 
-      const to = `/?${qs.stringify({ ...query, clients })}`;
+      const to = `/?${qs.stringify({ ...query, clients: isInclude ? null : clients })}`;
 
       return (
         <li className={classes} key={id} >
@@ -173,15 +180,32 @@ class Navigations extends Component {
   }
 }
 
-class Home extends Component {
+class Home extends AppPage {
   static backgroundColor = '#000';
-  static logoColor = '#f0f0f0';
-  static navigatorColor = '#f0f0f0';
   static navigationButtonCOlor = '#f0f0f0';
-  static navigators = [
-    { position: 'left', text: 'about', path: '/about' },
-    { position: 'right', text: 'let\'s talk', path: '/contact' }
-  ];
+  static footer = {
+    color: '#ffffff'
+  }
+  static logo = {
+    color: '#f0f0f0',
+    type: 'simple'
+  }
+  static navigators = {
+    color: '#f0f0f0',
+    list: [
+      { position: 'left', text: 'about', path: '/about' },
+      { position: 'right', text: 'let\'s talk', path: '/contact' }
+    ]
+  }
+
+  static navigations = {
+    component: Navigations,
+    props: {}
+  }
+
+  static contextTypes = {
+    application: PropTypes.object
+  }
 
   state = {
     waiting: true,
@@ -196,66 +220,42 @@ class Home extends Component {
     mouseMoveAngle: 0
   }
 
-  componentWillMount () {
-    const { clearNavigations } = this.props;
-
-    clearNavigations();
-  }
-
   componentWillUnmount () {
     const { isMobile } = this.props;
 
     if (isMobile) {
       document.removeEventListener('moving', this.onMoving);
     }
+
+    document.removeEventListener('onClearNavigations', this.onClearNavigations, false);
   }
 
   componentDidMount () {
-    const { location, setNavigations, setNavigators, isMobile, setLogoType, setLogoEvent } = this.props;
-    const { 
-      setBackgroundColor, 
-      setLogoColor, 
-      setNavigatorColor,
-      setNavigationButtonColor
-    } = this.props;
-    const query = qs.parse(location.search);
+    const { query, props } = this;
+    const { application } = this.context;
+    let { categories, clients } = query;
 
-    setBackgroundColor(Home.backgroundColor);
-    setLogoColor(Home.logoColor);
-    setNavigators(Home.navigators);
-    setNavigatorColor(Home.navigatorColor);
-    setNavigationButtonColor(Home.navigationButtonCOlor);
-    setLogoEvent(() => {
-      this.setState({
-        selectedCategories: [],
-        selectedClientIndex: null,
-        selectedClients: null
-      }, () => {
-        setNavigations(this.navigationsRender());
-        setLogoType('full');
-        setLogoColor(Home.logoColor);
-      });
-    });
+    categories = categories || '';
+    clients = clients || null;
 
-    if (!isMobile) {
-      document.addEventListener('moving', this.onMoving, false);
-    }
+    const selectedCategories = categories.length > 0 ? categories.split(',').map(cate => cate - 0) : [];
+    const selectedClients = clients ? clients - 0 : null;
 
     this.setState({
-      selectedCategories: query.categories ? query.categories.split(',').map(cate => cate - 0) : [],
-      // selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
-      selectedClients: query.clients ? query.clients - 0 : null
+      selectedCategories,
+      selectedClients
     }, () => {
-      const { selectedCategories, selectedClients } = this.state;
-      const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+      const isUnselected = 
+        selectedCategories.length === 0 && 
+        selectedClients === null;
+
+      Home.logo.type = isUnselected ? 'full' : 'simple';
 
       const promise = Promise.all([
         this.getProjectList(),
         this.getCategoryList(),
         this.getClientList()
       ]);
-
-      setLogoType(isUnselected ? 'full' : 'simple');
 
       promise
         .then(res => {
@@ -269,9 +269,21 @@ class Home extends Component {
 
           this.setState(state, () => {
             const { selectedClients, clients } = this.state;
-            setNavigations(this.navigationsRender());    
+            const color = (clients[selectedClients] || Home.logo).color;
             
-            setLogoColor(typeof selectedClients === 'number' ? (clients[selectedClients] || { color: 'white' }).color : Home.logoColor);
+            Home.navigations.props = {
+              ...props,
+              ...this.state,
+              onCategoryLinkClick: this.onCategoryLinkClick,
+              onClientLinkClick: this.onClientLinkClick,
+              onClear: this.onClearSelectedList
+            };
+
+            Home.logo.color = color;
+            
+            super.componentDidMount();
+
+            application.changeNavigationButtonState(!isUnselected ? 'open' : 'close');
           });
         })
         .catch(error => {
@@ -279,6 +291,23 @@ class Home extends Component {
             networkError: error
           });
         });
+    });
+
+
+    const { isMobile } = this.props;
+   
+    if (!isMobile) {
+      document.addEventListener('moving', this.onMoving, false);
+    }
+
+    document.addEventListener('clearnavigations', this.onClearNavigations, false);
+  }
+
+  onClearNavigations = () => {
+    this.setState({
+      selectedCategories: [],
+      selectedClientIndex: null,
+      selectedClients: null
     });
   }
 
@@ -304,7 +333,8 @@ class Home extends Component {
 
   onClientLinkClick = (client, index, isInclude) => {
     const { clients } = this.state;
-    const { setNavigations, setLogoColor, setLogoType } = this.props;
+    const { application } = this.context;
+    
 
     this.setState({
       selectedClients: isInclude ? null : client,
@@ -314,41 +344,18 @@ class Home extends Component {
       const { selectedClients, selectedCategories } = this.state;
       const isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-      setLogoType(isUnselected ? 'full' : 'simple');
-      
-      setNavigations(this.navigationsRender());
-      setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
+      application.setLogoStyle({
+        type: isUnselected ? 'full' : 'simple',
+        color: (clients[index] || Home.logo).color
+      });
+
+      application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
+    
     });
   }
 
-  // onClientLinkClick = (client, isInclude) => {
-  //   const { setNavigations } = this.props;
-  //   const { selectedClients } = this.state;
-  //   const index = selectedClients.indexOf(client);
-
-  //   const newSelectedList = selectedClients.slice();
-
-  //   if (isInclude) {
-  //     newSelectedList.splice(index, 1);
-
-  //     this.setState({
-  //       selectedClients: newSelectedList
-  //     }, () => {
-  //       setNavigations(this.navigationsRender());
-  //     });
-  //   } else {
-  //     newSelectedList.push(client);
-
-  //     this.setState({
-  //       selectedClients: newSelectedList
-  //     }, () => {
-  //       setNavigations(this.navigationsRender());
-  //     });
-  //   }
-  // }
-
   onCategoryLinkClick = (category, isInclude) => {
-    const { setNavigations, setLogoType } = this.props;
+    const { application } = this.context;
     const { selectedCategories } = this.state;
     const index = selectedCategories.indexOf(category);
 
@@ -361,11 +368,21 @@ class Home extends Component {
         selectedCategories: newSelectedList
       }, () => {
         const { selectedClients, selectedCategories } = this.state;
-        const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+        const isUnselected = 
+          selectedCategories.length === 0 && 
+          selectedClients === null;
 
-        setLogoType(isUnselected ? 'full' : 'simple');
+        application.setLogoStyle({
+          type: isUnselected ? 'full' : 'simple',
+        });
 
-        setNavigations(this.navigationsRender());
+        if (selectedClients === null) {
+          application.setLogoStyle({
+            color: Home.logo.color
+          });
+        }
+
+        application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
       });
     } else {
       newSelectedList.push(category);
@@ -374,11 +391,21 @@ class Home extends Component {
         selectedCategories: newSelectedList
       }, () => {
         const { selectedClients, selectedCategories } = this.state;
-        const isUnselected = selectedCategories.length === 0 && selectedClients === null;
+        const isUnselected = 
+          selectedCategories.length === 0 && 
+          selectedClients === null;
 
-        setLogoType(isUnselected ? 'full' : 'simple');
+        application.setLogoStyle({
+          type: isUnselected ? 'full' : 'simple',
+        });
 
-        setNavigations(this.navigationsRender());
+        if (selectedClients === null) {
+          application.setLogoStyle({
+            color: Home.logo.color
+          });
+        }
+
+        application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
       });
     }
   }

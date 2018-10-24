@@ -2,20 +2,30 @@ import React from 'react';
 import ReactSwipe from 'react-swipe';
 
 import Scene from '../../components/Scene';
+import AppPage from '../../components/AppPage';
 import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 
 const SCALE = 2.5;
 
-class About extends React.Component {
+class About extends AppPage {
   static backgroundColor = '#f0f0f0';
-  static logoColor = '#1a1a1a';
-  static navigatorColor = '#1a1a1a';
+  static logo = {
+    opacity: 1,
+    color: '#1a1a1a',
+    type: 'simple'
+  }
   static navigationButtonColor = '#1a1a1a';
-  static navigators = [
-    { position: 'left', text: 'projects', path: '/' },
-    { position: 'right', text: 'let’s talk', path: '/contact' }
-  ];
+  static footer = {
+    color: '#1a1a1a'
+  }
+  static navigators = {
+    color: '#1a1a1a',
+    data: [
+      { position: 'left', text: 'projects', path: '/' },
+      { position: 'right', text: 'let’s talk', path: '/contact' }
+    ]
+  }
 
   state = {
     waiting: true,
@@ -27,26 +37,8 @@ class About extends React.Component {
   }
 
   componentDidMount () {
-    const { 
-      setBackgroundColor, 
-      setLogoColor, 
-      setNavigators, 
-      setNavigatorColor,
-      setNavigationButtonColor,
-      setNavigations
-    } = this.props;
-
-    setBackgroundColor(About.backgroundColor);
-    setLogoColor(About.logoColor);
-    setNavigators(About.navigators);
-    setNavigatorColor(About.navigatorColor);
-    setNavigations(
-      <Context.Consumer>
-        {ctx => <SimpleNavigation {...ctx} />}
-      </Context.Consumer>
-    );
-    setNavigationButtonColor(About.navigationButtonColor);
-
+    super.componentDidMount();
+    
     const promise = Promise.all([
       this.getCategoryList(),
       this.getClientList()
@@ -125,8 +117,6 @@ class About extends React.Component {
       scrollTop: top,
       scrollHeight: height
     } = document.documentElement;
-
-
 
     return { 
       top: top === 0 ? document.body.scrollTop : top, 
@@ -361,7 +351,7 @@ class About extends React.Component {
   }
 
   render () {
-
+    console.log(this.props);
     return (
       <Scene waiting={this.waiting} name="about">
         {this.headerRender()}

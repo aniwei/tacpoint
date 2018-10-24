@@ -39,6 +39,7 @@
   bottom: 20px;
   left: 0;
   right: 0;
+  font-weight: lighter;
 }
 
 .app__logo {
@@ -59,9 +60,8 @@
   text-align: center;
   transform: rotate(180deg) translateY(100%);
   opacity: 0.5;
-  font-family: SourceSansPro;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: lighter;
   letter-spacing: 3.4px;
   color: #1a1a1a;
 }
@@ -202,7 +202,7 @@
   }
 
   .app__navigation.open {
-    opacity: 0.95;
+    animation: open 1s;
     display: block;
   }
 
@@ -255,5 +255,25 @@
 
   .scene-home {
     height: auto!important;
+  }
+}
+
+@-webkit-keyframes open {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.95;
+  }
+}
+
+@keyframes open {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.95;
   }
 }

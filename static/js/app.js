@@ -46,8 +46,6 @@
 
 	'use strict';
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	__webpack_require__(1);
@@ -60,41 +58,37 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _classnames2 = __webpack_require__(185);
+	var _propTypes = __webpack_require__(189);
 
-	var _classnames3 = _interopRequireDefault(_classnames2);
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _classnames = __webpack_require__(185);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
 
 	var _reactRouterDom = __webpack_require__(186);
 
 	var _reactRouterTransition = __webpack_require__(229);
 
-	var _Project = __webpack_require__(230);
+	var _AppBar = __webpack_require__(256);
 
-	var _Project2 = _interopRequireDefault(_Project);
+	var _AppBar2 = _interopRequireDefault(_AppBar);
 
-	var _Home = __webpack_require__(248);
+	var _AppFooter = __webpack_require__(257);
 
-	var _Home2 = _interopRequireDefault(_Home);
+	var _AppFooter2 = _interopRequireDefault(_AppFooter);
 
-	var _Contact = __webpack_require__(249);
+	var _AppNavigator = __webpack_require__(258);
 
-	var _Contact2 = _interopRequireDefault(_Contact);
+	var _AppNavigator2 = _interopRequireDefault(_AppNavigator);
 
-	var _About = __webpack_require__(250);
+	var _AppNavigationPanel = __webpack_require__(259);
 
-	var _About2 = _interopRequireDefault(_About);
+	var _AppNavigationPanel2 = _interopRequireDefault(_AppNavigationPanel);
 
-	var _Access = __webpack_require__(253);
+	var _AppScene = __webpack_require__(260);
 
-	var _Access2 = _interopRequireDefault(_Access);
-
-	var _Logo = __webpack_require__(254);
-
-	var _Logo2 = _interopRequireDefault(_Logo);
-
-	var _NavigationButton = __webpack_require__(255);
-
-	var _NavigationButton2 = _interopRequireDefault(_NavigationButton);
+	var _AppScene2 = _interopRequireDefault(_AppScene);
 
 	var _Context = __webpack_require__(242);
 
@@ -104,8 +98,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -113,47 +105,37 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var THROTTLE_TIMEOUT = 50;
+	var noop = function noop() {};
 
 	var App = function (_Component) {
 	  _inherits(App, _Component);
 
 	  function App() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
 	    _classCallCheck(this, App);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
+	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = App.__proto__ || Object.getPrototypeOf(App)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	      openNavigations: false,
-	      navigations: null,
-	      navigators: [],
-	      outterNavigators: [],
-	      backgroundColor: _contants.COLORS.BLACK,
-	      logoColor: _contants.COLORS.WHITE,
-	      navigatorColor: _contants.COLORS.WHITE,
-	      navigationButtonColor: _contants.COLORS.WHITE,
-	      logoType: 'simple',
-	      logoEvent: function logoEvent() {},
-	      transitionProperty: _contants.TRANSITION_PROPERTY['1024'],
-	      isMobile: false
-	    }, _this.clearNavigations = function () {
+	    _this.clearNavigations = function () {
 	      _this.setState({
 	        navigations: null,
 	        openNavigations: false
 	      });
-	    }, _this.createEventEmitter = function (type, data) {
+	    };
+
+	    _this.createEventEmitter = function (type, data) {
 	      var event = document.createEvent('HTMLEvents');
 
 	      event.initEvent(type, true, true);
 	      event.data = data;
 
 	      document.dispatchEvent(event);
-	    }, _this.onDeviceOrientation = function (e) {
+	    };
+
+	    _this.onNavigationStateChange = function (state) {
+	      _this.navigationState = state;
+	    };
+
+	    _this.onDeviceOrientation = function (e) {
 	      var alpha = e.alpha,
 	          beta = e.beta,
 	          gamma = e.gamma;
@@ -172,7 +154,9 @@
 	          }, THROTTLE_TIMEOUT);
 	        }
 	      }
-	    }, _this.onMouseMove = function (e) {
+	    };
+
+	    _this.onMouseMove = function (e) {
 	      var isMobile = _this.state.isMobile;
 	      var x = e.pageX,
 	          y = e.pageY;
@@ -190,7 +174,9 @@
 	          }, THROTTLE_TIMEOUT);
 	        }
 	      }
-	    }, _this.onResize = function () {
+	    };
+
+	    _this.setIsMobile = function () {
 	      var _window = window,
 	          width = _window.innerWidth,
 	          height = _window.innerHeight;
@@ -202,31 +188,49 @@
 	      _this.width = width;
 	      _this.height = height;
 
-	      // console.log(TRANSITION_PROPERTY[WIDTH_LIST[index]])
 	      _this.isMobile = _contants.IS_MOBILE[_contants.WIDTH_LIST[index]] === 'MOBILE';
+	      _this.widthIndex = index;
+	    };
 
-	      _this.setState({
-	        transitionProperty: _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[index]],
-	        isMobile: _this.isMobile
-	      });
-	    }, _this.onNavigatorClick = function () {
+	    _this.onResize = function () {
+
+	      if (!_this.isResizing) {
+	        _this.isResizing = true;
+
+	        _this.setIsMobile();
+	        _this.createEventEmitter('navigationstatechange', {
+	          type: 'close'
+	        });
+
+	        var transitionProperty = _contants.TRANSITION_PROPERTY[_contants.WIDTH_LIST[_this.widthIndex]];
+
+	        if (_this.state.transitionProperty !== transitionProperty) {
+	          setTimeout(function () {
+	            _this.createEventEmitter('modechange', {
+	              transitionProperty: transitionProperty
+	            });
+
+	            _this.isResizing = false;
+	          }, THROTTLE_TIMEOUT);
+	        }
+
+	        _this.setState({
+	          isMobile: _this.isMobile
+	        });
+	      }
+	    };
+
+	    _this.onNavigatorClick = function () {
 	      _this.clearNavigations();
-	    }, _this.onNavigationClear = function () {
+	    };
+
+	    _this.onNavigationClear = function () {
 	      if (_this.navigations) {
 	        _this.navigations.clear();
 	      }
-	    }, _this.onMapStyles = function (styles) {
-	      if (styles.transform !== undefined) {
-	        return _extends({}, styles, {
-	          transform: 'translateX(' + styles.transform + '%)',
-	          height: '100%'
-	        });
-	      }
+	    };
 
-	      return _extends({}, styles, {
-	        height: '100%'
-	      });
-	    }, _this.appendGoogleMapScript = function (onLoaded) {
+	    _this.appendGoogleMapScript = function (onLoaded) {
 	      if (_this.isGoogleScriptLoaded) {
 	        return onLoaded();
 	      }
@@ -242,93 +246,41 @@
 	      document.body.appendChild(script);
 
 	      _this.isGoogleScriptLoaded = true;
-	    }, _this.setLogoEvent = function () {
-	      var _logoEvent = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : function () {};
+	    };
 
-	      _this.setState({
-	        logoEvent: function logoEvent() {
-	          _logoEvent();
-
-	          _this.setState({
-	            openNavigations: false
-	          });
-	        }
-	      });
-	    }, _this.getContactInfomation = function () {
-	      return _contants.CONTACT_INFORMATION;
-	    }, _this.getSocialList = function () {
-	      return _contants.SOCIAL_LIST;
-	    }, _this.getAboutSwiperList = function () {
-	      return _contants.ABOUT_SWIPER_LIST;
-	    }, _this.getProjectSwiperOptions = function () {
-	      return _contants.PROJECT_SWIPER_OPTIONS;
-	    }, _this.getAboutSwiperOptions = function () {
-	      return _contants.ABOUT_SWIPER_OPTIONS;
-	    }, _this.setNavigationButtonColor = function (navigationButtonColor) {
-	      _this.setState({
-	        navigationButtonColor: navigationButtonColor
-	      });
-	    }, _this.setNavigatorColor = function (navigatorColor) {
-	      _this.setState({
-	        navigatorColor: navigatorColor
-	      }, function () {
-	        if (_this.navigators) {
-	          _this.setNavigators(_this.navigators);
-	        }
-	      });
-	    }, _this.setLogoType = function (logoType) {
-	      _this.setState({
-	        logoType: logoType
-	      });
-	    }, _this.setNavigations = function (navigations) {
-	      _this.setState({
-	        navigations: (0, _react.cloneElement)(navigations, {
-	          ref: function ref(_ref2) {
-	            _this.navigations = _ref2;
-	          }
-	        })
-	      });
-	    }, _this.setBackgroundColor = function (backgroundColor) {
+	    _this.setBackgroundColor = function (backgroundColor) {
 	      _this.setState({ backgroundColor: backgroundColor });
-	    }, _this.setLogoColor = function (logoColor) {
-	      _this.setState({ logoColor: logoColor });
-	    }, _this.setNavigators = function (navigators) {
-	      var navigatorColor = _this.state.navigatorColor;
+	    };
 
-	      _this.navigators = navigators;
+	    _this.getContactInfomation = function () {
+	      return _contants.CONTACT_INFORMATION;
+	    };
 
-	      _this.setState({
-	        navigators: navigators.map(function (nav) {
-	          var position = nav.position,
-	              text = nav.text,
-	              path = nav.path;
+	    _this.getSocialList = function () {
+	      return _contants.SOCIAL_LIST;
+	    };
 
-	          var classes = (0, _classnames3.default)(_defineProperty({
-	            'app__navigator': true
-	          }, 'app__navigator-' + position, true));
+	    _this.getAboutSwiperList = function () {
+	      return _contants.ABOUT_SWIPER_LIST;
+	    };
 
-	          console.log(path);
+	    _this.getProjectSwiperOptions = function () {
+	      return _contants.PROJECT_SWIPER_OPTIONS;
+	    };
 
-	          return _react2.default.createElement(
-	            'div',
-	            { className: classes, key: position, style: { color: navigatorColor } },
-	            _react2.default.createElement(
-	              _reactRouterDom.Link,
-	              { to: path, onClick: _this.onNavigatorClick },
-	              text
-	            )
-	          );
-	        })
-	      });
-	    }, _this.onNavigationButtonClick = function (action) {
-	      _this.setState({
-	        openNavigations: action === 'open'
-	      });
-	    }, _this.getPartnerList = function () {
+	    _this.getAboutSwiperOptions = function () {
+	      return _contants.ABOUT_SWIPER_OPTIONS;
+	    };
+
+	    _this.getPartnerList = function () {
 	      return _contants.PARTNER_LIST;
-	    }, _this.getFormInputList = function () {
+	    };
+
+	    _this.getFormInputList = function () {
 	      return _contants.FORM_INPUT_LIST;
-	    }, _this.getWindowSize = function () {
+	    };
+
+	    _this.getWindowSize = function () {
 	      var self = _this;
 
 	      return {
@@ -339,40 +291,17 @@
 	          return self.width;
 	        }
 	      };
-	    }, _this.getAnimatedProperty = function (type) {
-	      var transitionProperty = _this.state.transitionProperty;
+	    };
 
-	      var style = {};
-
-	      transitionProperty.map(function (_ref3) {
-	        var name = _ref3.name,
-	            value = _ref3.value;
-
-	        style[name] = value[type];
-	      });
-
-	      return style;
-	    }, _this.provideContext = function () {
-	      var _this2 = _this,
-	          state = _this2.state;
+	    _this.provideContext = function () {
+	      var context = _this;
+	      var state = context.state;
 
 
 	      return {
-	        application: _this,
 	        get isMobile() {
 	          return state.isMobile;
 	        },
-	        openNavigator: _this.openNavigator,
-	        closeNavigator: _this.closeNavigator,
-	        clearNavigations: _this.clearNavigations,
-	        setBackgroundColor: _this.setBackgroundColor,
-	        setLogoColor: _this.setLogoColor,
-	        setLogoType: _this.setLogoType,
-	        setNavigationButtonColor: _this.setNavigationButtonColor,
-	        setNavigations: _this.setNavigations,
-	        setNavigators: _this.setNavigators,
-	        setNavigatorColor: _this.setNavigatorColor,
-	        setLogoEvent: _this.setLogoEvent,
 	        getWindowSize: _this.getWindowSize,
 	        getContactInfomation: _this.getContactInfomation,
 	        getSocialList: _this.getSocialList,
@@ -382,17 +311,36 @@
 	        getAboutSwiperOptions: _this.getAboutSwiperOptions,
 	        getProjectSwiperOptions: _this.getProjectSwiperOptions
 	      };
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    };
+
+	    _this.setIsMobile();
+
+	    _this.state = {
+	      isMobile: _this.isMobile
+	    };
+
+	    App.application = _this;
+	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'getChildContext',
+	    value: function getChildContext() {
+	      return {
+	        application: this
+	      };
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      window.addEventListener('resize', this.onResize);
 	      this.onResize();
 
+	      document.addEventListener('navigationstatechange', this.onNavigationStateChange, false);
+
 	      if (this.isMobile && window.DeviceOrientationEvent) {
 	        window.addEventListener('deviceorientation', this.onDeviceOrientation, false);
+	        // window.addEventListener('scroll', this.onScroll, false);
 	      }
 	    }
 	  }, {
@@ -400,162 +348,42 @@
 	    value: function componentWillUnmount() {
 	      window.removeEventListener('resize', this.onScroll);
 
+	      document.removeEventListener('navigationstatechange', this.onNavigationStateChange, false);
+
 	      if (this.isMobile) {
 	        window.removeEventListener('deviceorientation', this.onDeviceOrientation, false);
+	        // window.removeEventListener('scroll', this.onScroll, false);
 	      }
-	    }
-	  }, {
-	    key: 'scenesRender',
-	    value: function scenesRender() {
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'scene' },
-	        _react2.default.createElement(
-	          _reactRouterTransition.AnimatedSwitch,
-	          {
-	            atEnter: this.getAnimatedProperty('from'),
-	            atLeave: this.getAnimatedProperty('from'),
-	            atActive: this.getAnimatedProperty('to'),
-	            mapStyles: this.onMapStyles,
-	            className: 'scene__animated'
-	          },
-	          _react2.default.createElement(
-	            _reactRouterDom.Switch,
-	            null,
-	            _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _Home2.default, exact: true }),
-	            _react2.default.createElement(_reactRouterDom.Route, { path: '/project', component: _Project2.default }),
-	            _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _About2.default }),
-	            _react2.default.createElement(_reactRouterDom.Route, { path: '/contact', component: _Contact2.default }),
-	            _react2.default.createElement(_reactRouterDom.Route, { path: '/access', component: _Access2.default })
-	          )
-	        )
-	      );
 	    }
 	  }, {
 	    key: 'layoutRender',
 	    value: function layoutRender() {
-	      var _this3 = this;
+	      var isMobile = this.state.isMobile;
 
-	      var _state = this.state,
-	          logoColor = _state.logoColor,
-	          logoType = _state.logoType,
-	          navigations = _state.navigations,
-	          openNavigations = _state.openNavigations,
-	          navigators = _state.navigators,
-	          backgroundColor = _state.backgroundColor,
-	          navigationButtonColor = _state.navigationButtonColor,
-	          logoEvent = _state.logoEvent;
-
-
-	      var classes = (0, _classnames3.default)({
-	        'app__navigation': true,
-	        'animated': true,
-	        'open': openNavigations
-	      });
 
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'app__layout', onMouseMove: this.onMouseMove },
+	        _react2.default.createElement(_AppBar2.default, null),
+	        _react2.default.createElement(_AppScene2.default, null),
+	        _react2.default.createElement(_AppFooter2.default, null),
+	        !isMobile && _react2.default.createElement(_AppNavigator2.default, null),
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'app__header' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'app__navigation-clear', onClick: this.onNavigationClear },
-	            _react2.default.createElement(
-	              _reactRouterDom.Link,
-	              { to: '/' },
-	              '+ all projects'
-	            )
-	          ),
-	          _react2.default.createElement(_NavigationButton2.default, {
-	            color: navigationButtonColor,
-	            open: openNavigations,
-	            onOpen: function onOpen() {
-	              return _this3.onNavigationButtonClick('open');
-	            },
-	            onClose: function onClose() {
-	              return _this3.onNavigationButtonClick('close');
-	            }
-	          }),
-	          _react2.default.createElement(_Logo2.default, { color: logoColor, type: logoType, clearSelected: this.onNavigationClear })
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'app__scene' },
-	          this.scenesRender()
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'app__footer' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'app__copyright' },
-	            '\xA92018 Tacpoint, Inc.'
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'app__outter-navigator' },
-	          navigators
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: classes, style: { backgroundColor: backgroundColor } },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'app__navigation-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'scene__grid' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'scene__grid-inner' },
-	                navigations
-	              )
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'app__navigation-clear', onClick: this.onNavigationClear },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'scene__grid' },
-	                _react2.default.createElement(
-	                  'div',
-	                  { className: 'scene__grid-inner' },
-	                  _react2.default.createElement(
-	                    'div',
-	                    { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear', onClick: this.onNavigationClear },
-	                    _react2.default.createElement(
-	                      _reactRouterDom.Link,
-	                      { to: '/' },
-	                      '+ all projects'
-	                    )
-	                  )
-	                )
-	              )
-	            )
-	          ),
-	          navigators
+	          _AppNavigationPanel2.default,
+	          null,
+	          isMobile && _react2.default.createElement(_AppNavigator2.default, null)
 	        )
 	      );
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var backgroundColor = this.state.backgroundColor;
-
-	      var style = {
-	        backgroundColor: backgroundColor
-	      };
-
 	      return _react2.default.createElement(
 	        _Context2.default.Provider,
 	        { value: this.provideContext() },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'app', style: style },
+	          { className: 'app', style: { backgroundColor: this.state.backgroundColor } },
 	          this.layoutRender()
 	        )
 	      );
@@ -569,6 +397,15 @@
 
 	  return App;
 	}(_react.Component);
+
+	App.sharedApplication = function () {
+	  return App.application;
+	};
+
+	App.childContextTypes = {
+	  application: _propTypes2.default.object
+	};
+
 
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRouterDom.HashRouter,
@@ -31750,6 +31587,8 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
+	var _contants = __webpack_require__(247);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31766,33 +31605,35 @@
 	var SimpleNavigation = function (_Component) {
 	  _inherits(SimpleNavigation, _Component);
 
-	  function SimpleNavigation() {
-	    var _ref;
-
-	    var _temp, _this, _ret;
-
+	  function SimpleNavigation(props, context) {
 	    _classCallCheck(this, SimpleNavigation);
 
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
+	    var _this = _possibleConstructorReturn(this, (SimpleNavigation.__proto__ || Object.getPrototypeOf(SimpleNavigation)).call(this, props, context));
 
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = SimpleNavigation.__proto__ || Object.getPrototypeOf(SimpleNavigation)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-	      alpha: LINE_INIT_ANGLE,
-	      beta: 0,
-	      gamma: 0
-	    }, _this.onOrientation = function (_ref2) {
-	      var _ref2$data = _ref2.data,
-	          alpha = _ref2$data.alpha,
-	          beta = _ref2$data.beta,
-	          gamma = _ref2$data.gamma;
+	    _this.onOrientation = function (_ref) {
+	      var _ref$data = _ref.data,
+	          alpha = _ref$data.alpha,
+	          beta = _ref$data.beta,
+	          gamma = _ref$data.gamma;
 
 	      _this.setState({
 	        alpha: LINE_INIT_ANGLE + parseInt(alpha * ANGLE_SCALE),
 	        beta: parseInt(ANGLE_SCALE * beta),
 	        gamma: parseInt(ANGLE_SCALE * gamma)
 	      });
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	    };
+
+	    _this.state = {
+	      alpha: LINE_INIT_ANGLE,
+	      beta: 0,
+	      gamma: 0,
+	      color: props.color || _contants.COLORS.WHITE
+	    };
+
+	    context.application.setSimpleNavigationLineColor = function (color) {
+	      _this.setState({ color: color });
+	    };
+	    return _this;
 	  }
 
 	  _createClass(SimpleNavigation, [{
@@ -31821,10 +31662,9 @@
 	      var _state = this.state,
 	          alpha = _state.alpha,
 	          beta = _state.beta,
-	          gamma = _state.gamma;
-	      var _props = this.props,
-	          backgroundColor = _props.backgroundColor,
-	          lineColor = _props.lineColor;
+	          gamma = _state.gamma,
+	          color = _state.color;
+	      var backgroundColor = this.props.backgroundColor;
 
 	      var style = { backgroundColor: backgroundColor };
 	      var transform = 'rotateZ(' + beta + 'deg)';
@@ -31832,7 +31672,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'app__simple-navigation', style: style },
-	        _react2.default.createElement('span', { className: 'app__simple-navigation-line', style: { borderColor: lineColor, transform: transform } }),
+	        _react2.default.createElement('span', { className: 'app__simple-navigation-line', style: { backgroundColor: color, transform: transform } }),
 	        this.props.children
 	      );
 	    }
@@ -31841,6 +31681,9 @@
 	  return SimpleNavigation;
 	}(_react.Component);
 
+	SimpleNavigation.contextTypes = {
+	  application: _propTypes2.default.object
+	};
 		exports.default = SimpleNavigation;
 
 /***/ }),
@@ -40791,6 +40634,8 @@
 	  value: true
 	});
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -40802,6 +40647,10 @@
 	var _classnames = __webpack_require__(185);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _reactRouterDom = __webpack_require__(186);
 
@@ -40816,6 +40665,10 @@
 	var _Scene = __webpack_require__(234);
 
 	var _Scene2 = _interopRequireDefault(_Scene);
+
+	var _AppPage2 = __webpack_require__(261);
+
+	var _AppPage3 = _interopRequireDefault(_AppPage2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40958,7 +40811,7 @@
 
 	        var clients = id;
 
-	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { clients: clients }));
+	        var to = '/?' + _queryString2.default.stringify(_extends({}, query, { clients: isInclude ? null : clients }));
 
 	        return _react2.default.createElement(
 	          'li',
@@ -41032,6 +40885,10 @@
 	  return Navigations;
 	}(_react.Component);
 
+	Navigations.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+
 	var _initialiseProps = function _initialiseProps() {
 	  var _this8 = this;
 
@@ -41067,8 +40924,8 @@
 	  };
 	};
 
-	var Home = function (_Component2) {
-	  _inherits(Home, _Component2);
+	var Home = function (_AppPage) {
+	  _inherits(Home, _AppPage);
 
 	  function Home() {
 	    var _ref2;
@@ -41092,6 +40949,12 @@
 	      selectedClientIndex: 0,
 	      lineAngle: 135,
 	      mouseMoveAngle: 0
+	    }, _this4.onClearNavigations = function () {
+	      _this4.setState({
+	        selectedCategories: [],
+	        selectedClientIndex: null,
+	        selectedClients: null
+	      });
 	    }, _this4.onMoving = function (_ref3) {
 	      var _ref3$data = _ref3.data,
 	          x = _ref3$data.x,
@@ -41115,10 +40978,7 @@
 	      });
 	    }, _this4.onClientLinkClick = function (client, index, isInclude) {
 	      var clients = _this4.state.clients;
-	      var _this4$props = _this4.props,
-	          setNavigations = _this4$props.setNavigations,
-	          setLogoColor = _this4$props.setLogoColor,
-	          setLogoType = _this4$props.setLogoType;
+	      var application = _this4.context.application;
 
 
 	      _this4.setState({
@@ -41132,15 +40992,15 @@
 
 	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	        setLogoType(isUnselected ? 'full' : 'simple');
+	        application.setLogoStyle({
+	          type: isUnselected ? 'full' : 'simple',
+	          color: (clients[index] || Home.logo).color
+	        });
 
-	        setNavigations(_this4.navigationsRender());
-	        setLogoColor(typeof selectedClients === 'number' ? (clients[index] || { color: 'white' }).color : Home.logoColor);
+	        application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	      });
 	    }, _this4.onCategoryLinkClick = function (category, isInclude) {
-	      var _this4$props2 = _this4.props,
-	          setNavigations = _this4$props2.setNavigations,
-	          setLogoType = _this4$props2.setLogoType;
+	      var application = _this4.context.application;
 	      var selectedCategories = _this4.state.selectedCategories;
 
 	      var index = selectedCategories.indexOf(category);
@@ -41159,9 +41019,17 @@
 
 	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	          setLogoType(isUnselected ? 'full' : 'simple');
+	          application.setLogoStyle({
+	            type: isUnselected ? 'full' : 'simple'
+	          });
 
-	          setNavigations(_this4.navigationsRender());
+	          if (selectedClients === null) {
+	            application.setLogoStyle({
+	              color: Home.logo.color
+	            });
+	          }
+
+	          application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	        });
 	      } else {
 	        newSelectedList.push(category);
@@ -41175,9 +41043,17 @@
 
 	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	          setLogoType(isUnselected ? 'full' : 'simple');
+	          application.setLogoStyle({
+	            type: isUnselected ? 'full' : 'simple'
+	          });
 
-	          setNavigations(_this4.navigationsRender());
+	          if (selectedClients === null) {
+	            application.setLogoStyle({
+	              color: Home.logo.color
+	            });
+	          }
+
+	          application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	        });
 	      }
 	    }, _this4.onProjectMouseEnter = function (project, e) {
@@ -41194,14 +41070,6 @@
 	  }
 
 	  _createClass(Home, [{
-	    key: 'componentWillMount',
-	    value: function componentWillMount() {
-	      var clearNavigations = this.props.clearNavigations;
-
-
-	      clearNavigations();
-	    }
-	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      var isMobile = this.props.isMobile;
@@ -41210,64 +41078,38 @@
 	      if (isMobile) {
 	        document.removeEventListener('moving', this.onMoving);
 	      }
+
+	      document.removeEventListener('onClearNavigations', this.onClearNavigations, false);
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this5 = this;
 
-	      var _props3 = this.props,
-	          location = _props3.location,
-	          setNavigations = _props3.setNavigations,
-	          setNavigators = _props3.setNavigators,
-	          isMobile = _props3.isMobile,
-	          setLogoType = _props3.setLogoType,
-	          setLogoEvent = _props3.setLogoEvent;
-	      var _props4 = this.props,
-	          setBackgroundColor = _props4.setBackgroundColor,
-	          setLogoColor = _props4.setLogoColor,
-	          setNavigatorColor = _props4.setNavigatorColor,
-	          setNavigationButtonColor = _props4.setNavigationButtonColor;
+	      var query = this.query,
+	          props = this.props;
+	      var application = this.context.application;
+	      var categories = query.categories,
+	          clients = query.clients;
 
-	      var query = _queryString2.default.parse(location.search);
 
-	      setBackgroundColor(Home.backgroundColor);
-	      setLogoColor(Home.logoColor);
-	      setNavigators(Home.navigators);
-	      setNavigatorColor(Home.navigatorColor);
-	      setNavigationButtonColor(Home.navigationButtonCOlor);
-	      setLogoEvent(function () {
-	        _this5.setState({
-	          selectedCategories: [],
-	          selectedClientIndex: null,
-	          selectedClients: null
-	        }, function () {
-	          setNavigations(_this5.navigationsRender());
-	          setLogoType('full');
-	          setLogoColor(Home.logoColor);
-	        });
-	      });
+	      categories = categories || '';
+	      clients = clients || null;
 
-	      if (!isMobile) {
-	        document.addEventListener('moving', this.onMoving, false);
-	      }
+	      var selectedCategories = categories.length > 0 ? categories.split(',').map(function (cate) {
+	        return cate - 0;
+	      }) : [];
+	      var selectedClients = clients ? clients - 0 : null;
 
 	      this.setState({
-	        selectedCategories: query.categories ? query.categories.split(',').map(function (cate) {
-	          return cate - 0;
-	        }) : [],
-	        // selectedClients: query.clients ? query.clients.split(',').map(client => client - 0) : []
-	        selectedClients: query.clients ? query.clients - 0 : null
+	        selectedCategories: selectedCategories,
+	        selectedClients: selectedClients
 	      }, function () {
-	        var _state = _this5.state,
-	            selectedCategories = _state.selectedCategories,
-	            selectedClients = _state.selectedClients;
-
 	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	        var promise = Promise.all([_this5.getProjectList(), _this5.getCategoryList(), _this5.getClientList()]);
+	        Home.logo.type = isUnselected ? 'full' : 'simple';
 
-	        setLogoType(isUnselected ? 'full' : 'simple');
+	        var promise = Promise.all([_this5.getProjectList(), _this5.getCategoryList(), _this5.getClientList()]);
 
 	        promise.then(function (res) {
 	          var state = _extends({
@@ -41276,13 +41118,23 @@
 	          }, res[0], res[1], res[2]);
 
 	          _this5.setState(state, function () {
-	            var _state2 = _this5.state,
-	                selectedClients = _state2.selectedClients,
-	                clients = _state2.clients;
+	            var _state = _this5.state,
+	                selectedClients = _state.selectedClients,
+	                clients = _state.clients;
 
-	            setNavigations(_this5.navigationsRender());
+	            var color = (clients[selectedClients] || Home.logo).color;
 
-	            setLogoColor(typeof selectedClients === 'number' ? (clients[selectedClients] || { color: 'white' }).color : Home.logoColor);
+	            Home.navigations.props = _extends({}, props, _this5.state, {
+	              onCategoryLinkClick: _this5.onCategoryLinkClick,
+	              onClientLinkClick: _this5.onClientLinkClick,
+	              onClear: _this5.onClearSelectedList
+	            });
+
+	            Home.logo.color = color;
+
+	            _get(Home.prototype.__proto__ || Object.getPrototypeOf(Home.prototype), 'componentDidMount', _this5).call(_this5);
+
+	            application.changeNavigationButtonState(!isUnselected ? 'open' : 'close');
 	          });
 	        }).catch(function (error) {
 	          _this5.setState({
@@ -41290,34 +41142,16 @@
 	          });
 	        });
 	      });
+
+	      var isMobile = this.props.isMobile;
+
+
+	      if (!isMobile) {
+	        document.addEventListener('moving', this.onMoving, false);
+	      }
+
+	      document.addEventListener('clearnavigations', this.onClearNavigations, false);
 	    }
-
-	    // onClientLinkClick = (client, isInclude) => {
-	    //   const { setNavigations } = this.props;
-	    //   const { selectedClients } = this.state;
-	    //   const index = selectedClients.indexOf(client);
-
-	    //   const newSelectedList = selectedClients.slice();
-
-	    //   if (isInclude) {
-	    //     newSelectedList.splice(index, 1);
-
-	    //     this.setState({
-	    //       selectedClients: newSelectedList
-	    //     }, () => {
-	    //       setNavigations(this.navigationsRender());
-	    //     });
-	    //   } else {
-	    //     newSelectedList.push(client);
-
-	    //     this.setState({
-	    //       selectedClients: newSelectedList
-	    //     }, () => {
-	    //       setNavigations(this.navigationsRender());
-	    //     });
-	    //   }
-	    // }
-
 	  }, {
 	    key: 'getProjectList',
 	    value: function getProjectList() {
@@ -41380,10 +41214,10 @@
 	    value: function projectsRender() {
 	      var _this6 = this;
 
-	      var _state3 = this.state,
-	          projects = _state3.projects,
-	          selectedCategories = _state3.selectedCategories,
-	          selectedClients = _state3.selectedClients;
+	      var _state2 = this.state,
+	          projects = _state2.projects,
+	          selectedCategories = _state2.selectedCategories,
+	          selectedClients = _state2.selectedClients;
 
 
 	      var projectElements = projects.map(function (project, index) {
@@ -41482,12 +41316,12 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state4 = this.state,
-	          selectedClients = _state4.selectedClients,
-	          selectedClientIndex = _state4.selectedClientIndex,
-	          clients = _state4.clients,
-	          lineAngle = _state4.lineAngle,
-	          mouseMoveAngle = _state4.mouseMoveAngle;
+	      var _state3 = this.state,
+	          selectedClients = _state3.selectedClients,
+	          selectedClientIndex = _state3.selectedClientIndex,
+	          clients = _state3.clients,
+	          lineAngle = _state3.lineAngle,
+	          mouseMoveAngle = _state3.mouseMoveAngle;
 
 	      var style = {
 	        transform: 'rotate(' + (lineAngle + mouseMoveAngle) + 'deg)',
@@ -41512,13 +41346,28 @@
 	  }]);
 
 	  return Home;
-	}(_react.Component);
+	}(_AppPage3.default);
 
 	Home.backgroundColor = '#000';
-	Home.logoColor = '#f0f0f0';
-	Home.navigatorColor = '#f0f0f0';
 	Home.navigationButtonCOlor = '#f0f0f0';
-	Home.navigators = [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }];
+	Home.footer = {
+	  color: '#ffffff'
+	};
+	Home.logo = {
+	  color: '#f0f0f0',
+	  type: 'simple'
+	};
+	Home.navigators = {
+	  color: '#f0f0f0',
+	  list: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
+	};
+	Home.navigations = {
+	  component: Navigations,
+	  props: {}
+	};
+	Home.contextTypes = {
+	  application: _propTypes2.default.object
+	};
 	exports.default = (0, _reactRouterDom.withRouter)(function (props) {
 	  return _react2.default.createElement(
 	    _Context2.default.Consumer,
@@ -41543,9 +41392,15 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
 
 	var _classnames = __webpack_require__(185);
 
@@ -41555,9 +41410,9 @@
 
 	var _Scene2 = _interopRequireDefault(_Scene);
 
-	var _SimpleNavigation = __webpack_require__(241);
+	var _AppPage2 = __webpack_require__(261);
 
-	var _SimpleNavigation2 = _interopRequireDefault(_SimpleNavigation);
+	var _AppPage3 = _interopRequireDefault(_AppPage2);
 
 	var _Context = __webpack_require__(242);
 
@@ -41571,8 +41426,8 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Contact = function (_React$Component) {
-	  _inherits(Contact, _React$Component);
+	var Contact = function (_AppPage) {
+	  _inherits(Contact, _AppPage);
 
 	  function Contact() {
 	    var _ref;
@@ -41644,27 +41499,8 @@
 	  _createClass(Contact, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _props = this.props,
-	          setBackgroundColor = _props.setBackgroundColor,
-	          setLogoColor = _props.setLogoColor,
-	          setNavigations = _props.setNavigations,
-	          setNavigationButtonColor = _props.setNavigationButtonColor,
-	          setNavigators = _props.setNavigators;
 
-
-	      setBackgroundColor(Contact.backgroundColor);
-	      setLogoColor(Contact.logoColor);
-	      setNavigations(_react2.default.createElement(
-	        _Context2.default.Consumer,
-	        null,
-	        function (ctx) {
-	          return _react2.default.createElement(_SimpleNavigation2.default, ctx);
-	        }
-	      ));
-
-	      setNavigators(Contact.navigators);
-
-	      setNavigationButtonColor(Contact.navigationButtonColor);
+	      _get(Contact.prototype.__proto__ || Object.getPrototypeOf(Contact.prototype), 'componentDidMount', this).call(this);
 
 	      if (this.googleMap) {
 	        this.createGoogleMap();
@@ -41678,7 +41514,7 @@
 	    value: function createGoogleMap() {
 	      var _this2 = this;
 
-	      var application = this.props.application;
+	      var application = this.context.application;
 
 
 	      application.onGoogleScriptLoaded = function () {
@@ -41782,9 +41618,9 @@
 	  }, {
 	    key: 'socialRender',
 	    value: function socialRender() {
-	      var _props2 = this.props,
-	          getSocialList = _props2.getSocialList,
-	          getContactInfomation = _props2.getContactInfomation;
+	      var _props = this.props,
+	          getSocialList = _props.getSocialList,
+	          getContactInfomation = _props.getContactInfomation;
 
 	      var social = getSocialList();
 	      var contactInformation = getContactInfomation();
@@ -41820,9 +41656,9 @@
 	  }, {
 	    key: 'footerRender',
 	    value: function footerRender() {
-	      var _props3 = this.props,
-	          getSocialList = _props3.getSocialList,
-	          getContactInfomation = _props3.getContactInfomation;
+	      var _props2 = this.props,
+	          getSocialList = _props2.getSocialList,
+	          getContactInfomation = _props2.getContactInfomation;
 
 	      var social = getSocialList();
 	      var contactInformation = getContactInfomation();
@@ -41917,12 +41753,27 @@
 	  }]);
 
 	  return Contact;
-	}(_react2.default.Component);
+	}(_AppPage3.default);
 
 	Contact.backgroundColor = '#8b8b8b';
-	Contact.logoColor = '#1a1a1a';
+	Contact.logo = {
+	  opacity: 0.5,
+	  color: '#1a1a1a',
+	  type: 'simple'
+	};
 	Contact.navigationButtonColor = '#1a1a1a';
-	Contact.navigators = [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'about', path: '/about' }];
+	Contact.navigationLineColor = '#ffffff';
+	Contact.navigators = {
+	  color: '#ffffff',
+	  data: [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'about', path: '/about' }]
+	};
+	Contact.footer = {
+	  color: '#1a1a1a',
+	  opacity: 0.5
+	};
+	Contact.contextTypes = {
+	  application: _propTypes2.default.object
+	};
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(
@@ -41948,6 +41799,8 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -41959,6 +41812,10 @@
 	var _Scene = __webpack_require__(234);
 
 	var _Scene2 = _interopRequireDefault(_Scene);
+
+	var _AppPage2 = __webpack_require__(261);
+
+	var _AppPage3 = _interopRequireDefault(_AppPage2);
 
 	var _SimpleNavigation = __webpack_require__(241);
 
@@ -41978,8 +41835,8 @@
 
 	var SCALE = 2.5;
 
-	var About = function (_React$Component) {
-	  _inherits(About, _React$Component);
+	var About = function (_AppPage) {
+	  _inherits(About, _AppPage);
 
 	  function About() {
 	    var _ref;
@@ -42033,27 +41890,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      var _props = this.props,
-	          setBackgroundColor = _props.setBackgroundColor,
-	          setLogoColor = _props.setLogoColor,
-	          setNavigators = _props.setNavigators,
-	          setNavigatorColor = _props.setNavigatorColor,
-	          setNavigationButtonColor = _props.setNavigationButtonColor,
-	          setNavigations = _props.setNavigations;
-
-
-	      setBackgroundColor(About.backgroundColor);
-	      setLogoColor(About.logoColor);
-	      setNavigators(About.navigators);
-	      setNavigatorColor(About.navigatorColor);
-	      setNavigations(_react2.default.createElement(
-	        _Context2.default.Consumer,
-	        null,
-	        function (ctx) {
-	          return _react2.default.createElement(_SimpleNavigation2.default, ctx);
-	        }
-	      ));
-	      setNavigationButtonColor(About.navigationButtonColor);
+	      _get(About.prototype.__proto__ || Object.getPrototypeOf(About.prototype), 'componentDidMount', this).call(this);
 
 	      var promise = Promise.all([this.getCategoryList(), this.getClientList()]);
 
@@ -42200,9 +42037,9 @@
 	  }, {
 	    key: 'footerRender',
 	    value: function footerRender() {
-	      var _props2 = this.props,
-	          getSocialList = _props2.getSocialList,
-	          getContactInfomation = _props2.getContactInfomation;
+	      var _props = this.props,
+	          getSocialList = _props.getSocialList,
+	          getContactInfomation = _props.getContactInfomation;
 
 	      var social = getSocialList();
 	      var contactInformation = getContactInfomation();
@@ -42360,9 +42197,9 @@
 	    value: function swiperRender() {
 	      var _this3 = this;
 
-	      var _props3 = this.props,
-	          getAboutSwiperList = _props3.getAboutSwiperList,
-	          getAboutSwiperOptions = _props3.getAboutSwiperOptions;
+	      var _props2 = this.props,
+	          getAboutSwiperList = _props2.getAboutSwiperList,
+	          getAboutSwiperOptions = _props2.getAboutSwiperOptions;
 	      var swiperIndex = this.state.swiperIndex;
 
 	      var swiperList = getAboutSwiperList();
@@ -42466,7 +42303,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-
+	      console.log(this.props);
 	      return _react2.default.createElement(
 	        _Scene2.default,
 	        { waiting: this.waiting, name: 'about' },
@@ -42478,13 +42315,22 @@
 	  }]);
 
 	  return About;
-	}(_react2.default.Component);
+	}(_AppPage3.default);
 
 	About.backgroundColor = '#f0f0f0';
-	About.logoColor = '#1a1a1a';
-	About.navigatorColor = '#1a1a1a';
+	About.logo = {
+	  opacity: 1,
+	  color: '#1a1a1a',
+	  type: 'simple'
+	};
 	About.navigationButtonColor = '#1a1a1a';
-	About.navigators = [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'let’s talk', path: '/contact' }];
+	About.footer = {
+	  color: '#1a1a1a'
+	};
+	About.navigators = {
+	  color: '#1a1a1a',
+	  data: [{ position: 'left', text: 'projects', path: '/' }, { position: 'right', text: 'let’s talk', path: '/contact' }]
+	};
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(
@@ -43505,7 +43351,7 @@
 	          { width: '146px', height: '20px', viewBox: '0 0 146 20', version: '1.1', xmlns: 'http://www.w3.org/2000/svg', xmlnsXlink: 'http://www.w3.org/1999/xlink' },
 	          _react2.default.createElement(
 	            'g',
-	            { stroke: 'none', strokeWidth: '1', fill: 'none', fillRule: 'evenodd' },
+	            { stroke: 'none', strokeWidth: '1', fill: color, fillRule: 'evenodd' },
 	            _react2.default.createElement(
 	              'g',
 	              { transform: 'translate(-649.000000, -30.000000)', fill: color },
@@ -43569,13 +43415,15 @@
 	    value: function render() {
 	      var _this2 = this;
 
+	      var opacity = this.props.opacity;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'app__logo' },
+	        { className: 'app__logo', style: { opacity: opacity } },
 	        _react2.default.createElement(
 	          _reactRouterDom.Link,
 	          { to: '/', onClick: function onClick() {
-	              return _this2.props.clearSelected();
+	              return _this2.props.onClick();
 	            } },
 	          this.simpleLogoRender(),
 	          this.fullLogoRender()
@@ -43685,7 +43533,7 @@
 	          { width: '40px', height: '40px', viewBox: '0 0 40 40', version: '1.1', xmlns: 'http://www.w3.org/2000/svg', xmlnsXlink: 'http://www.w3.org/1999/xlink' },
 	          _react2.default.createElement(
 	            'g',
-	            { stroke: 'none', strokeWidth: '1', fill: 'none', fillRule: 'evenodd', opacity: '0.5' },
+	            { stroke: 'none', strokeWidth: '1', fill: color, fillRule: 'evenodd', opacity: '0.5' },
 	            _react2.default.createElement(
 	              'g',
 	              { transform: 'translate(-37.000000, -21.000000)', fillRule: 'nonzero' },
@@ -43719,6 +43567,794 @@
 	  onClose: noop
 	};
 		exports.default = NavigationButton;
+
+/***/ }),
+/* 256 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _reactRouterDom = __webpack_require__(186);
+
+	var _NavigationButton = __webpack_require__(255);
+
+	var _NavigationButton2 = _interopRequireDefault(_NavigationButton);
+
+	var _Logo = __webpack_require__(254);
+
+	var _Logo2 = _interopRequireDefault(_Logo);
+
+	var _contants = __webpack_require__(247);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppBar = function (_Component) {
+	  _inherits(AppBar, _Component);
+
+	  function AppBar(props, context) {
+	    _classCallCheck(this, AppBar);
+
+	    var _this = _possibleConstructorReturn(this, (AppBar.__proto__ || Object.getPrototypeOf(AppBar)).call(this, props, context));
+
+	    _this.onNavigationClear = function () {
+	      var application = _this.context.application;
+
+
+	      application.createEventEmitter('clearnavigations');
+	    };
+
+	    _this.onNavigationButtonClick = function (type) {
+	      var application = _this.context.application;
+
+
+	      application.createEventEmitter('navigationstatechange', {
+	        type: type
+	      });
+	    };
+
+	    _this.state = {
+	      navigationButtonColor: _contants.COLORS.BLACK,
+	      navigationButtonState: 'close',
+	      logo: {
+	        color: _contants.COLORS.WHITE,
+	        type: 'simple',
+	        opacity: 1
+	      },
+	      open: context.application.navigationState === 'open' || false
+	    };
+
+	    context.application.setNavigationButtonColor = function (navigationButtonColor) {
+	      _this.setState({ navigationButtonColor: navigationButtonColor });
+	    };
+
+	    context.application.setLogoStyle = function () {
+	      var logoStyle = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	      _this.setState({ logo: _extends({}, _this.state.logo, logoStyle) });
+	    };
+
+	    context.application.changeNavigationButtonState = function (navigationButtonState) {
+	      _this.setState({
+	        navigationButtonState: navigationButtonState
+	      });
+
+	      context.application.createEventEmitter('navigationbuttonstatechange', { type: navigationButtonState });
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AppBar, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps, context) {
+	      this.setState({
+	        open: context.application.navigationState === 'open' || this.state.open
+	      });
+	    }
+	  }, {
+	    key: 'clearButtonRender',
+	    value: function clearButtonRender() {
+	      var navigationButtonState = this.state.navigationButtonState;
+
+
+	      if (navigationButtonState === 'open') {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'app__navigation-clear', onClick: this.onNavigationClear },
+	          _react2.default.createElement(
+	            _reactRouterDom.Link,
+	            { to: '/' },
+	            '+ all projects'
+	          )
+	        );
+	      }
+	    }
+	  }, {
+	    key: 'navigationButtonRender',
+	    value: function navigationButtonRender() {
+	      var _this2 = this;
+
+	      var _state = this.state,
+	          navigationButtonColor = _state.navigationButtonColor,
+	          open = _state.open;
+
+
+	      return _react2.default.createElement(_NavigationButton2.default, {
+	        color: navigationButtonColor,
+	        open: open,
+	        onOpen: function onOpen() {
+	          return _this2.onNavigationButtonClick('open');
+	        },
+	        onClose: function onClose() {
+	          return _this2.onNavigationButtonClick('close');
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'logoRender',
+	    value: function logoRender() {
+	      var logo = this.state.logo;
+
+
+	      return _react2.default.createElement(_Logo2.default, _extends({}, logo, { onClick: this.onNavigationButtonClick }));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app__header' },
+	        this.clearButtonRender(),
+	        this.navigationButtonRender(),
+	        this.logoRender()
+	      );
+	    }
+	  }]);
+
+	  return AppBar;
+	}(_react.Component);
+
+	AppBar.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+		exports.default = AppBar;
+
+/***/ }),
+/* 257 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _contants = __webpack_require__(247);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppFoot = function (_Component) {
+	  _inherits(AppFoot, _Component);
+
+	  function AppFoot(props, context) {
+	    _classCallCheck(this, AppFoot);
+
+	    var _this = _possibleConstructorReturn(this, (AppFoot.__proto__ || Object.getPrototypeOf(AppFoot)).call(this, props, context));
+
+	    _this.state = {
+	      color: _contants.COLORS.WHITE,
+	      opacity: 0.5
+	    };
+
+	    context.application.setFooterStyle = function (color) {
+	      _this.setState(_extends({}, color));
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AppFoot, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app__footer' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'app__copyright', style: { color: this.state.color } },
+	          '\xA92018 Tacpoint, Inc.'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AppFoot;
+	}(_react.Component);
+
+	AppFoot.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+		exports.default = AppFoot;
+
+/***/ }),
+/* 258 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _classnames2 = __webpack_require__(185);
+
+	var _classnames3 = _interopRequireDefault(_classnames2);
+
+	var _reactRouterDom = __webpack_require__(186);
+
+	var _contants = __webpack_require__(247);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppNavigator = function (_Component) {
+	  _inherits(AppNavigator, _Component);
+
+	  function AppNavigator(props, context) {
+	    _classCallCheck(this, AppNavigator);
+
+	    var _this = _possibleConstructorReturn(this, (AppNavigator.__proto__ || Object.getPrototypeOf(AppNavigator)).call(this, props, context));
+
+	    _this.onNavigatorClick = function () {};
+
+	    _this.state = {
+	      color: _contants.COLORS.WHITE,
+	      data: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
+	    };
+
+	    context.application.setNavigators = function () {
+	      var navigators = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+	      var state = _extends({}, _this.state, navigators);
+
+	      _this.setState(state);
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AppNavigator, [{
+	    key: 'navigatorsRender',
+	    value: function navigatorsRender() {
+	      var _this2 = this;
+
+	      var _state = this.state,
+	          data = _state.data,
+	          color = _state.color;
+
+
+	      return data.map(function (nav) {
+	        var position = nav.position,
+	            text = nav.text,
+	            path = nav.path;
+
+	        var classes = (0, _classnames3.default)(_defineProperty({
+	          'app__navigator': true
+	        }, 'app__navigator-' + position, true));
+
+	        return _react2.default.createElement(
+	          'div',
+	          { className: classes, key: position, style: { color: color } },
+	          _react2.default.createElement(
+	            _reactRouterDom.Link,
+	            { to: path, onClick: _this2.onNavigatorClick },
+	            text
+	          )
+	        );
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.navigatorsRender()
+	      );
+	    }
+	  }]);
+
+	  return AppNavigator;
+	}(_react.Component);
+
+	AppNavigator.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+		exports.default = AppNavigator;
+
+/***/ }),
+/* 259 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _classnames = __webpack_require__(185);
+
+	var _classnames2 = _interopRequireDefault(_classnames);
+
+	var _reactRouterDom = __webpack_require__(186);
+
+	var _contants = __webpack_require__(247);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppNavigationPanel = function (_Component) {
+	  _inherits(AppNavigationPanel, _Component);
+
+	  function AppNavigationPanel(props, context) {
+	    _classCallCheck(this, AppNavigationPanel);
+
+	    var _this = _possibleConstructorReturn(this, (AppNavigationPanel.__proto__ || Object.getPrototypeOf(AppNavigationPanel)).call(this, props, context));
+
+	    _this.onNavigationStateChange = function (_ref) {
+	      var type = _ref.data.type;
+
+	      _this.setState({
+	        open: type === 'open'
+	      });
+	    };
+
+	    _this.onNavigatorClick = function () {};
+
+	    _this.state = {
+	      backgroundColor: _contants.COLORS.BLACK,
+	      color: _contants.COLORS.WHITE,
+	      open: context.application.navigationState || false,
+	      navigations: null
+	    };
+
+	    context.application.setNavigations = function (navigations) {
+	      _this.setState({
+	        navigations: navigations
+	      });
+	    };
+
+	    context.application.setNavigationsPanelBackgroundColor = function (backgroundColor) {
+	      _this.setState({
+	        backgroundColor: backgroundColor
+	      });
+	    };
+	    return _this;
+	  }
+
+	  _createClass(AppNavigationPanel, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps, context) {
+	      this.setState({
+	        open: context.application.navigationState === 'open' || this.state.open
+	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.addEventListener('navigationstatechange', this.onNavigationStateChange, false);
+	      // document.addEventListener('navigationbuttonstatechange', this.onNavigationButtonStateChange, false);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      document.removeEventListener('navigationstatechange', this.onNavigationStateChange, false);
+	      // document.removeEventListener('navigationbuttonstatechange', this.onNavigationButtonStateChange, false);
+	    }
+	  }, {
+	    key: 'navigationsRender',
+	    value: function navigationsRender() {
+	      var navigations = this.state.navigations;
+
+
+	      if (navigations) {
+	        var component = navigations.component,
+	            props = navigations.props;
+
+
+	        return (0, _react.createElement)(component, props || {});
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _state = this.state,
+	          backgroundColor = _state.backgroundColor,
+	          open = _state.open;
+
+	      var classes = (0, _classnames2.default)({
+	        'app__navigation': true,
+	        'animated': true,
+	        'open': open
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        { className: classes, style: { backgroundColor: backgroundColor } },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'app__navigation-content' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'scene__grid' },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'scene__grid-inner' },
+	              this.navigationsRender()
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'app__navigation-clear', onClick: this.onNavigationClear },
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'scene__grid' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'scene__grid-inner' },
+	                _react2.default.createElement(
+	                  'div',
+	                  { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 app__navigation-clear', onClick: this.onNavigationClear },
+	                  _react2.default.createElement(
+	                    _reactRouterDom.Link,
+	                    { to: '/' },
+	                    '+ more projects'
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        ),
+	        this.props.children
+	      );
+	    }
+	  }]);
+
+	  return AppNavigationPanel;
+	}(_react.Component);
+
+	AppNavigationPanel.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+		exports.default = AppNavigationPanel;
+
+/***/ }),
+/* 260 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouterDom = __webpack_require__(186);
+
+	var _reactRouterTransition = __webpack_require__(229);
+
+	var _Project = __webpack_require__(230);
+
+	var _Project2 = _interopRequireDefault(_Project);
+
+	var _Home = __webpack_require__(248);
+
+	var _Home2 = _interopRequireDefault(_Home);
+
+	var _Contact = __webpack_require__(249);
+
+	var _Contact2 = _interopRequireDefault(_Contact);
+
+	var _About = __webpack_require__(250);
+
+	var _About2 = _interopRequireDefault(_About);
+
+	var _Access = __webpack_require__(253);
+
+	var _Access2 = _interopRequireDefault(_Access);
+
+	var _contants = __webpack_require__(247);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AppScene = function (_Component) {
+	  _inherits(AppScene, _Component);
+
+	  function AppScene() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, AppScene);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AppScene.__proto__ || Object.getPrototypeOf(AppScene)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      transitionProperty: _contants.TRANSITION_PROPERTY['1024']
+	    }, _this.onModeChange = function (_ref2) {
+	      var transitionProperty = _ref2.data.transitionProperty;
+
+	      if (_this.state.transitionProperty !== transitionProperty) {
+	        _this.setState({
+	          transitionProperty: transitionProperty
+	        });
+	      }
+	    }, _this.onMapStyles = function (styles) {
+	      if (styles.transform !== undefined) {
+	        return _extends({}, styles, {
+	          transform: 'translateX(' + styles.transform + '%)',
+	          height: '100%'
+	        });
+	      }
+
+	      return _extends({}, styles, {
+	        height: '100%'
+	      });
+	    }, _this.getAnimatedProperty = function (type) {
+	      var transitionProperty = _this.state.transitionProperty;
+
+	      var style = {};
+
+	      transitionProperty.map(function (_ref3) {
+	        var name = _ref3.name,
+	            value = _ref3.value;
+
+	        style[name] = value[type];
+	      });
+
+	      return style;
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(AppScene, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.addEventListener('modechange', this.onModeChange, false);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      document.removeEventListener('modechange', this.onModeChange, false);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app__scene' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'scene' },
+	          _react2.default.createElement(
+	            _reactRouterTransition.AnimatedSwitch,
+	            {
+	              atEnter: this.getAnimatedProperty('from'),
+	              atLeave: this.getAnimatedProperty('from'),
+	              atActive: this.getAnimatedProperty('to'),
+	              mapStyles: this.onMapStyles,
+	              className: 'scene__animated'
+	            },
+	            _react2.default.createElement(
+	              _reactRouterDom.Switch,
+	              null,
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/', component: _Home2.default, exact: true }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/project', component: _Project2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/about', component: _About2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/contact', component: _Contact2.default }),
+	              _react2.default.createElement(_reactRouterDom.Route, { path: '/access', component: _Access2.default })
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return AppScene;
+	}(_react.Component);
+
+		exports.default = AppScene;
+
+/***/ }),
+/* 261 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(189);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _queryString = __webpack_require__(231);
+
+	var _queryString2 = _interopRequireDefault(_queryString);
+
+	var _SimpleNavigation = __webpack_require__(241);
+
+	var _SimpleNavigation2 = _interopRequireDefault(_SimpleNavigation);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Home = function (_Component) {
+	  _inherits(Home, _Component);
+
+	  function Home(props, context) {
+	    _classCallCheck(this, Home);
+
+	    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props, context));
+
+	    var location = props.location;
+
+
+	    _this.query = _queryString2.default.parse(location.search);
+	    return _this;
+	  }
+
+	  _createClass(Home, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var application = this.context.application;
+
+	      var constructor = this.constructor;
+
+	      constructor.navigations.props = _extends({}, this.props, constructor.navigations.props, {
+	        isMobile: this.props.isMobile,
+	        color: constructor.navigationLineColor
+	      });
+
+	      application.setNavigationButtonColor(constructor.navigationButtonColor);
+	      application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
+	      application.setLogoStyle(_extends({}, constructor.logo));
+	      application.setNavigators(constructor.navigators);
+	      application.setBackgroundColor(constructor.backgroundColor);
+	      application.setFooterStyle(constructor.footer);
+	      application.setNavigations(constructor.navigations);
+	      if (application.setSimpleNavigationLineColor) {
+	        application.setSimpleNavigationLineColor(constructor.navigationLineColor);
+	      }
+	      application.changeNavigationButtonState('close');
+	    }
+	  }]);
+
+	  return Home;
+	}(_react.Component);
+
+	Home.backgroundColor = '#000';
+	Home.navigationButtonColor = '#f0f0f0';
+	Home.navigationLineColor = '#f0f0f0';
+	Home.footer = {
+	  color: '#ffffff',
+	  opacity: 0.5
+	};
+	Home.logo = {
+	  color: '#f0f0f0',
+	  type: 'simple'
+	};
+	Home.navigators = {
+	  color: '#f0f0f0',
+	  data: [{ position: 'left', text: 'about', path: '/about' }, { position: 'right', text: 'let\'s talk', path: '/contact' }]
+	};
+	Home.navigations = {
+	  component: _SimpleNavigation2.default,
+	  props: {}
+	};
+	Home.contextTypes = {
+	  application: _propTypes2.default.object
+	};
+		exports.default = Home;
 
 /***/ })
 /******/ ]);

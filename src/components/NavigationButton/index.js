@@ -52,7 +52,7 @@ export default class NavigationButton extends Component {
     return (
       <div className={classes} onClick={this.onClick}>
         <svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-          <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" opacity="0.5">
+          <g stroke="none" strokeWidth="1" fill={color} fillRule="evenodd" opacity="0.5">
             <g transform="translate(-37.000000, -21.000000)" fillRule="nonzero">
               <g transform="translate(37.000000, 21.000000)">
                 <rect fill={color} opacity="0.01" x="0" y="0" width="40" height="40"></rect>

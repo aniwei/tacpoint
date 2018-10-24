@@ -14,7 +14,7 @@ export default class Logo extends Component {
     return (
       <div className={classes}>
         <svg width="146px" height="20px" viewBox="0 0 146 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-          <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+          <g stroke="none" strokeWidth="1" fill={color} fillRule="evenodd">
             <g transform="translate(-649.000000, -30.000000)" fill={color}>
               <g transform="translate(649.000000, 30.000000)">
                 <polygon points="16.98795 0.0011 9.04295 0.0011 8.30695 0.0011 0.36145 0.0011 -5e-05 0.0011 -5e-05 1.4596 0.36145 1.4596 7.94545 1.4596 7.94545 19.6376 7.94545 19.9991 8.30695 19.9991 9.04295 19.9991 9.40395 19.9991 9.40395 19.6376 9.40395 1.4596 16.98795 1.4596 17.34945 1.4596 17.34945 1.0981 17.34945 0.3626 17.34945 0.0011" />
@@ -61,9 +61,10 @@ export default class Logo extends Component {
   }
 
   render () {
+    const { opacity } = this.props;
     return (
-      <div className="app__logo">
-        <Link to="/" onClick={() => this.props.clearSelected()}>
+      <div className="app__logo" style={{ opacity }}>
+        <Link to="/" onClick={() => this.props.onClick()}>
           {this.simpleLogoRender()}
           {this.fullLogoRender()}
         </Link>

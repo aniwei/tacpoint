@@ -1,17 +1,34 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Scene from '../../components/Scene';
-import SimpleNavigation from '../../components/SimpleNavigation';
+import AppPage from '../../components/AppPage';
 import Context from '../../Context';
 
-class Contact extends React.Component {
+class Contact extends AppPage {
   static backgroundColor = '#8b8b8b';
-  static logoColor = '#1a1a1a';
+  static logo = {
+    opacity: 0.5,
+    color: '#1a1a1a',
+    type: 'simple'
+  }
   static navigationButtonColor = '#1a1a1a';
-  static navigators = [
-    { position: 'left', text: 'projects', path: '/' },
-    { position: 'right', text: 'about', path: '/about' }
-  ];
+  static navigationLineColor = '#ffffff'
+  static navigators = { 
+    color: '#ffffff',
+    data: [
+      { position: 'left', text: 'projects', path: '/' },
+      { position: 'right', text: 'about', path: '/about' }
+    ]
+  }
+  static footer = {
+    color: '#1a1a1a',
+    opacity: 0.5
+  }
+
+  static contextTypes = {
+    application: PropTypes.object
+  }
 
   state = {
     waiting: false,
@@ -19,25 +36,8 @@ class Contact extends React.Component {
   }
 
   componentDidMount () {
-    const { 
-      setBackgroundColor, 
-      setLogoColor, 
-      setNavigations, 
-      setNavigationButtonColor,
-      setNavigators
-    } = this.props;
-
-    setBackgroundColor(Contact.backgroundColor);
-    setLogoColor(Contact.logoColor);
-    setNavigations(
-      <Context.Consumer>
-        {ctx => <SimpleNavigation {...ctx} />}
-      </Context.Consumer>
-    );
-
-    setNavigators(Contact.navigators);
-
-    setNavigationButtonColor(Contact.navigationButtonColor);
+    
+    super.componentDidMount();
 
     if (this.googleMap) {
       this.createGoogleMap();
@@ -84,7 +84,7 @@ class Contact extends React.Component {
 
 
   createGoogleMap () {
-    const { application } = this.props;
+    const { application } = this.context;
 
     application.onGoogleScriptLoaded = () => {
       new google.maps.Map(this.googleMap, {

@@ -21,6 +21,7 @@
 /* category s */
 .scene-home__category {
     font-size: 0px;
+    display: block;
 }
 .scene-home__category:after {
     content: "";
@@ -38,6 +39,10 @@
 .scene-home .scene__category-item {
     font-size: 18px;
     color: rgba(255, 255, 255, 0.25);
+}
+.scene-home .scene__category-item:hover {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 1);
 }
 .scene-home .scene__category-item + .scene__category-item {
     margin-top: 0px;
@@ -67,6 +72,10 @@
     .scene-home .scene__category-item {
         font-size: 18px;
         color: rgba(255, 255, 255, 1);
+    }
+
+    .scene-home .scene-home__category {
+        display: none;
     }
 
     .scene-home__category-content {

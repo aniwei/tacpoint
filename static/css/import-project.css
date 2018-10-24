@@ -7,6 +7,10 @@
     color: rgba(255, 255, 255, 0.25);
 }
 
+.scene__project-item:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
 .scene__project-item_highlight {
     color: #ffffff;
 }

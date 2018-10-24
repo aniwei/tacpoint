@@ -2,16 +2,33 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import { 
+  COLORS 
+} from '../../contants';
+
 const noop = (() => {});
 
 const LINE_INIT_ANGLE = -25.75;
 const ANGLE_SCALE = 60 / 180;
 
 export default class SimpleNavigation extends Component {
-  state = {
-    alpha: LINE_INIT_ANGLE,
-    beta: 0,
-    gamma: 0
+  static contextTypes = {
+    application: PropTypes.object
+  };
+
+  constructor (props, context) {
+    super(props, context);
+
+    this.state = {
+      alpha: LINE_INIT_ANGLE,
+      beta: 0,
+      gamma: 0,
+      color: props.color || COLORS.WHITE
+    };
+
+    context.application.setSimpleNavigationLineColor = (color) => {
+      this.setState({ color });
+    }
   }
 
   componentDidMount () {
@@ -39,14 +56,14 @@ export default class SimpleNavigation extends Component {
   }
 
   render () {
-    const { alpha, beta, gamma } = this.state;
-    const { backgroundColor, lineColor } = this.props;
+    const { alpha, beta, gamma, color } = this.state;
+    const { backgroundColor } = this.props;
     const style = { backgroundColor };
     const transform = `rotateZ(${beta}deg)`;
 
     return (
       <div className="app__simple-navigation" style={style}>
-        <span className="app__simple-navigation-line" style={{ borderColor: lineColor, transform }}></span>
+        <span className="app__simple-navigation-line" style={{ backgroundColor: color, transform }}></span>
         {this.props.children}
       </div>
     );
