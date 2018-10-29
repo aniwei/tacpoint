@@ -41846,6 +41846,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var MOUSE_MOVING_SCALE = 15;
+	var START_ANGLE = 135;
 
 	var Navigations = function (_Component) {
 	  _inherits(Navigations, _Component);
@@ -42113,9 +42114,7 @@
 	      clients: [],
 	      selectedCategories: [],
 	      selectedClients: null,
-	      selectedClientIndex: 0,
-	      lineAngle: 135,
-	      mouseMoveAngle: 0
+	      selectedClientIndex: 0
 	    }, _this4.onClearNavigations = function () {
 	      _this4.setState({
 	        selectedCategories: [],
@@ -42144,8 +42143,7 @@
 
 	      _this4.setState({
 	        selectedClients: isInclude ? null : client,
-	        selectedClientIndex: isInclude ? null : index,
-	        lineAngle: 135 + 110 / clients.length * index
+	        selectedClientIndex: isInclude ? null : index
 	      }, function () {
 	        var _this4$state = _this4.state,
 	            selectedClients = _this4$state.selectedClients,
@@ -42153,10 +42151,25 @@
 
 	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	        application.setLogoStyle({
-	          type: isUnselected ? 'full' : 'simple',
-	          color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
-	        });
+	        // debugger;
+	        setTimeout(function () {
+	          application.setLogoStyle({
+	            type: isUnselected ? 'full' : 'simple',
+	            color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
+	          });
+	        }, 500);
+
+	        if (selectedClients === null) {
+	          application.createEventEmitter('linestatechange', {
+	            open: false
+	          });
+	        } else {
+	          application.createEventEmitter('linestatechange', {
+	            open: true,
+	            color: clients[selectedClients].color,
+	            angle: START_ANGLE + 110 / clients.length * selectedClients
+	          });
+	        }
 
 	        Home.navigations.props = _extends({}, _this4.props, _this4.state, {
 	          onCategoryLinkClick: _this4.onCategoryLinkClick,
@@ -42228,6 +42241,17 @@
 	          if (selectedClients === null) {
 	            application.setLogoStyle({
 	              color: Home.logo.color
+	            });
+	          }
+
+	          if (selectedClients === null) {
+	            application.createEventEmitter('linestatechange', {
+	              open: false
+	            });
+	          } else {
+	            application.createEventEmitter('linestatechange', {
+	              open: true,
+	              color: clients[selectedClients].color
 	            });
 	          }
 
@@ -42318,6 +42342,18 @@
 	              onClientLinkClick: _this5.onClientLinkClick,
 	              onClear: _this5.onClearSelectedList
 	            });
+
+	            if (selectedClients === null) {
+	              application.createEventEmitter('linestatechange', {
+	                open: false
+	              });
+	            } else {
+	              application.createEventEmitter('linestatechange', {
+	                open: true,
+	                color: clients[selectedClients].color,
+	                angle: START_ANGLE + 110 / clients.length * selectedClients
+	              });
+	            }
 
 	            Home.logo.color = color;
 
@@ -42505,18 +42541,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state3 = this.state,
-	          selectedClients = _state3.selectedClients,
-	          selectedClientIndex = _state3.selectedClientIndex,
-	          clients = _state3.clients,
-	          lineAngle = _state3.lineAngle,
-	          mouseMoveAngle = _state3.mouseMoveAngle;
-
-	      var style = {
-	        transform: 'rotate(' + (lineAngle + mouseMoveAngle) + 'deg)',
-	        backgroundColor: (clients[selectedClientIndex] || { color: 'white' }).color
-	      };
-
 	      return _react2.default.createElement(
 	        _Scene2.default,
 	        { waiting: this.state.waiting, light: true, name: 'home' },
@@ -42569,19 +42593,53 @@
 	    }
 
 	    return _ret3 = (_temp3 = (_this8 = _possibleConstructorReturn(this, (_ref3 = Line.__proto__ || Object.getPrototypeOf(Line)).call.apply(_ref3, [this].concat(args))), _this8), _this8.state = {
-	      angle: 0,
+	      angle: START_ANGLE,
 	      translate: 0,
-	      color: _contants.COLORS.WHITE
-	    }, _this8.onLineStateChange = function (state) {
+	      color: _contants.COLORS.WHITE,
+	      open: false
+	    }, _this8.onLineStateChange = function (_ref4) {
+	      var state = _ref4.data;
+
 	      _this8.setState(_extends({}, state));
-	    }, _this8.onMoving = function () {
+	    }, _this8.onOrientation = function (_ref5) {
+	      var _ref5$data = _ref5.data,
+	          alpha = _ref5$data.alpha,
+	          beta = _ref5$data.beta,
+	          gamma = _ref5$data.gamma;
 	      var getWindowSize = _this8.props.getWindowSize;
 
-	      var size = getWindowSize();
+	      var _getWindowSize = getWindowSize(),
+	          height = _getWindowSize.height,
+	          width = _getWindowSize.width;
 
-	      // this.setState({
-	      //   translate: parseInt((y / size.height) * MOUSE_MOVING_SCALE)
-	      // });
+	      var halfHeight = height / 2;
+	      var halfWidth = width / 2;
+
+	      var offsetX = alpha * (60 / 180);
+	      var offsetY = beta * (60 / 180);
+
+	      _this8.setState({
+	        translate: offsetX + 'px, ' + offsetY + 'px'
+	      });
+	    }, _this8.onMoving = function (_ref6) {
+	      var _ref6$data = _ref6.data,
+	          x = _ref6$data.x,
+	          y = _ref6$data.y;
+	      var getWindowSize = _this8.props.getWindowSize;
+
+	      var _getWindowSize2 = getWindowSize(),
+	          height = _getWindowSize2.height,
+	          width = _getWindowSize2.width;
+
+	      var halfHeight = height / 2;
+	      var halfWidth = width / 2;
+
+	      var offsetX = (x - halfWidth) * (60 / halfWidth);
+	      var offsetY = (y - halfHeight) * (60 / halfHeight);
+
+	      _this8.setState({
+	        translate: offsetX + 'px, ' + offsetY + 'px'
+	      });
 	    }, _temp3), _possibleConstructorReturn(_this8, _ret3);
 	  }
 
@@ -42591,8 +42649,10 @@
 	      var isMobile = this.props.isMobile;
 
 
-	      if (isMobile) {
+	      if (!isMobile) {
 	        document.removeEventListener('moving', this.onMoving);
+	      } else {
+	        document.removeEventListener('orientation', this.onOrientation, false);
 	      }
 
 	      document.removeEventListener('linestatechange', this.onLineStateChange, false);
@@ -42605,6 +42665,8 @@
 
 	      if (!isMobile) {
 	        document.addEventListener('moving', this.onMoving, false);
+	      } else {
+	        document.addEventListener('orientation', this.onOrientation, false);
 	      }
 
 	      document.addEventListener('linestatechange', this.onLineStateChange, false);
@@ -42612,20 +42674,22 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _props3 = this.props,
-	          angle = _props3.angle,
-	          translate = _props3.translate,
-	          color = _props3.color;
+	      var _state3 = this.state,
+	          angle = _state3.angle,
+	          translate = _state3.translate,
+	          color = _state3.color,
+	          open = _state3.open;
+
 
 	      var style = {
-	        transform: 'rotate(' + angle + 'deg)',
+	        transform: 'rotate(' + angle + 'deg) translate(' + translate + ')',
 	        backgroundColor: color
 	      };
 
 	      return _react2.default.createElement('div', { className: (0, _classnames2.default)({
 	          'scene-home__line': true,
 	          'animated': true,
-	          'fadeIn': typeof selectedClients === 'number'
+	          'fadeIn': open
 	        }), style: style });
 	    }
 	  }]);

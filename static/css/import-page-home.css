@@ -62,12 +62,13 @@
     height: 2px;
     width: 50%;
     margin-left: -25%;
-    transition: transform 1s;
+    transition: transform .35s;
 }
 
 @media screen and (max-width: 768px) {
     .scene-home__line {
-        display: none;
+        width: 60%;
+        /* display: none; */
     }
 
     .scene-home .scene__category-item {

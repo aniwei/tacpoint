@@ -10,6 +10,7 @@ import AppPage from '../../components/AppPage';
 import { COLORS } from '../../contants';
 
 const MOUSE_MOVING_SCALE = 15;
+const START_ANGLE = 135;
 
 class Navigations extends Component {
   static contextTypes = {
@@ -217,8 +218,6 @@ class Home extends AppPage {
     selectedCategories: [],
     selectedClients: null,
     selectedClientIndex: 0,
-    lineAngle: 135,
-    mouseMoveAngle: 0
   }
 
   componentWillUnmount () {
@@ -280,6 +279,18 @@ class Home extends AppPage {
               onClear: this.onClearSelectedList
             };
 
+            if (selectedClients === null) {
+              application.createEventEmitter('linestatechange', {
+                open: false
+              });
+            } else {
+              application.createEventEmitter('linestatechange', {
+                open: true,
+                color: clients[selectedClients].color,
+                angle: START_ANGLE + 110 / clients.length * selectedClients
+              });
+            }
+
             Home.logo.color = color;
             
             super.componentDidMount();
@@ -337,15 +348,30 @@ class Home extends AppPage {
     this.setState({
       selectedClients: isInclude ? null : client,
       selectedClientIndex: isInclude ? null : index,
-      lineAngle: 135 + 110 / clients.length * index
     }, () => {
       const { selectedClients, selectedCategories } = this.state;
       const isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-      application.setLogoStyle({
-        type: isUnselected ? 'full' : 'simple',
-        color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
-      });
+      // debugger;
+      setTimeout(() => {
+        application.setLogoStyle({
+          type: isUnselected ? 'full' : 'simple',
+          color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
+        });
+      }, 500)
+      
+
+      if (selectedClients === null) {
+        application.createEventEmitter('linestatechange', {
+          open: false
+        });
+      } else {
+        application.createEventEmitter('linestatechange', {
+          open: true,
+          color: clients[selectedClients].color,
+          angle: START_ANGLE + 110 / clients.length * selectedClients
+        });
+      }
 
       Home.navigations.props = {
         ...this.props,
@@ -423,6 +449,17 @@ class Home extends AppPage {
         if (selectedClients === null) {
           application.setLogoStyle({
             color: Home.logo.color
+          });
+        }
+
+        if (selectedClients === null) {
+          application.createEventEmitter('linestatechange', {
+            open: false
+          });
+        } else {
+          application.createEventEmitter('linestatechange', {
+            open: true,
+            color: clients[selectedClients].color
           });
         }
 
@@ -594,12 +631,6 @@ class Home extends AppPage {
   }
 
   render () {
-    const { selectedClients, selectedClientIndex, clients, lineAngle, mouseMoveAngle } = this.state;
-    const style = {
-      transform: `rotate(${lineAngle + mouseMoveAngle}deg)`,
-      backgroundColor: (clients[selectedClientIndex] || { color: 'white' }).color
-    }
-
     return (
       <Scene waiting={this.state.waiting} light name="home">
         <div className="scene-home">
@@ -617,16 +648,19 @@ class Line extends Component {
   }
 
   state = {
-    angle: 0,
+    angle: START_ANGLE,
     translate: 0,
-    color: COLORS.WHITE
+    color: COLORS.WHITE,
+    open: false
   }
 
   componentWillUnmount () {
     const { isMobile } = this.props;
 
-    if (isMobile) {
+    if (!isMobile) {
       document.removeEventListener('moving', this.onMoving);
+    } else {
+      document.removeEventListener('orientation', this.onOrientation, false);
     }
 
     document.removeEventListener('linestatechange', this.onLineStateChange, false);
@@ -637,30 +671,52 @@ class Line extends Component {
    
     if (!isMobile) {
       document.addEventListener('moving', this.onMoving, false);
+    } else {
+      document.addEventListener('orientation', this.onOrientation, false);
     }
 
     document.addEventListener('linestatechange', this.onLineStateChange, false);
   }
 
-  onLineStateChange = (state) => {
+  onLineStateChange = ({ data: state }) => {
     this.setState({
       ...state
     })
   }
 
-  onMoving = () => {
+  onOrientation = ({ data: { alpha, beta, gamma }}) => {
     const { getWindowSize } = this.props;
-    const size = getWindowSize();
+    const { height, width } = getWindowSize();
+    const halfHeight = height / 2;
+    const halfWidth = width / 2;
 
-    // this.setState({
-    //   translate: parseInt((y / size.height) * MOUSE_MOVING_SCALE)
-    // });
+    const offsetX = (alpha) * (60 / 180) ;
+    const offsetY = (beta) * (60 / 180);
+
+    this.setState({
+      translate: `${offsetX}px, ${offsetY}px`
+    });
+  }
+
+  onMoving = ({ data: { x, y } }) => {
+    const { getWindowSize } = this.props;
+    const { height, width } = getWindowSize();
+    const halfHeight = height / 2;
+    const halfWidth = width / 2;
+
+    const offsetX = (x - halfWidth) * (60 / halfWidth) ;
+    const offsetY = (y - halfHeight) * (60 / halfHeight);
+
+    this.setState({
+      translate: `${offsetX}px, ${offsetY}px`
+    });
   }
 
   render () {
-    const { angle, translate, color } = this.props;
+    const { angle, translate, color, open } = this.state;
+
     const style = {
-      transform: `rotate(${angle}deg)`,
+      transform: `rotate(${angle}deg) translate(${translate})`,
       backgroundColor: color
     }
 
@@ -668,7 +724,7 @@ class Line extends Component {
       <div className={classnames({
         'scene-home__line': true,
         'animated': true,
-        'fadeIn': typeof selectedClients === 'number'
+        'fadeIn': open
       })} style={style}></div>
     );
   }
