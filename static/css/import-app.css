@@ -19,6 +19,7 @@
 .app__scene {
   height: 100%;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .app__layout,

@@ -42615,8 +42615,10 @@
 	      var halfHeight = height / 2;
 	      var halfWidth = width / 2;
 
-	      var offsetX = alpha * (60 / 180);
-	      var offsetY = beta * (60 / 180);
+	      var offsetX = beta;
+	      var offsetY = gamma;
+
+	      console.log(offsetX, offsetY);
 
 	      _this8.setState({
 	        translate: offsetX + 'px, ' + offsetY + 'px'
@@ -42631,8 +42633,8 @@
 	          height = _getWindowSize2.height,
 	          width = _getWindowSize2.width;
 
-	      var halfHeight = height / 2;
-	      var halfWidth = width / 2;
+	      var halfHeight = height / 4;
+	      var halfWidth = width / 4;
 
 	      var offsetX = (x - halfWidth) * (60 / halfWidth);
 	      var offsetY = (y - halfHeight) * (60 / halfHeight);

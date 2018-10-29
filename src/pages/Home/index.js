@@ -690,8 +690,10 @@ class Line extends Component {
     const halfHeight = height / 2;
     const halfWidth = width / 2;
 
-    const offsetX = (alpha) * (60 / 180) ;
-    const offsetY = (beta) * (60 / 180);
+    const offsetX = (beta);
+    const offsetY = (gamma);
+
+    console.log(offsetX, offsetY);
 
     this.setState({
       translate: `${offsetX}px, ${offsetY}px`
@@ -701,8 +703,8 @@ class Line extends Component {
   onMoving = ({ data: { x, y } }) => {
     const { getWindowSize } = this.props;
     const { height, width } = getWindowSize();
-    const halfHeight = height / 2;
-    const halfWidth = width / 2;
+    const halfHeight = height / 4;
+    const halfWidth = width / 4;
 
     const offsetX = (x - halfWidth) * (60 / halfWidth) ;
     const offsetY = (y - halfHeight) * (60 / halfHeight);
