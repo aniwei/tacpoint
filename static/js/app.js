@@ -131,8 +131,10 @@
 	      document.dispatchEvent(event);
 	    };
 
-	    _this.onNavigationStateChange = function (state) {
-	      _this.navigationState = state;
+	    _this.onNavigationStateChange = function (_ref) {
+	      var type = _ref.data.type;
+
+	      _this.navigationState = type;
 	    };
 
 	    _this.onDeviceOrientation = function (e) {
@@ -31050,7 +31052,12 @@
 
 	    var _this = _possibleConstructorReturn(this, (AppNavigator.__proto__ || Object.getPrototypeOf(AppNavigator)).call(this, props, context));
 
-	    _this.onNavigatorClick = function () {};
+	    _this.onNavigatorClick = function () {
+	      var application = _this.context.application;
+
+
+	      application.createEventEmitter('navigationstatechange', { type: 'close' });
+	    };
 
 	    _this.state = {
 	      color: _contants.COLORS.WHITE,
@@ -31166,6 +31173,8 @@
 	      _this.setState({
 	        open: type === 'open'
 	      });
+
+	      console.log(type);
 	    };
 
 	    _this.onNavigatorClick = function () {};
@@ -31175,6 +31184,16 @@
 	      color: _contants.COLORS.WHITE,
 	      open: context.application.navigationState || false,
 	      navigations: null
+	    };
+
+	    context.application.forceUpdateNavigationPanel = function () {
+	      _this.forceUpdate();
+	    };
+
+	    context.application.closeNavigationPanel = function () {
+	      _this.setState({
+	        open: false
+	      });
 	    };
 
 	    context.application.setNavigations = function (navigations) {
@@ -31195,7 +31214,7 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps, context) {
 	      this.setState({
-	        open: context.application.navigationState === 'open' || this.state.open
+	        open: context.application.navigationState === 'open'
 	      });
 	    }
 	  }, {
@@ -31539,7 +31558,6 @@
 	          // });
 	        });
 	      }).catch(function (err) {
-	        console.log(err);
 	        alert('Sorry, has a network error.');
 	      });
 	    }, _this.onNextProjectClick = function () {
@@ -42137,8 +42155,16 @@
 
 	        application.setLogoStyle({
 	          type: isUnselected ? 'full' : 'simple',
-	          color: (clients[index] || Home.logo).color
+	          color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
 	        });
+
+	        Home.navigations.props = _extends({}, _this4.props, _this4.state, {
+	          onCategoryLinkClick: _this4.onCategoryLinkClick,
+	          onClientLinkClick: _this4.onClientLinkClick,
+	          onClear: _this4.onClearSelectedList
+	        });
+
+	        application.forceUpdateNavigationPanel();
 
 	        application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	      });
@@ -42172,6 +42198,15 @@
 	            });
 	          }
 
+	          Home.navigations.props = _extends({}, _this4.props, _this4.state, {
+	            onCategoryLinkClick: _this4.onCategoryLinkClick,
+	            onClientLinkClick: _this4.onClientLinkClick,
+	            onClear: _this4.onClearSelectedList
+	          });
+
+	          application.forceUpdateNavigationPanel();
+	          application.setLogoStyle(_extends({}, _this4.constructor.logo));
+
 	          application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	        });
 	      } else {
@@ -42196,6 +42231,16 @@
 	            });
 	          }
 
+	          Home.navigations.props = _extends({}, _this4.props, _this4.state, {
+	            onCategoryLinkClick: _this4.onCategoryLinkClick,
+	            onClientLinkClick: _this4.onClientLinkClick,
+	            onClear: _this4.onClearSelectedList
+	          });
+
+	          application.setLogoStyle(_extends({}, _this4.constructor.logo));
+
+	          application.forceUpdateNavigationPanel();
+
 	          application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	        });
 	      }
@@ -42204,6 +42249,7 @@
 	    }, _this4.onProjectMouseLeave = function () {}, _this4.onMouseOver = function (e) {
 	      console.log(e);
 	    }, _this4.navigationsRender = function () {
+
 	      return _react2.default.createElement(Navigations, _extends({}, _this4.props, {
 	        onCategoryLinkClick: _this4.onCategoryLinkClick,
 	        onClientLinkClick: _this4.onClientLinkClick,

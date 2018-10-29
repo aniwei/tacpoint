@@ -344,8 +344,18 @@ class Home extends AppPage {
 
       application.setLogoStyle({
         type: isUnselected ? 'full' : 'simple',
-        color: (clients[index] || Home.logo).color
+        color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
       });
+
+      Home.navigations.props = {
+        ...this.props,
+        ...this.state,
+        onCategoryLinkClick: this.onCategoryLinkClick,
+        onClientLinkClick: this.onClientLinkClick,
+        onClear: this.onClearSelectedList
+      };
+
+      application.forceUpdateNavigationPanel();
 
       application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
     
@@ -380,6 +390,19 @@ class Home extends AppPage {
           });
         }
 
+        Home.navigations.props = {
+          ...this.props,
+          ...this.state,
+          onCategoryLinkClick: this.onCategoryLinkClick,
+          onClientLinkClick: this.onClientLinkClick,
+          onClear: this.onClearSelectedList
+        };
+
+        application.forceUpdateNavigationPanel();
+        application.setLogoStyle({
+          ...this.constructor.logo
+        });
+
         application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
       });
     } else {
@@ -402,6 +425,20 @@ class Home extends AppPage {
             color: Home.logo.color
           });
         }
+
+        Home.navigations.props = {
+          ...this.props,
+          ...this.state,
+          onCategoryLinkClick: this.onCategoryLinkClick,
+          onClientLinkClick: this.onClientLinkClick,
+          onClear: this.onClearSelectedList
+        };
+
+        application.setLogoStyle({
+          ...this.constructor.logo
+        });
+
+        application.forceUpdateNavigationPanel();
 
         application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
       });
@@ -525,6 +562,7 @@ class Home extends AppPage {
   }
 
   navigationsRender = () => {
+
     return (
       <Navigations 
         {...this.props}

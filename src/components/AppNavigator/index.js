@@ -34,7 +34,9 @@ export default class AppNavigator extends Component {
   }
 
   onNavigatorClick = () => {
-    
+    const { application } = this.context;
+
+    application.createEventEmitter('navigationstatechange', { type: 'close' })
   }
 
   navigatorsRender () {

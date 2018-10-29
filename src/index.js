@@ -100,8 +100,8 @@ class App extends Component {
     document.dispatchEvent(event);
   }
 
-  onNavigationStateChange = (state) => {
-    this.navigationState = state;
+  onNavigationStateChange = ({ data: { type }}) => {
+    this.navigationState = type;
   }
 
   onDeviceOrientation = (e) => {

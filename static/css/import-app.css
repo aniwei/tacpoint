@@ -10,6 +10,7 @@
   height: 100%;
   position: absolute;
   width: 100%;
+  overflow: hidden;
 }
 .scene {
   height: 100%;
@@ -17,6 +18,7 @@
 
 .app__scene {
   height: 100%;
+  overflow: auto;
 }
 
 .app__layout,

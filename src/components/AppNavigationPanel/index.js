@@ -22,6 +22,16 @@ export default class AppNavigationPanel extends Component {
       navigations: null
     };
 
+    context.application.forceUpdateNavigationPanel = () => {
+      this.forceUpdate();
+    }
+
+    context.application.closeNavigationPanel = () => {
+      this.setState({
+        open: false
+      });
+    }
+
     context.application.setNavigations = (navigations) => {
       this.setState({
         navigations
@@ -37,7 +47,7 @@ export default class AppNavigationPanel extends Component {
 
   componentWillReceiveProps (nextProps, context) {
     this.setState({
-      open: context.application.navigationState === 'open' || this.state.open
+      open: context.application.navigationState === 'open'
     });
   }
 
@@ -55,6 +65,8 @@ export default class AppNavigationPanel extends Component {
     this.setState({
       open: type === 'open'
     });
+
+    console.log(type);
   }
 
   onNavigatorClick = () => {

@@ -30,6 +30,7 @@ export default class AppBar extends Component {
       visible: true,
       open: context.application.navigationState === 'open' || false,
     }
+    
 
     context.application.setNavigationButtonColor = (navigationButtonColor) => {
       this.setState({ navigationButtonColor });

@@ -79,7 +79,6 @@ class Project extends AppPage {
       // });
     }))
     .catch(err => {
-      console.log(err);
       alert('Sorry, has a network error.');
     });
   }
