@@ -41823,6 +41823,10 @@
 
 	var _queryString2 = _interopRequireDefault(_queryString);
 
+	var _reactIdSwiper = __webpack_require__(253);
+
+	var _reactIdSwiper2 = _interopRequireDefault(_reactIdSwiper);
+
 	var _Context = __webpack_require__(251);
 
 	var _Context2 = _interopRequireDefault(_Context);
@@ -42027,7 +42031,9 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category' },
+	        { ref: function ref(_ref2) {
+	            return console.log(_ref2);
+	          }, className: 'col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'scene-home__category-content' },
@@ -42096,7 +42102,7 @@
 	  _inherits(Home, _AppPage);
 
 	  function Home() {
-	    var _ref2;
+	    var _ref3;
 
 	    var _temp2, _this4, _ret2;
 
@@ -42106,7 +42112,7 @@
 	      args[_key2] = arguments[_key2];
 	    }
 
-	    return _ret2 = (_temp2 = (_this4 = _possibleConstructorReturn(this, (_ref2 = Home.__proto__ || Object.getPrototypeOf(Home)).call.apply(_ref2, [this].concat(args))), _this4), _this4.state = {
+	    return _ret2 = (_temp2 = (_this4 = _possibleConstructorReturn(this, (_ref3 = Home.__proto__ || Object.getPrototypeOf(Home)).call.apply(_ref3, [this].concat(args))), _this4), _this4.state = {
 	      waiting: true,
 	      networkError: null,
 	      projects: [],
@@ -42378,6 +42384,32 @@
 	      document.addEventListener('clearnavigations', this.onClearNavigations, false);
 	    }
 	  }, {
+	    key: 'onLayout',
+	    value: function onLayout(node) {
+	      if (node && !this.isLayouted) {
+	        var getWindowSize = this.props.getWindowSize;
+	        var projects = this.state.projects;
+	        var clientHeight = node.clientHeight;
+
+	        var _getWindowSize = getWindowSize(),
+	            height = _getWindowSize.height;
+
+	        var newProject = projects;
+
+	        var mul = height / clientHeight;
+
+	        for (var i = 0; i < mul; i++) {
+	          newProject = newProject.concat(projects);
+	        }
+
+	        this.setState({
+	          projects: newProject
+	        });
+
+	        this.isLayouted = true;
+	      }
+	    }
+	  }, {
 	    key: 'getProjectList',
 	    value: function getProjectList() {
 	      return new Promise(function (resolve, reject) {
@@ -42463,10 +42495,10 @@
 	            return selectedCategories.includes(cate.id);
 	          }) || selectedClients === clientId) {
 	            return _react2.default.createElement(
-	              'li',
+	              'div',
 	              {
 	                className: classes,
-	                key: id,
+	                key: id + '-' + index,
 	                onMouseEnter: function onMouseEnter(e) {
 	                  return _this6.onProjectMouseLeave(project, e);
 	                },
@@ -42485,7 +42517,7 @@
 	          }
 	        } else {
 	          return _react2.default.createElement(
-	            'li',
+	            'div',
 	            { className: classes },
 	            _react2.default.createElement(
 	              _reactRouterDom.Link,
@@ -42499,16 +42531,32 @@
 	        }
 	      });
 
+	      var options = {
+	        slidesPerView: 'auto',
+	        spaceBetween: 0,
+	        freeMode: true,
+	        mode: 'vertical',
+	        direction: 'vertical',
+	        loop: true
+	        // direction: 'vertical',
+	      };
+
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'col-12 col-m-14 col-s-24 scene-home__project' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'scene__project' },
+	          { className: 'scene__project', ref: function ref(_ref4) {
+	              return _this6.onLayout(_ref4);
+	            } },
 	          _react2.default.createElement(
-	            'ul',
+	            'div',
 	            { className: 'scene__project-list' },
-	            projectElements
+	            this.isLayouted ? _react2.default.createElement(
+	              _reactIdSwiper2.default,
+	              options,
+	              projectElements
+	            ) : projectElements
 	          )
 	        )
 	      );
@@ -42582,7 +42630,7 @@
 	  _inherits(Line, _Component2);
 
 	  function Line() {
-	    var _ref3;
+	    var _ref5;
 
 	    var _temp3, _this8, _ret3;
 
@@ -42592,25 +42640,25 @@
 	      args[_key3] = arguments[_key3];
 	    }
 
-	    return _ret3 = (_temp3 = (_this8 = _possibleConstructorReturn(this, (_ref3 = Line.__proto__ || Object.getPrototypeOf(Line)).call.apply(_ref3, [this].concat(args))), _this8), _this8.state = {
+	    return _ret3 = (_temp3 = (_this8 = _possibleConstructorReturn(this, (_ref5 = Line.__proto__ || Object.getPrototypeOf(Line)).call.apply(_ref5, [this].concat(args))), _this8), _this8.state = {
 	      angle: START_ANGLE,
 	      translate: 0,
 	      color: _contants.COLORS.WHITE,
 	      open: false
-	    }, _this8.onLineStateChange = function (_ref4) {
-	      var state = _ref4.data;
+	    }, _this8.onLineStateChange = function (_ref6) {
+	      var state = _ref6.data;
 
 	      _this8.setState(_extends({}, state));
-	    }, _this8.onOrientation = function (_ref5) {
-	      var _ref5$data = _ref5.data,
-	          alpha = _ref5$data.alpha,
-	          beta = _ref5$data.beta,
-	          gamma = _ref5$data.gamma;
+	    }, _this8.onOrientation = function (_ref7) {
+	      var _ref7$data = _ref7.data,
+	          alpha = _ref7$data.alpha,
+	          beta = _ref7$data.beta,
+	          gamma = _ref7$data.gamma;
 	      var getWindowSize = _this8.props.getWindowSize;
 
-	      var _getWindowSize = getWindowSize(),
-	          height = _getWindowSize.height,
-	          width = _getWindowSize.width;
+	      var _getWindowSize2 = getWindowSize(),
+	          height = _getWindowSize2.height,
+	          width = _getWindowSize2.width;
 
 	      var halfHeight = height / 2;
 	      var halfWidth = width / 2;
@@ -42623,15 +42671,15 @@
 	      _this8.setState({
 	        translate: offsetX + 'px, ' + offsetY + 'px'
 	      });
-	    }, _this8.onMoving = function (_ref6) {
-	      var _ref6$data = _ref6.data,
-	          x = _ref6$data.x,
-	          y = _ref6$data.y;
+	    }, _this8.onMoving = function (_ref8) {
+	      var _ref8$data = _ref8.data,
+	          x = _ref8$data.x,
+	          y = _ref8$data.y;
 	      var getWindowSize = _this8.props.getWindowSize;
 
-	      var _getWindowSize2 = getWindowSize(),
-	          height = _getWindowSize2.height,
-	          width = _getWindowSize2.width;
+	      var _getWindowSize3 = getWindowSize(),
+	          height = _getWindowSize3.height,
+	          width = _getWindowSize3.width;
 
 	      var halfHeight = height / 4;
 	      var halfWidth = width / 4;

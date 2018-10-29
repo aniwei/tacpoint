@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
 import qs from 'query-string';
+import ReactSwiper from 'react-id-swiper';
 import Context from '../../Context';
 
 import Scene from '../../components/Scene';
@@ -166,7 +167,7 @@ class Navigations extends Component {
 
   render () {
     return (
-      <div className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category">
+      <div ref={ref => console.log(ref)} className="col-8 col-offset-4 col-m-10 col-offset-m-0 col-s-12 col-offset-s-9 col-xs-12 col-offset-xs-6 scene-home__category">
         <div className="scene-home__category-content">
           <div className="scene__category">
             <div className="scene_grid">
@@ -494,6 +495,28 @@ class Home extends AppPage {
     console.log(e);
   }
 
+  onLayout (node) {
+    if (node && !this.isLayouted) {
+      const { getWindowSize } = this.props;
+      const { projects } = this.state;
+      const { clientHeight } = node;
+      const { height } = getWindowSize();
+      let newProject = projects;
+
+      const mul = height / clientHeight;
+      
+      for (let i = 0; i < mul; i++) {
+        newProject = newProject.concat(projects);
+      }
+
+      this.setState({
+        projects: newProject
+      });
+
+      this.isLayouted = true;
+    }
+  }
+
   getProjectList () {
     return new Promise((resolve, reject) => {
       fetch('./data/projects.json', {
@@ -557,9 +580,9 @@ class Home extends AppPage {
           selectedClients === clientId
         ) {
           return (
-            <li 
+            <div 
               className={classes} 
-              key={id} 
+              key={`${id}-${index}`} 
               onMouseEnter={(e) => this.onProjectMouseLeave(project, e)}
               onMouseLeave={(e) => this.onProjectMouseEnter(project, e)}
             >
@@ -568,31 +591,45 @@ class Home extends AppPage {
               >
                 {name}
               </Link>
-            </li>
+            </div>
           );
         }
       } else {
         return (
-          <li className={classes}>
+          <div className={classes}>
             <Link 
               to={to}
               key={id}
             >
               {name}
             </Link>
-          </li>
+          </div>
         );
       }
 
       
     });
 
+    const options = {
+      slidesPerView: 'auto',
+      spaceBetween: 0,
+      freeMode: true,
+      mode: 'vertical',
+      direction: 'vertical',
+      loop: true,
+      // direction: 'vertical',
+    };
+
     return (
       <div className="col-12 col-m-14 col-s-24 scene-home__project">
-        <div className="scene__project">
-          <ul className="scene__project-list">
-            {projectElements}
-          </ul>
+        <div className="scene__project" ref={ref => this.onLayout(ref)}>
+          <div className="scene__project-list">
+            {
+              this.isLayouted ? <ReactSwiper {...options}>
+                {projectElements}
+              </ReactSwiper> : projectElements
+            }
+          </div>
         </div>
       </div>
     );

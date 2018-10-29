@@ -65,6 +65,11 @@
     transition: transform .35s;
 }
 
+.scene__project,
+.scene__project-list {
+    height: 100%;
+}
+
 @media screen and (max-width: 768px) {
     .scene-home__line {
         width: 60%;

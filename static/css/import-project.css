@@ -1,5 +1,11 @@
 
 /* project s */
+
+.scene__project,
+.scene__project-list {
+    height: 100%;
+}
+
 .scene__project-item {
     line-height: 72px;
     font-size: 64px;
