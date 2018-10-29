@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import Scene from '../../components/Scene';
 import AppPage from '../../components/AppPage';
-import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
 import Article from '../../components/Article';
 
@@ -12,8 +11,9 @@ class Project extends AppPage {
   static backgroundColor = '#ffffff';
   static logo = {
     color: '#000000',
-    type: 'simple'
+    type: 'simple',
   };
+  static position = 'fixed';
   static navigationButtonColor = '#000000';
   static navigationLineColor = '#000000';
   static navigators = {
@@ -22,6 +22,10 @@ class Project extends AppPage {
       { position: 'left', text: 'about', path: '/about' },
       { position: 'right', text: 'let\'s talk', path: '/contact' }
     ]
+  }
+
+  static footer = {
+    color: '#000000'
   }
 
   state = {
@@ -35,6 +39,25 @@ class Project extends AppPage {
     this.query = qs.parse(location.search);
 
     this.getProject(this.query.id);
+
+    window.addEventListener('scroll', this.onScroll, false);
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('scroll', this.onScroll, false);
+  }
+
+  onScroll = () => {
+    const { scrollY } = window;
+    const { application } = this.context;
+
+    if (this.prevScrollTop > scrollY) {
+      application.openAppBar();
+    } else {
+      application.closeAppBar();
+    }
+
+    this.prevScrollTop = scrollY;
   }
 
   onNavigationMore = () => {
@@ -51,9 +74,9 @@ class Project extends AppPage {
     }).then(res => res.json())
     .then(res => this.setState({ data: res.project, waiting: false }, () => {
 
-      application.setLogoStyle({
-        color: res.project.color
-      });
+      // application.setLogoStyle({
+      //   color: res.project.color
+      // });
     }))
     .catch(err => {
       console.log(err);

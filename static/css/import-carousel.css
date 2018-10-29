@@ -1,5 +1,37 @@
+.scene__carousel {
+    position: relative;
+}
+
 .scene__carousel-inner {
     overflow: hidden;
+}
+
+
+.scene__carousel-slider-navigator {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    background: url('../image/arrow.png') 318px center no-repeat;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .35s;
+    z-index: 100;
+}
+
+
+.scene__carousel-slider-navigator:hover {
+    pointer-events: all;
+    opacity: 1;
+}
+
+.scene__carousel-slider-prev {
+    left: 0;
+    transform: rotateY(180deg);
+}
+
+.scene__carousel-slider-next {
+    right: 0;
 }
 
 /* slider s */

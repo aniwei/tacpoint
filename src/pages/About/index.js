@@ -69,6 +69,14 @@ class About extends AppPage {
     window.removeEventListener('scroll', this.onWindowScroll);
   }
 
+  onSwipeClick = (direction) => {
+    if (direction === 'prev') {
+      this.swiper.prev();
+    } else {
+      this.swiper.next();
+    }
+  }
+
   onWindowScroll = () => {
     const { getWindowSize } = this.props;
     const { top, height: contentHeight } = this.getScrollRect();
@@ -276,7 +284,7 @@ class About extends AppPage {
   }
 
   swiperRender () {
-    const { getAboutSwiperList, getAboutSwiperOptions } = this.props;
+    const { getAboutSwiperList, getAboutSwiperOptions, isMobile } = this.props;
     const { swiperIndex } = this.state;
     const swiperList = getAboutSwiperList();
 
@@ -310,20 +318,32 @@ class About extends AppPage {
     const length = swiperElements.length;
     const total = length < 10 ? `0${length}` : length;
 
+    const sliderElement = (
+      <div className="scene__carousel-slider">
+        <ReactSwipe ref={ref => this.swiper = ref} {...options}>
+          {swiperElements}
+        </ReactSwipe>
+      </div>
+    );
+
     return (
       <div className="scene__carousel">
+        
         <div className="scene__carousel-inner">
           <div className="scene-about__object">
-            <div className="scene__carousel-slider">
-              <ReactSwipe swipeOptions={options}>
-                {swiperElements}
-              </ReactSwipe>
-            </div>
+            {sliderElement}
           </div>
           <div className="scene__carousel-order scene__carousel-order_brief">
             <span className="scene__carousel-order-num scene__carousel-order_active">{swiperIndex}</span>/<span className="scene__carousel-order-num">{total}</span>
           </div>
         </div>
+
+        {
+          !isMobile && <a onClick={() => this.onSwipeClick('prev')} className="scene__carousel-slider-navigator scene__carousel-slider-prev"></a>
+        }
+        {
+          !isMobile && <a onClick={() => this.onSwipeClick('next')} className="scene__carousel-slider-navigator scene__carousel-slider-next"></a>
+        }
       </div>
     );
   }
@@ -351,7 +371,6 @@ class About extends AppPage {
   }
 
   render () {
-    console.log(this.props);
     return (
       <Scene waiting={this.waiting} name="about">
         {this.headerRender()}

@@ -81,6 +81,12 @@ class Swiper extends Component {
 
   }
 
+  onSwiperNumberClick = (index) => {
+    if (this.swiper) {
+      this.swiper.slideTo(index, 500, true);
+    }
+  }
+
   onTransitionEnd = (swipeIndex, element) => {
     const { onTransitionEnd } = this.props;
 
@@ -95,7 +101,7 @@ class Swiper extends Component {
 
   render () {
     const { swipeIndex } = this.state;
-    const { swipes, options } = this.props;
+    const { swipes, options, isMobile } = this.props;
     const { onTransitionEnd } = this;
 
     options.on = {
@@ -112,7 +118,7 @@ class Swiper extends Component {
         'scene__carousel-order_active': swipeIndex === index
       });
       orderElements.push(
-        <span className={classes}>
+        <span className={classes} onClick={() => this.onSwiperNumberClick(index)}>
           {index < 10 ? `0${index + 1}` : index + 1}
         </span>
       );
@@ -142,11 +148,11 @@ class Swiper extends Component {
       <div className="scene-detail__box">
         <div className="scene__carousel">
           <div className="scene__carousel-inner">
-            <div className="scene__carousel-slider">
-              <ReactSwiper {...options}>
-                {swipeElements}
-              </ReactSwiper>
-            </div>
+          <div className="scene__carousel-slider">
+            <ReactSwiper ref={ref => ref ? this.swiper = ref.swiper : null} {...options}>
+              {swipeElements}
+            </ReactSwiper>
+          </div>
 
             <div className="scene__carousel-order">
               {orderElements}

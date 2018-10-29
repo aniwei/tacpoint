@@ -30,6 +30,8 @@
 .scene__page-header-description-text {
     line-height: 24px;
     font-size: 16px;
+    font-weight: 400; /* Regular */
+    letter-spacing: 0;
 }
 .scene__page-header-description-text + .scene__page-header-description-text {
     margin-top: 32px;
@@ -69,6 +71,9 @@
 .scene__page-footer-information-item {
     line-height: 24px;
     font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: lowercase;
 }
 .scene__page-footer-information-item + .scene__page-footer-information-item {
     margin-top: 16px;
@@ -100,9 +105,11 @@
 }
 .scene__page-footer-information-site-link i {
     opacity: 0.5;
+    transition: 0.35s;
 }
 .scene__page-footer-information-site-link:hover i {
     opacity: 1;
+    transition: 0.35s;
 }
 /* information e */
 

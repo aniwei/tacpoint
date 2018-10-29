@@ -19,6 +19,7 @@ import {
   IS_MOBILE,
   COLORS, 
   WIDTH_LIST, 
+  CLIENT_IMAGES,
   TRANSITION_PROPERTY,
   GOOGLE_MAP_JS_URL,
   SOCIAL_LIST,
@@ -227,6 +228,10 @@ class App extends Component {
     return PROJECT_SWIPER_OPTIONS;
   }
 
+  getClientImages = () => {
+    return CLIENT_IMAGES;
+  }
+
   getAboutSwiperOptions = () => {
     return ABOUT_SWIPER_OPTIONS;
   }
@@ -285,7 +290,8 @@ class App extends Component {
       getFormInputList: this.getFormInputList,
       getAboutSwiperList: this.getAboutSwiperList,
       getAboutSwiperOptions: this.getAboutSwiperOptions,
-      getProjectSwiperOptions: this.getProjectSwiperOptions
+      getProjectSwiperOptions: this.getProjectSwiperOptions,
+      getClientImages: this.getClientImages
     }
   }
 

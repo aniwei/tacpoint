@@ -1,16 +1,20 @@
-@import url("//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700");
+/*@import url("//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700");*/
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700')
 html {
     height: 100%;
 }
 body {
     color: #1a1a1a;
-    font-family: OpenSans, "PingFang SC";
-    font-weight: 300;
+    /*font-family: OpenSans, "PingFang SC";*/
+    font-family: 'Open Sans', sans-serif;
+    /*font-weight: 300;*/
+    font-weight: 400; /* Regular */
     height: 100%;
 }
 
 a {
     color: inherit;
+    display: inline-block;
 }
 a:hover {
     text-decoration: none;
@@ -39,8 +43,10 @@ input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
     -moz-transition: background-color 1s;
     -webkit-transition: background-color 1s;
     -o-transition: background-color 1s;
-    font-family: 'Open Sans';
-    font-weight: lighter;
+    /*font-family: 'Open Sans';*/
+    /*font-weight: lighter;*/
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
 .scene__container {

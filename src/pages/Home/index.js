@@ -7,6 +7,7 @@ import Context from '../../Context';
 
 import Scene from '../../components/Scene';
 import AppPage from '../../components/AppPage';
+import { COLORS } from '../../contants';
 
 const MOUSE_MOVING_SCALE = 15;
 
@@ -309,14 +310,11 @@ class Home extends AppPage {
       selectedClientIndex: null,
       selectedClients: null
     });
-  }
 
-  onMoving = ({ data: { x, y }}) => {
-    const { getWindowSize } = this.props;
-    const size = getWindowSize();
+    const { application } = this.context;
 
-    this.setState({
-      mouseMoveAngle: parseInt((y / size.height) * MOUSE_MOVING_SCALE)
+    application.setLogoStyle({
+      ...this.constructor.logo
     });
   }
 
@@ -568,13 +566,72 @@ class Home extends AppPage {
       <Scene waiting={this.state.waiting} light name="home">
         <div className="scene-home">
           {this.bodyRender()}
-          <div className={classnames({
-            'scene-home__line': true,
-            'animated': true,
-            'fadeIn': typeof selectedClients === 'number'
-          })} style={style}></div>
+          <Line {...this.props} />
         </div>
       </Scene>
+    );
+  }
+}
+
+class Line extends Component {
+  static propTypes = {
+    application: PropTypes.object
+  }
+
+  state = {
+    angle: 0,
+    translate: 0,
+    color: COLORS.WHITE
+  }
+
+  componentWillUnmount () {
+    const { isMobile } = this.props;
+
+    if (isMobile) {
+      document.removeEventListener('moving', this.onMoving);
+    }
+
+    document.removeEventListener('linestatechange', this.onLineStateChange, false);
+  }
+
+  componentDidMount () {
+    const { isMobile } = this.props;
+   
+    if (!isMobile) {
+      document.addEventListener('moving', this.onMoving, false);
+    }
+
+    document.addEventListener('linestatechange', this.onLineStateChange, false);
+  }
+
+  onLineStateChange = (state) => {
+    this.setState({
+      ...state
+    })
+  }
+
+  onMoving = () => {
+    const { getWindowSize } = this.props;
+    const size = getWindowSize();
+
+    // this.setState({
+    //   translate: parseInt((y / size.height) * MOUSE_MOVING_SCALE)
+    // });
+  }
+
+  render () {
+    const { angle, translate, color } = this.props;
+    const style = {
+      transform: `rotate(${angle}deg)`,
+      backgroundColor: color
+    }
+
+    return (
+      <div className={classnames({
+        'scene-home__line': true,
+        'animated': true,
+        'fadeIn': typeof selectedClients === 'number'
+      })} style={style}></div>
     );
   }
 }

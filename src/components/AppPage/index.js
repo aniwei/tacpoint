@@ -52,6 +52,12 @@ export default  class Home extends Component {
       color: constructor.navigationLineColor
     };
 
+    if (constructor.position === 'fixed') {
+      application.setAppBarPositionStyle(constructor.position);
+    } else {
+      application.setAppBarPositionStyle('absolute');
+    }
+
     application.setNavigationButtonColor(constructor.navigationButtonColor);
     application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
     application.setLogoStyle({ ...constructor.logo });

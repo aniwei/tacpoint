@@ -64,25 +64,6 @@ const CONTACT_INFORMATION = [
   { key: 'phoneNumber', value: '650.577.3140' }
 ];
 
-const PARTNER_LIST = [
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' },
-  { url: '' }
-];
-
 const FORM_INPUT_LIST = [
   { key: 'name', placeholder: 'name', type: 'text' },
   { key: 'email', placeholder: 'email', type: 'text' },
@@ -98,6 +79,27 @@ const ABOUT_SWIPER_LIST = [
   { url: 'http://127.0.0.1:8080/static/image/img-about-office.jpg', alt: '' }
 ];
 
+const CLIENT_IMAGES = [
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-0.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-1.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-2.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-3.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-4.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-5.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-6.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-7.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-8.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-9.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-10.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-11.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-12.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-13.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-14.png', alt: '' },
+  { url: 'http://127.0.0.1:8080/static/image/clients/client-15.png', alt: '' },
+];
+
+const PARTNER_LIST = CLIENT_IMAGES;
+
 const ABOUT_SWIPER_OPTIONS = {
   speed: 400,
   auto: 3000,
@@ -109,7 +111,8 @@ const ABOUT_SWIPER_OPTIONS = {
 const PROJECT_SWIPER_OPTIONS = {
   slidesPerView: 'auto',
   centeredSlides: true,
-  loop: true
+  loop: true,
+  autoplay: true
 };
 
 export {

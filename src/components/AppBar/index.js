@@ -1,4 +1,5 @@
 import React, { Component, cloneElement } from 'react';
+import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -23,8 +24,10 @@ export default class AppBar extends Component {
       logo: {
         color: COLORS.WHITE,
         type: 'simple',
-        opacity: 1
+        opacity: 1,
       },
+      position: 'absolute',
+      visible: true,
       open: context.application.navigationState === 'open' || false,
     }
 
@@ -42,6 +45,30 @@ export default class AppBar extends Component {
       });
 
       context.application.createEventEmitter('navigationbuttonstatechange', { type: navigationButtonState })
+    }
+
+    context.application.setAppBarPositionStyle = (position) => {
+      if (this.state.position !== position) {
+        this.setState({
+          position: position
+        });
+      }
+    }
+
+    context.application.closeAppBar = () => {
+      if (this.state.visible === true) {
+        this.setState({
+          visible: false
+        });
+      }
+    }
+
+    context.application.openAppBar = () => {
+      if (this.state.visible === false) {
+        this.setState({
+          visible: true
+        });
+      }
     }
   }
 
@@ -101,8 +128,17 @@ export default class AppBar extends Component {
   }
 
   render () {
+    const { position, visible } = this.state;
+    const classes = classnames({
+      'animated': true,
+      'app__header': true,
+      'fixed': position === 'fixed',
+      'fadeIn': visible,
+      'fadeOut': !visible
+    });
+    
     return (
-      <div className="app__header">
+      <div className={classes}>
         {this.clearButtonRender()}
         {this.navigationButtonRender()}
         {this.logoRender()}

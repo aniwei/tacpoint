@@ -3,8 +3,9 @@
 .scene__project-item {
     line-height: 72px;
     font-size: 64px;
-    font-weight: inherit;
+    font-weight: 300;
     color: rgba(255, 255, 255, 0.25);
+    transition: color .35s;
 }
 
 .scene__project-item:hover {
