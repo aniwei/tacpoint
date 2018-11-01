@@ -42,6 +42,7 @@ export default  class Home extends Component {
   }
 
   setApplicationStyle = () => {
+    const { location } = this.props;
     const { application } = this.context;
     const constructor = this.constructor;
     
@@ -69,6 +70,12 @@ export default  class Home extends Component {
       application.setSimpleNavigationLineColor(constructor.navigationLineColor);
     }
     application.changeNavigationButtonState('close');
+
+    if (location.pathname === '/') {
+      application.setFooterFixed();
+    } else {
+      application.clearFooterFixed();
+    }
   }
 
   componentDidMount () {

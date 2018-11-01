@@ -111,6 +111,7 @@ const ABOUT_SWIPER_OPTIONS = {
 const PROJECT_SWIPER_OPTIONS = {
   slidesPerView: 'auto',
   centeredSlides: true,
+  slideActiveClass: 'scene__carousel-item_active',
   loop: true,
   autoplay: true
 };

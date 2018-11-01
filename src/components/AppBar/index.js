@@ -73,16 +73,48 @@ export default class AppBar extends Component {
     }
   }
 
+  componentDidMount () {
+    document.addEventListener('layoutscrolling', this.onLayoutScrolling, false);
+  }
+
+  componentWillUnmount () {
+    document.removeEventListener('layoutscrolling', this.onLayoutScrolling, false);
+  }
+
   componentWillReceiveProps (nextProps, context) {
     this.setState({
       open: context.application.navigationState === 'open' || this.state.open
     });
   }
 
+  onLayoutScrolling = ({ data: { scrollTop: top } }) => {
+    const { visible } = this.state;
+
+    if (top > this.originalScrollTop) {
+      if (visible === true) {
+        this.setState({
+          visible: false
+        });
+      }
+    } else {
+      if (visible === false) {
+        this.setState({
+          visible: true
+        });
+      }
+    }
+
+    this.originalScrollTop = top;
+  }
+
   onNavigationClear = () => {
     const { application } = this.context;
 
     application.createEventEmitter('clearnavigations');
+
+    this.setState({
+      navigationButtonState: 'close'
+    });
   }
 
   onNavigationButtonClick = (type) => {

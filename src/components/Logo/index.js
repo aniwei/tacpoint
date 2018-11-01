@@ -38,6 +38,7 @@ export default class Logo extends Component {
     const classes = classnames({
       'app__logo-svg': true,
       'animated': true,
+      'simple': true,
       [type !== 'full' ? 'fadeIn' : 'fadeOut']: !!type
     });
 
@@ -62,6 +63,8 @@ export default class Logo extends Component {
 
   render () {
     const { opacity } = this.props;
+
+
     return (
       <div className="app__logo" style={{ opacity }}>
         <Link to="/" onClick={() => this.props.onClick()}>

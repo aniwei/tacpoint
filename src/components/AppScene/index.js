@@ -8,6 +8,8 @@ import Contact from '../../pages/Contact';
 import About from '../../pages/About';
 import Access from '../../pages/Access';
 
+import Footer from '../AppFooter';
+
 import { 
   TRANSITION_PROPERTY 
 } from '../../contants';

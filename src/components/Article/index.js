@@ -83,7 +83,9 @@ class Swiper extends Component {
 
   onSwiperNumberClick = (index) => {
     if (this.swiper) {
-      this.swiper.slideTo(index, 500, true);
+      this.swiper.slideToLoop(index, 500, () => {
+        debugger;
+      } ,false);
     }
   }
 
@@ -99,14 +101,30 @@ class Swiper extends Component {
     });
   }
 
+  onCarouselItemClick = (swipeIndex) => {
+    if (this.swiper) {
+      
+      this.swiper.slideToLoop(swipeIndex, 500);
+    }
+  }
+
   render () {
     const { swipeIndex } = this.state;
     const { swipes, options, isMobile } = this.props;
-    const { onTransitionEnd } = this;
+    const { onTransitionEnd, onCarouselItemClick } = this;
 
     options.on = {
       transitionEnd: function () {
         onTransitionEnd(this.realIndex);
+      },
+      click: function () {
+        if (this.clickedIndex > this.activeIndex) {
+          this.slideNext();
+        } else {
+          if (this.clickedIndex < this.activeIndex) {
+            this.slidePrev();
+          }
+        }
       }
     }
 
@@ -128,7 +146,7 @@ class Swiper extends Component {
             key={index}
             className={classnames({
               'scene__carousel-item': true,
-              'scene__carousel-item_active': index === swipeIndex
+              // 'scene__carousel-item_active': index === swipeIndex
             })} 
           >
             <div className="scene__carousel-item-inner">
@@ -148,11 +166,11 @@ class Swiper extends Component {
       <div className="scene-detail__box">
         <div className="scene__carousel">
           <div className="scene__carousel-inner">
-          <div className="scene__carousel-slider">
-            <ReactSwiper ref={ref => ref ? this.swiper = ref.swiper : null} {...options}>
-              {swipeElements}
-            </ReactSwiper>
-          </div>
+            <div className="scene__carousel-slider">
+              <ReactSwiper ref={ref => ref ? this.swiper = ref.swiper : null} {...options}>
+                {swipeElements}
+              </ReactSwiper>
+            </div>
 
             <div className="scene__carousel-order">
               {orderElements}

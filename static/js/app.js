@@ -131,6 +131,25 @@
 	      document.dispatchEvent(event);
 	    };
 
+	    _this.onScroll = function (e) {
+	      if (!_this.isLayoutScrolling) {
+	        var target = e.target;
+
+	        _this.isLayoutScrolling = true;
+
+	        setTimeout(function () {
+	          var scrollTop = target.scrollTop,
+	              scrollHeight = target.scrollHeight;
+
+	          _this.isLayoutScrolling = false;
+	          _this.createEventEmitter('layoutscrolling', {
+	            scrollTop: scrollTop,
+	            scrollHeight: scrollHeight
+	          });
+	        }, THROTTLE_TIMEOUT / 5);
+	      }
+	    };
+
 	    _this.onNavigationStateChange = function (_ref) {
 	      var type = _ref.data.type;
 
@@ -353,7 +372,7 @@
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      window.removeEventListener('resize', this.onScroll);
+	      // window.removeEventListener('resize', this.onScroll);
 
 	      document.removeEventListener('navigationstatechange', this.onNavigationStateChange, false);
 
@@ -370,7 +389,7 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'app__layout', onMouseMove: this.onMouseMove },
+	        { className: 'app__layout', onMouseMove: this.onMouseMove, onScroll: this.onScroll },
 	        _react2.default.createElement(_AppBar2.default, null),
 	        _react2.default.createElement(_AppScene2.default, null),
 	        _react2.default.createElement(_AppFooter2.default, null),
@@ -30391,11 +30410,37 @@
 
 	    var _this = _possibleConstructorReturn(this, (AppBar.__proto__ || Object.getPrototypeOf(AppBar)).call(this, props, context));
 
+	    _this.onLayoutScrolling = function (_ref) {
+	      var top = _ref.data.scrollTop;
+	      var visible = _this.state.visible;
+
+
+	      if (top > _this.originalScrollTop) {
+	        if (visible === true) {
+	          _this.setState({
+	            visible: false
+	          });
+	        }
+	      } else {
+	        if (visible === false) {
+	          _this.setState({
+	            visible: true
+	          });
+	        }
+	      }
+
+	      _this.originalScrollTop = top;
+	    };
+
 	    _this.onNavigationClear = function () {
 	      var application = _this.context.application;
 
 
 	      application.createEventEmitter('clearnavigations');
+
+	      _this.setState({
+	        navigationButtonState: 'close'
+	      });
 	    };
 
 	    _this.onNavigationButtonClick = function (type) {
@@ -30465,6 +30510,16 @@
 	  }
 
 	  _createClass(AppBar, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      document.addEventListener('layoutscrolling', this.onLayoutScrolling, false);
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      document.removeEventListener('layoutscrolling', this.onLayoutScrolling, false);
+	    }
+	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps, context) {
 	      this.setState({
@@ -30773,7 +30828,8 @@
 
 	      var classes = (0, _classnames4.default)(_defineProperty({
 	        'app__logo-svg': true,
-	        'animated': true
+	        'animated': true,
+	        'simple': true
 	      }, type !== 'full' ? 'fadeIn' : 'fadeOut', !!type));
 
 	      return _react2.default.createElement(
@@ -30808,6 +30864,7 @@
 	      var _this2 = this;
 
 	      var opacity = this.props.opacity;
+
 
 	      return _react2.default.createElement(
 	        'div',
@@ -30912,6 +30969,7 @@
 	var PROJECT_SWIPER_OPTIONS = {
 	  slidesPerView: 'auto',
 	  centeredSlides: true,
+	  slideActiveClass: 'scene__carousel-item_active',
 	  loop: true,
 	  autoplay: true
 	};
@@ -30972,11 +31030,24 @@
 
 	    _this.state = {
 	      color: _contants.COLORS.WHITE,
-	      opacity: 0.5
+	      opacity: 0.5,
+	      position: 'relative'
 	    };
 
 	    context.application.setFooterStyle = function (color) {
 	      _this.setState(_extends({}, color));
+	    };
+
+	    context.application.setFooterFixed = function () {
+	      _this.setState({
+	        position: 'absolute'
+	      });
+	    };
+
+	    context.application.clearFooterFixed = function () {
+	      _this.setState({
+	        position: 'relative'
+	      });
 	    };
 	    return _this;
 	  }
@@ -30984,9 +31055,11 @@
 	  _createClass(AppFoot, [{
 	    key: 'render',
 	    value: function render() {
+	      var style = { position: this.state.position };
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'app__footer' },
+	        { className: 'app__footer', style: style },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'app__copyright', style: { color: this.state.color } },
@@ -31347,6 +31420,10 @@
 	var _Access = __webpack_require__(261);
 
 	var _Access2 = _interopRequireDefault(_Access);
+
+	var _AppFooter = __webpack_require__(234);
+
+	var _AppFooter2 = _interopRequireDefault(_AppFooter);
 
 	var _contants = __webpack_require__(233);
 
@@ -32743,34 +32820,7 @@
 
 	    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props, context));
 
-	    _this.setApplicationStyle = function () {
-	      var application = _this.context.application;
-
-	      var constructor = _this.constructor;
-
-	      constructor.navigations.props = _extends({}, _this.props, constructor.navigations.props, {
-	        isMobile: _this.props.isMobile,
-	        color: constructor.navigationLineColor
-	      });
-
-	      if (constructor.position === 'fixed') {
-	        application.setAppBarPositionStyle(constructor.position);
-	      } else {
-	        application.setAppBarPositionStyle('absolute');
-	      }
-
-	      application.setNavigationButtonColor(constructor.navigationButtonColor);
-	      application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
-	      application.setLogoStyle(_extends({}, constructor.logo));
-	      application.setNavigators(constructor.navigators);
-	      application.setBackgroundColor(constructor.backgroundColor);
-	      application.setFooterStyle(constructor.footer);
-	      application.setNavigations(constructor.navigations);
-	      if (application.setSimpleNavigationLineColor) {
-	        application.setSimpleNavigationLineColor(constructor.navigationLineColor);
-	      }
-	      application.changeNavigationButtonState('close');
-	    };
+	    _initialiseProps.call(_this);
 
 	    var location = props.location;
 
@@ -32811,6 +32861,47 @@
 	Home.contextTypes = {
 	  application: _propTypes2.default.object
 	};
+
+	var _initialiseProps = function _initialiseProps() {
+	  var _this2 = this;
+
+	  this.setApplicationStyle = function () {
+	    var location = _this2.props.location;
+	    var application = _this2.context.application;
+
+	    var constructor = _this2.constructor;
+
+	    constructor.navigations.props = _extends({}, _this2.props, constructor.navigations.props, {
+	      isMobile: _this2.props.isMobile,
+	      color: constructor.navigationLineColor
+	    });
+
+	    if (constructor.position === 'fixed') {
+	      application.setAppBarPositionStyle(constructor.position);
+	    } else {
+	      application.setAppBarPositionStyle('absolute');
+	    }
+
+	    application.setNavigationButtonColor(constructor.navigationButtonColor);
+	    application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
+	    application.setLogoStyle(_extends({}, constructor.logo));
+	    application.setNavigators(constructor.navigators);
+	    application.setBackgroundColor(constructor.backgroundColor);
+	    application.setFooterStyle(constructor.footer);
+	    application.setNavigations(constructor.navigations);
+	    if (application.setSimpleNavigationLineColor) {
+	      application.setSimpleNavigationLineColor(constructor.navigationLineColor);
+	    }
+	    application.changeNavigationButtonState('close');
+
+	    if (location.pathname === '/') {
+	      application.setFooterFixed();
+	    } else {
+	      application.clearFooterFixed();
+	    }
+	  };
+	};
+
 		exports.default = Home;
 
 /***/ }),
@@ -33108,7 +33199,9 @@
 	      }
 	    }, _this3.onSwiperNumberClick = function (index) {
 	      if (_this3.swiper) {
-	        _this3.swiper.slideTo(index, 500, true);
+	        _this3.swiper.slideToLoop(index, 500, function () {
+	          debugger;
+	        }, false);
 	      }
 	    }, _this3.onTransitionEnd = function (swipeIndex, element) {
 	      var onTransitionEnd = _this3.props.onTransitionEnd;
@@ -33121,6 +33214,11 @@
 	      _this3.setState({
 	        swipeIndex: swipeIndex
 	      });
+	    }, _this3.onCarouselItemClick = function (swipeIndex) {
+	      if (_this3.swiper) {
+
+	        _this3.swiper.slideToLoop(swipeIndex, 500);
+	      }
 	    }, _temp), _possibleConstructorReturn(_this3, _ret);
 	  }
 
@@ -33137,12 +33235,22 @@
 	          swipes = _props.swipes,
 	          options = _props.options,
 	          isMobile = _props.isMobile;
-	      var onTransitionEnd = this.onTransitionEnd;
+	      var onTransitionEnd = this.onTransitionEnd,
+	          onCarouselItemClick = this.onCarouselItemClick;
 
 
 	      options.on = {
 	        transitionEnd: function transitionEnd() {
 	          onTransitionEnd(this.realIndex);
+	        },
+	        click: function click() {
+	          if (this.clickedIndex > this.activeIndex) {
+	            this.slideNext();
+	          } else {
+	            if (this.clickedIndex < this.activeIndex) {
+	              this.slidePrev();
+	            }
+	          }
 	        }
 	      };
 
@@ -33168,8 +33276,8 @@
 	          {
 	            key: index,
 	            className: (0, _classnames2.default)({
-	              'scene__carousel-item': true,
-	              'scene__carousel-item_active': index === swipeIndex
+	              'scene__carousel-item': true
+	              // 'scene__carousel-item_active': index === swipeIndex
 	            })
 	          },
 	          _react2.default.createElement(
@@ -41851,6 +41959,7 @@
 
 	var MOUSE_MOVING_SCALE = 15;
 	var START_ANGLE = 135;
+	var SET_LOGO_TIMEOUT = 350;
 
 	var Navigations = function (_Component) {
 	  _inherits(Navigations, _Component);
@@ -42131,7 +42240,15 @@
 	      var application = _this4.context.application;
 
 
-	      application.setLogoStyle(_extends({}, _this4.constructor.logo));
+	      if (_this4.setLogoStyleTimer) {
+	        clearTimeout(_this4.setLogoStyleTimer);
+	      }
+
+	      _this4.setLogoStyleTimer = setTimeout(function () {
+	        _this4.setLogoStyleTimer = null;
+
+	        application.setLogoStyle(_extends({}, _this4.constructor.logo));
+	      }, SET_LOGO_TIMEOUT);
 	    }, _this4.onClearSelectedList = function () {
 	      var setNavigations = _this4.props.setNavigations;
 
@@ -42158,12 +42275,20 @@
 	        var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
 	        // debugger;
-	        setTimeout(function () {
+
+	        if (_this4.setLogoStyleTimer) {
+	          clearTimeout(_this4.setLogoStyleTimer);
+	        }
+
+	        _this4.setLogoStyleTimer = setTimeout(function () {
+
+	          _this4.setLogoStyleTimer = null;
+
 	          application.setLogoStyle({
 	            type: isUnselected ? 'full' : 'simple',
-	            color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
+	            color: selectedClients === null ? Home.logo.color : (clients[index] || Home.logo).color
 	          });
-	        }, 500);
+	        }, SET_LOGO_TIMEOUT);
 
 	        if (selectedClients === null) {
 	          application.createEventEmitter('linestatechange', {
@@ -42189,7 +42314,9 @@
 	      });
 	    }, _this4.onCategoryLinkClick = function (category, isInclude) {
 	      var application = _this4.context.application;
-	      var selectedCategories = _this4.state.selectedCategories;
+	      var _this4$state2 = _this4.state,
+	          selectedCategories = _this4$state2.selectedCategories,
+	          clients = _this4$state2.clients;
 
 	      var index = selectedCategories.indexOf(category);
 
@@ -42201,15 +42328,24 @@
 	        _this4.setState({
 	          selectedCategories: newSelectedList
 	        }, function () {
-	          var _this4$state2 = _this4.state,
-	              selectedClients = _this4$state2.selectedClients,
-	              selectedCategories = _this4$state2.selectedCategories;
+	          var _this4$state3 = _this4.state,
+	              selectedClients = _this4$state3.selectedClients,
+	              selectedCategories = _this4$state3.selectedCategories;
 
 	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	          application.setLogoStyle({
-	            type: isUnselected ? 'full' : 'simple'
-	          });
+	          if (_this4.setLogoStyleTimer) {
+	            clearTimeout(_this4.setLogoStyleTimer);
+	          }
+
+	          _this4.setLogoStyleTimer = setTimeout(function () {
+
+	            _this4.setLogoStyleTimer = null;
+
+	            application.setLogoStyle({
+	              type: isUnselected ? 'full' : 'simple'
+	            });
+	          }, SET_LOGO_TIMEOUT);
 
 	          if (selectedClients === null) {
 	            application.setLogoStyle({
@@ -42234,15 +42370,24 @@
 	        _this4.setState({
 	          selectedCategories: newSelectedList
 	        }, function () {
-	          var _this4$state3 = _this4.state,
-	              selectedClients = _this4$state3.selectedClients,
-	              selectedCategories = _this4$state3.selectedCategories;
+	          var _this4$state4 = _this4.state,
+	              selectedClients = _this4$state4.selectedClients,
+	              selectedCategories = _this4$state4.selectedCategories;
 
 	          var isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
-	          application.setLogoStyle({
-	            type: isUnselected ? 'full' : 'simple'
-	          });
+	          if (_this4.setLogoStyleTimer) {
+	            clearTimeout(_this4.setLogoStyleTimer);
+	          }
+
+	          _this4.setLogoStyleTimer = setTimeout(function () {
+
+	            _this4.setLogoStyleTimer = null;
+
+	            application.setLogoStyle({
+	              type: isUnselected ? 'full' : 'simple'
+	            });
+	          }, SET_LOGO_TIMEOUT);
 
 	          if (selectedClients === null) {
 	            application.setLogoStyle({
@@ -42267,7 +42412,14 @@
 	            onClear: _this4.onClearSelectedList
 	          });
 
-	          application.setLogoStyle(_extends({}, _this4.constructor.logo));
+	          // this.setLogoStyleTimer = setTimeout(() => {
+
+	          //   this.setLogoStyleTimer = null;
+
+	          //   application.setLogoStyle({
+	          //     ...this.constructor.logo
+	          //   });
+	          // }, 500);
 
 	          application.forceUpdateNavigationPanel();
 
@@ -43207,6 +43359,10 @@
 
 	var _Context2 = _interopRequireDefault(_Context);
 
+	var _AppFooter = __webpack_require__(234);
+
+	var _AppFooter2 = _interopRequireDefault(_AppFooter);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -43244,12 +43400,12 @@
 	      } else {
 	        _this.swiper.next();
 	      }
-	    }, _this.onWindowScroll = function () {
+	    }, _this.onWindowScroll = function (_ref2) {
+	      var _ref2$data = _ref2.data,
+	          top = _ref2$data.scrollTop,
+	          contentHeight = _ref2$data.scrollHeight;
 	      var getWindowSize = _this.props.getWindowSize;
-
-	      var _this$getScrollRect = _this.getScrollRect(),
-	          top = _this$getScrollRect.top,
-	          contentHeight = _this$getScrollRect.height;
+	      // const { height: contentHeight } = 
 
 	      var _getWindowSize = getWindowSize(),
 	          height = _getWindowSize.height;
@@ -43260,16 +43416,6 @@
 	        categoryOffset: top,
 	        lineAngle: angle
 	      });
-	    }, _this.getScrollRect = function () {
-	      var _document$documentEle = document.documentElement,
-	          top = _document$documentEle.scrollTop,
-	          height = _document$documentEle.scrollHeight;
-
-
-	      return {
-	        top: top === 0 ? document.body.scrollTop : top,
-	        height: height
-	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
 
@@ -43295,12 +43441,12 @@
 	        });
 	      });
 
-	      window.addEventListener('scroll', this.onWindowScroll);
+	      document.addEventListener('layoutscrolling', this.onWindowScroll);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      window.removeEventListener('scroll', this.onWindowScroll);
+	      document.removeEventListener('layoutscrolling', this.onWindowScroll);
 	    }
 	  }, {
 	    key: 'getCategoryList',
@@ -43340,6 +43486,19 @@
 	        });
 	      });
 	    }
+
+	    // getScrollRect = () => {
+	    //   const { 
+	    //     scrollTop: top,
+	    //     scrollHeight: height
+	    //   } = document.documentElement;
+
+	    //   return { 
+	    //     top: top === 0 ? document.body.scrollTop : top, 
+	    //     height 
+	    //   };
+	    // }
+
 	  }, {
 	    key: 'headerRender',
 	    value: function headerRender() {
@@ -43629,8 +43788,8 @@
 	        { className: 'scene__carousel-slider' },
 	        _react2.default.createElement(
 	          _reactSwipe2.default,
-	          _extends({ ref: function ref(_ref2) {
-	              return _this3.swiper = _ref2;
+	          _extends({ ref: function ref(_ref3) {
+	              return _this3.swiper = _ref3;
 	            } }, options),
 	          swiperElements
 	        )

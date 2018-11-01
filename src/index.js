@@ -74,7 +74,7 @@ class App extends Component {
   }
 
   componentWillUnmount () {
-    window.removeEventListener('resize', this.onScroll);
+    // window.removeEventListener('resize', this.onScroll);
 
     document.removeEventListener('navigationstatechange', this.onNavigationStateChange, false);
 
@@ -98,6 +98,23 @@ class App extends Component {
     event.data = data;
     
     document.dispatchEvent(event);
+  }
+
+  onScroll = (e) => {
+    if (!this.isLayoutScrolling) {
+      const { target } = e;
+      this.isLayoutScrolling = true;
+
+      setTimeout(() => {
+        const { scrollTop, scrollHeight } = target;
+        this.isLayoutScrolling = false;
+        this.createEventEmitter('layoutscrolling', {
+          scrollTop,
+          scrollHeight
+        });
+      }, THROTTLE_TIMEOUT / 5);
+    }
+    
   }
 
   onNavigationStateChange = ({ data: { type }}) => {
@@ -261,7 +278,7 @@ class App extends Component {
     const { isMobile } = this.state;
 
     return (
-      <div className="app__layout" onMouseMove={this.onMouseMove}>
+      <div className="app__layout" onMouseMove={this.onMouseMove} onScroll={this.onScroll}>
         <AppBar />
         <AppScene />
         <AppFooter />

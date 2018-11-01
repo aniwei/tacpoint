@@ -15,17 +15,32 @@ export default class AppFoot extends Component {
 
     this.state = {
       color: COLORS.WHITE,
-      opacity: 0.5
+      opacity: 0.5,
+      position: 'relative'
     };
 
     context.application.setFooterStyle = (color) => {
       this.setState({ ...color });
     }
+
+    context.application.setFooterFixed = () => {
+      this.setState({
+        position: 'absolute'
+      });
+    }
+
+    context.application.clearFooterFixed = () => {
+      this.setState({
+        position: 'relative'
+      })
+    }
   }
 
   render () {
+    const style = { position: this.state.position };
+
     return (
-      <div className="app__footer">
+      <div className="app__footer" style={style}>
         <div className="app__copyright" style={{ color: this.state.color }}>©2018 Tacpoint, Inc.</div>
       </div>
     );

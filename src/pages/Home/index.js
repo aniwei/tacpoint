@@ -12,6 +12,7 @@ import { COLORS } from '../../contants';
 
 const MOUSE_MOVING_SCALE = 15;
 const START_ANGLE = 135;
+const SET_LOGO_TIMEOUT = 350;
 
 class Navigations extends Component {
   static contextTypes = {
@@ -325,9 +326,17 @@ class Home extends AppPage {
 
     const { application } = this.context;
 
-    application.setLogoStyle({
-      ...this.constructor.logo
-    });
+    if (this.setLogoStyleTimer) {
+      clearTimeout(this.setLogoStyleTimer);
+    }
+
+    this.setLogoStyleTimer = setTimeout(() => {
+      this.setLogoStyleTimer = null;
+
+      application.setLogoStyle({
+        ...this.constructor.logo
+      });
+    }, SET_LOGO_TIMEOUT);
   }
 
   onClearSelectedList = () => {
@@ -354,12 +363,20 @@ class Home extends AppPage {
       const isUnselected = selectedCategories.length === 0 && selectedClients === null;
 
       // debugger;
-      setTimeout(() => {
+
+      if (this.setLogoStyleTimer) {
+        clearTimeout(this.setLogoStyleTimer);
+      }
+
+      this.setLogoStyleTimer = setTimeout(() => {
+
+        this.setLogoStyleTimer = null;
+
         application.setLogoStyle({
           type: isUnselected ? 'full' : 'simple',
-          color: isUnselected ? Home.logo.color : (clients[index] || Home.logo).color
+          color: selectedClients === null ? Home.logo.color : (clients[index] || Home.logo).color
         });
-      }, 500)
+      }, SET_LOGO_TIMEOUT)
       
 
       if (selectedClients === null) {
@@ -391,7 +408,7 @@ class Home extends AppPage {
 
   onCategoryLinkClick = (category, isInclude) => {
     const { application } = this.context;
-    const { selectedCategories } = this.state;
+    const { selectedCategories, clients } = this.state;
     const index = selectedCategories.indexOf(category);
 
     const newSelectedList = selectedCategories.slice();
@@ -407,9 +424,18 @@ class Home extends AppPage {
           selectedCategories.length === 0 && 
           selectedClients === null;
 
-        application.setLogoStyle({
-          type: isUnselected ? 'full' : 'simple',
-        });
+        if (this.setLogoStyleTimer) {
+          clearTimeout(this.setLogoStyleTimer);
+        }
+
+        this.setLogoStyleTimer = setTimeout(() => {
+
+          this.setLogoStyleTimer = null;
+  
+          application.setLogoStyle({
+            type: isUnselected ? 'full' : 'simple'
+          });
+        }, SET_LOGO_TIMEOUT);
 
         if (selectedClients === null) {
           application.setLogoStyle({
@@ -443,9 +469,18 @@ class Home extends AppPage {
           selectedCategories.length === 0 && 
           selectedClients === null;
 
-        application.setLogoStyle({
-          type: isUnselected ? 'full' : 'simple',
-        });
+        if (this.setLogoStyleTimer) {
+          clearTimeout(this.setLogoStyleTimer);
+        }
+
+        this.setLogoStyleTimer = setTimeout(() => {
+
+          this.setLogoStyleTimer = null;
+  
+          application.setLogoStyle({
+            type: isUnselected ? 'full' : 'simple'
+          });
+        }, SET_LOGO_TIMEOUT);
 
         if (selectedClients === null) {
           application.setLogoStyle({
@@ -472,9 +507,14 @@ class Home extends AppPage {
           onClear: this.onClearSelectedList
         };
 
-        application.setLogoStyle({
-          ...this.constructor.logo
-        });
+        // this.setLogoStyleTimer = setTimeout(() => {
+
+        //   this.setLogoStyleTimer = null;
+  
+        //   application.setLogoStyle({
+        //     ...this.constructor.logo
+        //   });
+        // }, 500);
 
         application.forceUpdateNavigationPanel();
 

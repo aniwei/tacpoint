@@ -11,6 +11,7 @@
     width: 312px;
     height: 1px;
     background-color: #1a1a1a;
+    transition: transform .35s;
     /* transform: rotate(-35deg);
     -ms-transform: rotate(-35deg);
     -moz-transform: rotate(-35deg);

@@ -5,6 +5,7 @@ import Scene from '../../components/Scene';
 import AppPage from '../../components/AppPage';
 import SimpleNavigation from '../../components/SimpleNavigation';
 import Context from '../../Context';
+import AppFooter from '../../components/AppFooter';
 
 const SCALE = 2.5;
 
@@ -62,11 +63,11 @@ class About extends AppPage {
         });
       });
 
-    window.addEventListener('scroll', this.onWindowScroll);
+    document.addEventListener('layoutscrolling', this.onWindowScroll);
   }
 
   componentWillUnmount () {
-    window.removeEventListener('scroll', this.onWindowScroll);
+    document.removeEventListener('layoutscrolling', this.onWindowScroll);
   }
 
   onSwipeClick = (direction) => {
@@ -77,9 +78,9 @@ class About extends AppPage {
     }
   }
 
-  onWindowScroll = () => {
+  onWindowScroll = ({ data: { scrollTop: top, scrollHeight: contentHeight }}) => {
     const { getWindowSize } = this.props;
-    const { top, height: contentHeight } = this.getScrollRect();
+    // const { height: contentHeight } = 
     const { height } = getWindowSize();
 
     const angle = parseInt((top / (contentHeight - height)) * 90 - 55);
@@ -120,17 +121,17 @@ class About extends AppPage {
     });
   }
 
-  getScrollRect = () => {
-    const { 
-      scrollTop: top,
-      scrollHeight: height
-    } = document.documentElement;
+  // getScrollRect = () => {
+  //   const { 
+  //     scrollTop: top,
+  //     scrollHeight: height
+  //   } = document.documentElement;
 
-    return { 
-      top: top === 0 ? document.body.scrollTop : top, 
-      height 
-    };
-  }
+  //   return { 
+  //     top: top === 0 ? document.body.scrollTop : top, 
+  //     height 
+  //   };
+  // }
 
   headerRender () {
     return (
