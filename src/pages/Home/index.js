@@ -384,6 +384,10 @@ class Home extends AppPage {
         application.createEventEmitter('linestatechange', {
           open: false
         });
+
+        application.setLogoStyle({
+          color:  Home.logo.color
+        });
       } else {
         application.createEventEmitter('linestatechange', {
           open: true,
@@ -453,9 +457,9 @@ class Home extends AppPage {
         };
 
         application.forceUpdateNavigationPanel();
-        application.setLogoStyle({
-          ...this.constructor.logo
-        });
+        // application.setLogoStyle({
+        //   ...this.constructor.logo
+        // });
 
         application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
       });

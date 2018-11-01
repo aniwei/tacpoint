@@ -42328,6 +42328,10 @@
 	          application.createEventEmitter('linestatechange', {
 	            open: false
 	          });
+
+	          application.setLogoStyle({
+	            color: Home.logo.color
+	          });
 	        } else {
 	          application.createEventEmitter('linestatechange', {
 	            open: true,
@@ -42394,7 +42398,9 @@
 	          });
 
 	          application.forceUpdateNavigationPanel();
-	          application.setLogoStyle(_extends({}, _this4.constructor.logo));
+	          // application.setLogoStyle({
+	          //   ...this.constructor.logo
+	          // });
 
 	          application.changeNavigationButtonState(isUnselected ? 'close' : 'open');
 	        });
