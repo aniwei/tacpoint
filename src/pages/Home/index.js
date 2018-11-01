@@ -185,6 +185,7 @@ class Navigations extends Component {
 }
 
 class Home extends AppPage {
+  static position = 'fixed';
   static backgroundColor = '#000';
   static navigationButtonCOlor = '#f0f0f0';
   static footer = {
@@ -524,7 +525,7 @@ class Home extends AppPage {
   }
 
   onProjectMouseEnter = (project, e) => {
-    console.log(e);
+    // console.log(e);
   }
 
   onProjectMouseLeave = () => {
@@ -532,7 +533,7 @@ class Home extends AppPage {
   }
 
   onMouseOver = (e) => {
-    console.log(e);
+    // console.log(e);
   }
 
   onLayout (node) {
@@ -608,6 +609,7 @@ class Home extends AppPage {
     const projectElements = projects.map((project, index) => {
       const classes = classnames({
         'scene__project-item': true,
+        // 'swiper-slide': true,
         'scene__project-item_highlight': false
       });
 
@@ -651,12 +653,19 @@ class Home extends AppPage {
     });
 
     const options = {
-      slidesPerView: 'auto',
-      spaceBetween: 0,
-      freeMode: true,
-      mode: 'vertical',
-      direction: 'vertical',
-      loop: true,
+      // slidesPerView: 'auto',
+      // spaceBetween: 0,
+      // freeMode: true,
+      // mode: 'vertical',
+      // direction: 'vertical',
+      // loop: true,
+
+      // slidesPerView: 'auto',
+      // spaceBetween: 30,
+      // freeMode: true,
+      // mode: 'vertical',
+      // direction: 'vertical',
+      // loop: true,
       // direction: 'vertical',
     };
 
@@ -664,11 +673,9 @@ class Home extends AppPage {
       <div className="col-12 col-m-14 col-s-24 scene-home__project">
         <div className="scene__project" ref={ref => this.onLayout(ref)}>
           <div className="scene__project-list">
-            {
-              this.isLayouted ? <ReactSwiper {...options}>
+              {/* <ReactSwiper {...options}> */}
                 {projectElements}
-              </ReactSwiper> : projectElements
-            }
+              {/* </ReactSwiper> */}
           </div>
         </div>
       </div>
@@ -770,7 +777,7 @@ class Line extends Component {
     const offsetX = (beta);
     const offsetY = (gamma);
 
-    console.log(offsetX, offsetY);
+    // console.log(offsetX, offsetY);
 
     this.setState({
       translate: `${offsetX}px, ${offsetY}px`

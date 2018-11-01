@@ -25,7 +25,7 @@ export default class AppFoot extends Component {
 
     context.application.setFooterFixed = () => {
       this.setState({
-        position: 'absolute'
+        position: 'fixed'
       });
     }
 

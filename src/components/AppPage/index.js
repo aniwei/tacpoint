@@ -61,6 +61,7 @@ export default  class Home extends Component {
 
     application.setNavigationButtonColor(constructor.navigationButtonColor);
     application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
+    application.setAppBarBackgroundColor(constructor.backgroundColor);
     application.setLogoStyle({ ...constructor.logo });
     application.setNavigators(constructor.navigators);
     application.setBackgroundColor(constructor.backgroundColor);
@@ -71,10 +72,18 @@ export default  class Home extends Component {
     }
     application.changeNavigationButtonState('close');
 
-    if (location.pathname === '/') {
+    const { pathname } = location;
+
+    if (pathname === '/') {
       application.setFooterFixed();
     } else {
       application.clearFooterFixed();
+    }
+
+    if (pathname === '/project') {
+      application.enableAppBarScrollingEffect();
+    } else {
+      application.disableAppBarScrollingEffect();
     }
   }
 

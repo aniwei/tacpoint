@@ -7,6 +7,7 @@ import Context from '../../Context';
 
 class Contact extends AppPage {
   static backgroundColor = '#8b8b8b';
+  static position = 'fixed';
   static logo = {
     opacity: 0.5,
     color: '#1a1a1a',

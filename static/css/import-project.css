@@ -1,9 +1,12 @@
 
 /* project s */
 
-.scene__project,
-.scene__project-list {
+.scene__project {
     height: 100%;
+}
+.scene__project-list {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .scene__project-item {

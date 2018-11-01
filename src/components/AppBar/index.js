@@ -20,6 +20,7 @@ export default class AppBar extends Component {
 
     this.state = {
       navigationButtonColor: COLORS.BLACK,
+      backgroundColor: COLORS.BLACK,
       navigationButtonState: 'close',
       logo: {
         color: COLORS.WHITE,
@@ -30,7 +31,18 @@ export default class AppBar extends Component {
       visible: true,
       open: context.application.navigationState === 'open' || false,
     }
+
+    context.application.setAppBarBackgroundColor = (backgroundColor) => {
+      this.setState({ backgroundColor });
+    }
     
+    context.application.enableAppBarScrollingEffect = () => {
+      this.enabled = true;
+    }
+
+    context.application.disableAppBarScrollingEffect = () => {
+      this.enabled = false;
+    }
 
     context.application.setNavigationButtonColor = (navigationButtonColor) => {
       this.setState({ navigationButtonColor });
@@ -90,17 +102,21 @@ export default class AppBar extends Component {
   onLayoutScrolling = ({ data: { scrollTop: top } }) => {
     const { visible } = this.state;
 
-    if (top > this.originalScrollTop) {
-      if (visible === true) {
-        this.setState({
-          visible: false
-        });
-      }
-    } else {
-      if (visible === false) {
-        this.setState({
-          visible: true
-        });
+    if (this.enabled) {
+      if (top > 80) {
+        if (top > this.originalScrollTop) {
+          if (visible === true) {
+            this.setState({
+              visible: false
+            });
+          }
+        } else {
+          if (visible === false) {
+            this.setState({
+              visible: true
+            });
+          }
+        }
       }
     }
 
@@ -161,7 +177,7 @@ export default class AppBar extends Component {
   }
 
   render () {
-    const { position, visible } = this.state;
+    const { position, visible, backgroundColor } = this.state;
     const classes = classnames({
       'animated': true,
       'app__header': true,
@@ -169,9 +185,13 @@ export default class AppBar extends Component {
       'fadeIn': visible,
       'fadeOut': !visible
     });
+
+    const style = { backgroundColor };
+
+    // console.log(style);
     
     return (
-      <div className={classes}>
+      <div className={classes} style={style}>
         {this.clearButtonRender()}
         {this.navigationButtonRender()}
         {this.logoRender()}

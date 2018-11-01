@@ -101,6 +101,8 @@ class App extends Component {
   }
 
   onScroll = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (!this.isLayoutScrolling) {
       const { target } = e;
       this.isLayoutScrolling = true;

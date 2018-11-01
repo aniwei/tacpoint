@@ -66,7 +66,7 @@ export default class AppNavigationPanel extends Component {
       open: type === 'open'
     });
 
-    console.log(type);
+    // console.log(type);
   }
 
   onNavigatorClick = () => {

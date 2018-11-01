@@ -11,6 +11,7 @@ const SCALE = 2.5;
 
 class About extends AppPage {
   static backgroundColor = '#f0f0f0';
+  static position = 'fixed';
   static logo = {
     opacity: 1,
     color: '#1a1a1a',

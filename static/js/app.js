@@ -132,6 +132,8 @@
 	    };
 
 	    _this.onScroll = function (e) {
+	      e.stopPropagation();
+	      e.preventDefault();
 	      if (!_this.isLayoutScrolling) {
 	        var target = e.target;
 
@@ -30415,17 +30417,21 @@
 	      var visible = _this.state.visible;
 
 
-	      if (top > _this.originalScrollTop) {
-	        if (visible === true) {
-	          _this.setState({
-	            visible: false
-	          });
-	        }
-	      } else {
-	        if (visible === false) {
-	          _this.setState({
-	            visible: true
-	          });
+	      if (_this.enabled) {
+	        if (top > 80) {
+	          if (top > _this.originalScrollTop) {
+	            if (visible === true) {
+	              _this.setState({
+	                visible: false
+	              });
+	            }
+	          } else {
+	            if (visible === false) {
+	              _this.setState({
+	                visible: true
+	              });
+	            }
+	          }
 	        }
 	      }
 
@@ -30454,6 +30460,7 @@
 
 	    _this.state = {
 	      navigationButtonColor: _contants.COLORS.BLACK,
+	      backgroundColor: _contants.COLORS.BLACK,
 	      navigationButtonState: 'close',
 	      logo: {
 	        color: _contants.COLORS.WHITE,
@@ -30463,6 +30470,18 @@
 	      position: 'absolute',
 	      visible: true,
 	      open: context.application.navigationState === 'open' || false
+	    };
+
+	    context.application.setAppBarBackgroundColor = function (backgroundColor) {
+	      _this.setState({ backgroundColor: backgroundColor });
+	    };
+
+	    context.application.enableAppBarScrollingEffect = function () {
+	      _this.enabled = true;
+	    };
+
+	    context.application.disableAppBarScrollingEffect = function () {
+	      _this.enabled = false;
 	    };
 
 	    context.application.setNavigationButtonColor = function (navigationButtonColor) {
@@ -30578,7 +30597,8 @@
 	    value: function render() {
 	      var _state2 = this.state,
 	          position = _state2.position,
-	          visible = _state2.visible;
+	          visible = _state2.visible,
+	          backgroundColor = _state2.backgroundColor;
 
 	      var classes = (0, _classnames2.default)({
 	        'animated': true,
@@ -30588,9 +30608,13 @@
 	        'fadeOut': !visible
 	      });
 
+	      var style = { backgroundColor: backgroundColor };
+
+	      // console.log(style);
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: classes },
+	        { className: classes, style: style },
 	        this.clearButtonRender(),
 	        this.navigationButtonRender(),
 	        this.logoRender()
@@ -31040,7 +31064,7 @@
 
 	    context.application.setFooterFixed = function () {
 	      _this.setState({
-	        position: 'absolute'
+	        position: 'fixed'
 	      });
 	    };
 
@@ -31247,7 +31271,7 @@
 	        open: type === 'open'
 	      });
 
-	      console.log(type);
+	      // console.log(type);
 	    };
 
 	    _this.onNavigatorClick = function () {};
@@ -32884,6 +32908,7 @@
 
 	    application.setNavigationButtonColor(constructor.navigationButtonColor);
 	    application.setNavigationsPanelBackgroundColor(constructor.backgroundColor);
+	    application.setAppBarBackgroundColor(constructor.backgroundColor);
 	    application.setLogoStyle(_extends({}, constructor.logo));
 	    application.setNavigators(constructor.navigators);
 	    application.setBackgroundColor(constructor.backgroundColor);
@@ -32894,10 +32919,19 @@
 	    }
 	    application.changeNavigationButtonState('close');
 
-	    if (location.pathname === '/') {
+	    var pathname = location.pathname;
+
+
+	    if (pathname === '/') {
 	      application.setFooterFixed();
 	    } else {
 	      application.clearFooterFixed();
+	    }
+
+	    if (pathname === '/project') {
+	      application.enableAppBarScrollingEffect();
+	    } else {
+	      application.disableAppBarScrollingEffect();
 	    }
 	  };
 	};
@@ -42427,9 +42461,9 @@
 	        });
 	      }
 	    }, _this4.onProjectMouseEnter = function (project, e) {
-	      console.log(e);
+	      // console.log(e);
 	    }, _this4.onProjectMouseLeave = function () {}, _this4.onMouseOver = function (e) {
-	      console.log(e);
+	      // console.log(e);
 	    }, _this4.navigationsRender = function () {
 
 	      return _react2.default.createElement(Navigations, _extends({}, _this4.props, {
@@ -42632,6 +42666,7 @@
 	      var projectElements = projects.map(function (project, index) {
 	        var classes = (0, _classnames2.default)({
 	          'scene__project-item': true,
+	          // 'swiper-slide': true,
 	          'scene__project-item_highlight': false
 	        });
 
@@ -42684,12 +42719,19 @@
 	      });
 
 	      var options = {
-	        slidesPerView: 'auto',
-	        spaceBetween: 0,
-	        freeMode: true,
-	        mode: 'vertical',
-	        direction: 'vertical',
-	        loop: true
+	        // slidesPerView: 'auto',
+	        // spaceBetween: 0,
+	        // freeMode: true,
+	        // mode: 'vertical',
+	        // direction: 'vertical',
+	        // loop: true,
+
+	        // slidesPerView: 'auto',
+	        // spaceBetween: 30,
+	        // freeMode: true,
+	        // mode: 'vertical',
+	        // direction: 'vertical',
+	        // loop: true,
 	        // direction: 'vertical',
 	      };
 
@@ -42704,11 +42746,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'scene__project-list' },
-	            this.isLayouted ? _react2.default.createElement(
-	              _reactIdSwiper2.default,
-	              options,
-	              projectElements
-	            ) : projectElements
+	            projectElements
 	          )
 	        )
 	      );
@@ -42757,6 +42795,7 @@
 	  return Home;
 	}(_AppPage3.default);
 
+	Home.position = 'fixed';
 	Home.backgroundColor = '#000';
 	Home.navigationButtonCOlor = '#f0f0f0';
 	Home.footer = {
@@ -42818,7 +42857,7 @@
 	      var offsetX = beta;
 	      var offsetY = gamma;
 
-	      console.log(offsetX, offsetY);
+	      // console.log(offsetX, offsetY);
 
 	      _this8.setState({
 	        translate: offsetX + 'px, ' + offsetY + 'px'
@@ -43290,6 +43329,7 @@
 	}(_AppPage3.default);
 
 	Contact.backgroundColor = '#8b8b8b';
+	Contact.position = 'fixed';
 	Contact.logo = {
 	  opacity: 0.5,
 	  color: '#1a1a1a',
@@ -43875,6 +43915,7 @@
 	}(_AppPage3.default);
 
 	About.backgroundColor = '#f0f0f0';
+	About.position = 'fixed';
 	About.logo = {
 	  opacity: 1,
 	  color: '#1a1a1a',
@@ -44834,8 +44875,12 @@
 	  return Access;
 	}(_react2.default.Component);
 
+	Access.position = 'fixed';
 	Access.backgroundColor = '#1a1a1a';
-	Access.logoColor = '#fff';
+	Access.logo = {
+	  color: '#fff',
+	  simple: 'full'
+	};
 
 	exports.default = function (props) {
 	  return _react2.default.createElement(

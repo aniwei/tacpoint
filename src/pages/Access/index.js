@@ -4,8 +4,13 @@ import Scene from '../../components/Scene';
 import Context from '../../Context';
 
 class Access extends React.Component {
+  static position = 'fixed';
   static backgroundColor = '#1a1a1a';
-  static logoColor = '#fff';
+  static logo = {
+    color: '#fff',
+    simple: 'full'
+  };
+
 
   state = {
     waiting: false,
