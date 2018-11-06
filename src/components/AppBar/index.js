@@ -179,11 +179,8 @@ export default class AppBar extends Component {
   render () {
     const { position, visible, backgroundColor } = this.state;
     const classes = classnames({
-      'animated': true,
       'app__header': true,
       'fixed': position === 'fixed',
-      'fadeIn': visible,
-      'fadeOut': !visible
     });
 
     const style = { backgroundColor };
@@ -191,7 +188,8 @@ export default class AppBar extends Component {
     // console.log(style);
     
     return (
-      <div className={classes} style={style}>
+      <div className={classes} >
+        <div style={style} className={classnames({ 'app__header-background': true,'animated': true, 'fadeIn': visible, 'fadeOut': !visible})}></div>
         {this.clearButtonRender()}
         {this.navigationButtonRender()}
         {this.logoRender()}

@@ -30601,11 +30601,8 @@
 	          backgroundColor = _state2.backgroundColor;
 
 	      var classes = (0, _classnames2.default)({
-	        'animated': true,
 	        'app__header': true,
-	        'fixed': position === 'fixed',
-	        'fadeIn': visible,
-	        'fadeOut': !visible
+	        'fixed': position === 'fixed'
 	      });
 
 	      var style = { backgroundColor: backgroundColor };
@@ -30614,7 +30611,8 @@
 
 	      return _react2.default.createElement(
 	        'div',
-	        { className: classes, style: style },
+	        { className: classes },
+	        _react2.default.createElement('div', { style: style, className: (0, _classnames2.default)({ 'app__header-background': true, 'animated': true, 'fadeIn': visible, 'fadeOut': !visible }) }),
 	        this.clearButtonRender(),
 	        this.navigationButtonRender(),
 	        this.logoRender()
