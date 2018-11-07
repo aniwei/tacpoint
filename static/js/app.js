@@ -30564,6 +30564,19 @@
 	      }
 	    }
 	  }, {
+	    key: 'moreButtonRender',
+	    value: function moreButtonRender() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'app__navigation-clear app__navigation-button-more', onClick: this.onNavigationClear },
+	        _react2.default.createElement(
+	          _reactRouterDom.Link,
+	          { to: '/' },
+	          '+ more projects'
+	        )
+	      );
+	    }
+	  }, {
 	    key: 'navigationButtonRender',
 	    value: function navigationButtonRender() {
 	      var _this2 = this;
@@ -30613,6 +30626,7 @@
 	        'div',
 	        { className: classes },
 	        _react2.default.createElement('div', { style: style, className: (0, _classnames2.default)({ 'app__header-background': true, 'animated': true, 'fadeIn': visible, 'fadeOut': !visible }) }),
+	        this.moreButtonRender(),
 	        this.clearButtonRender(),
 	        this.navigationButtonRender(),
 	        this.logoRender()

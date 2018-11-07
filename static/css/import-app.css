@@ -150,7 +150,7 @@
   display: none;
 }
 
-.app__navigation-more {
+.app__navigation-button-more {
   position: absolute;
   bottom: 0px;
   color: #1a1a1a;
@@ -208,12 +208,19 @@
   /* height: 800px!important; */
 }
 
+
 .app__header .app__navigation-clear {
   display: block;
   top: 50%;
   left: 105px;
   color:rgba(255, 255, 255, 0.25);
   transform: translate(0, -50%);
+}
+
+.app__header .app__navigation-button-more {
+  display: bloack;
+  color:rgba(0, 0, 0, 0.5);
+  text-align: left;
 }
 
 .app__header .app__header-background {
@@ -254,6 +261,10 @@
   }
 
   .app__outter-navigator {
+    display: none;
+  }
+
+  .scene-project .app__navigation-more {
     display: none;
   }
 

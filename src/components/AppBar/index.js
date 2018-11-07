@@ -155,6 +155,16 @@ export default class AppBar extends Component {
     }
   }
 
+  moreButtonRender () {
+    return (
+      <div className="app__navigation-clear app__navigation-button-more" onClick={this.onNavigationClear}>
+        <Link to="/">
+          + more projects
+        </Link>        
+      </div>
+      );
+  }
+
   navigationButtonRender () {
     const { navigationButtonColor, open } = this.state;
 
@@ -190,6 +200,7 @@ export default class AppBar extends Component {
     return (
       <div className={classes} >
         <div style={style} className={classnames({ 'app__header-background': true,'animated': true, 'fadeIn': visible, 'fadeOut': !visible})}></div>
+        {this.moreButtonRender()}
         {this.clearButtonRender()}
         {this.navigationButtonRender()}
         {this.logoRender()}
