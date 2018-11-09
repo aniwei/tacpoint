@@ -22,6 +22,9 @@
 .scene-home__category {
     font-size: 0px;
     display: block;
+    position: fixed;
+    top: 0px;
+
 }
 .scene-home__category:after {
     content: "";
@@ -69,8 +72,8 @@
     height: 100%;
 }
 .scene__project-list {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    /* overflow: auto;
+    -webkit-overflow-scrolling: touch; */
 }
 
 @media screen and (max-width: 768px) {

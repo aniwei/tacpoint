@@ -156,8 +156,16 @@ export default class AppBar extends Component {
   }
 
   moreButtonRender () {
+    const { position, visible } = this.state;
+    const classes = classnames({
+      'app__navigation-clear app__navigation-button-more': true,
+      'fadeIn': visible,
+      'fadeOut': !visible,
+      'animated': true
+    });
+
     return (
-      <div className="app__navigation-clear app__navigation-button-more" onClick={this.onNavigationClear}>
+      <div className={classes} onClick={this.onNavigationClear}>
         <Link to="/">
           + more projects
         </Link>        

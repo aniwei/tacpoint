@@ -223,6 +223,13 @@
   text-align: left;
 }
 
+.app__navigation-button-more a {
+  transition: color .35s;
+}
+.app__navigation-button-more a:hover {
+  color: rgba(26, 26, 26, 1);
+}
+
 .app__header .app__header-background {
   position: absolute;
   left: 0;

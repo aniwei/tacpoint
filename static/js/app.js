@@ -30566,9 +30566,20 @@
 	  }, {
 	    key: 'moreButtonRender',
 	    value: function moreButtonRender() {
+	      var _state = this.state,
+	          position = _state.position,
+	          visible = _state.visible;
+
+	      var classes = (0, _classnames2.default)({
+	        'app__navigation-clear app__navigation-button-more': true,
+	        'fadeIn': visible,
+	        'fadeOut': !visible,
+	        'animated': true
+	      });
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'app__navigation-clear app__navigation-button-more', onClick: this.onNavigationClear },
+	        { className: classes, onClick: this.onNavigationClear },
 	        _react2.default.createElement(
 	          _reactRouterDom.Link,
 	          { to: '/' },
@@ -30581,9 +30592,9 @@
 	    value: function navigationButtonRender() {
 	      var _this2 = this;
 
-	      var _state = this.state,
-	          navigationButtonColor = _state.navigationButtonColor,
-	          open = _state.open;
+	      var _state2 = this.state,
+	          navigationButtonColor = _state2.navigationButtonColor,
+	          open = _state2.open;
 
 
 	      return _react2.default.createElement(_NavigationButton2.default, {
@@ -30608,10 +30619,10 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _state2 = this.state,
-	          position = _state2.position,
-	          visible = _state2.visible,
-	          backgroundColor = _state2.backgroundColor;
+	      var _state3 = this.state,
+	          position = _state3.position,
+	          visible = _state3.visible,
+	          backgroundColor = _state3.backgroundColor;
 
 	      var classes = (0, _classnames2.default)({
 	        'app__header': true,

@@ -5,8 +5,8 @@
     height: 100%;
 }
 .scene__project-list {
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
+    /* overflow: auto;
+    -webkit-overflow-scrolling: touch; */
 }
 
 .scene__project-item {
