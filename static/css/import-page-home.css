@@ -57,7 +57,7 @@
 /* category e */
 
 .scene-home__line {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     display: block;
