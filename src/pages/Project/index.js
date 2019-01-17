@@ -1,5 +1,5 @@
 import React from 'react';
-import qs from 'query-string';
+import qs from 'qs';
 import { Link } from 'react-router-dom';
 
 import Scene from '../../components/Scene';

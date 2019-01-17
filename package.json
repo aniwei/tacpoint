@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --watch --progress & http-server ."
+    "start": "webpack --watch --progress & http-server .",
+    "build": "webpack --progress --profile --colors --config webpack.production.config.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,7 @@
     "create-react-context": "^0.2.3",
     "http-server": "^0.11.1",
     "prop-types": "^15.6.2",
-    "query-string": "^6.1.0",
+    "qs": "^6.6.0",
     "react": "^15.6.2",
     "react-dom": "^15.2.1",
     "react-id-swiper": "^1.6.8",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",
-    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "jsx-loader": "^0.13.2",

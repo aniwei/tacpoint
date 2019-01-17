@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { withRouter, Link } from 'react-router-dom';
-import qs from 'query-string';
+import qs from 'qs';
 import ReactSwiper from 'react-id-swiper';
 import Context from '../../Context';
 

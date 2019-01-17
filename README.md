@@ -1,11 +1,33 @@
-# How to start?
+## Getting Started
 
-### enviroment
+You need to install nodejs before you can start the project.
 
-- node/npm
+### Prerequisites
 
+- nodejs (v8.3.0)
+- npm
+
+### Install nodejs dependencies
+
+With npm
+
+```bash
+$ cd ./path/to/tacpoint/
+$ npm install
 ```
-$ cd path/to/tacpoint
-$ npm install 
-$ npm start
+
+### Startup
+
+- development
+
+```bash
+$ cd ./path/to/tacpoint/
+$ npm start 
 ```
+
+- production
+```bash
+$ cd ./path/to/tacpoint/
+$ npm start 
+```
+

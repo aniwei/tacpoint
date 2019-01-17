@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import qs from 'query-string';
+import qs from 'qs';
 
 import SimpleNavigation from '../SimpleNavigation';
 
